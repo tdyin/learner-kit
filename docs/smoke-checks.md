@@ -561,3 +561,22 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 - After any help on the problem, every later wrong or incomplete answer to any part of it is an unsuccessful coached retry. The skill gives the example: after a hint about ΔU, a wrong W is retry 1 and a second wrong W is retry 2.
 
 **Rerun needed:** CC5 and CR3 on the commit after `0ffcb87`.
+
+### Rerun at `4a1d03a` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** `lk-coach` reinstalled from `4a1d03a` on both hosts, with all nine installed. The scratch directory was still empty at the end.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | Hint revealed no value. First wrong W: named the log-base error, labelled "(Coached retry count for this problem: 1.)", and wrote out no expression. Second wrong W: "the mistake is the **temperature value** … (Coached retry count for this problem: 2.) Instead of another hint, how would you like to continue?" It gave four options, said nothing about how to fix it, and asked for no recomputation. Full solution correct; stop ended. | Pass |
+| CR3 | **Hint stated the answer:** "Since the temperature stays at 300 K, ΔU is zero." First wrong W: misdiagnosed as arithmetic and wrote out "2.0 × 8.314 × 300 × ln(2)". Second-retry fallback correct. Full solution correct; "Stopped." | **Fail** |
+
+**Fix after this run:**
+- A hint must not state the result of the step it points to, or answer the question just asked.
+- Corrections must not write out a corrected expression with numbers substituted.
+- Before naming a mistake, work out what the learner actually did, so the real error is named. For example, a value that is correct for a base-10 log means the wrong log was used, not an arithmetic slip.
+
+**Rerun needed:** CC5 and CR3 on the commit after `4a1d03a`, because the shared text changed for both hosts.
