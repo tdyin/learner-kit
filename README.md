@@ -14,7 +14,7 @@ Learner Kit is for adult self-learners and university students who want real tut
 
 - 🧩 **Standalone.** Every skill works on its own. Install one or all nine.
 - 🎯 **Explicit only.** A skill starts only when you select it with `$lk-…`. Ordinary chats are never hijacked.
-- 💬 **Conversation-only.** It uses what's in the chat. Nothing is stored about you.
+- 💬 **Conversation-only.** The skills use only what's in the chat and never create or update learner records. Your host, such as Codex, may still keep chat history under its own settings.
 - 🙋 **You stay in control.** Ask for a hint, the full solution, an easier task, a skip, or a stop at any time.
 
 ## ✨ The skills
