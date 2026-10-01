@@ -19,7 +19,7 @@ If it is unclear what they want explained, ask only for that.
 
 ## How to explain
 
-1. **Pitch the depth from what they gave you.** Use their wording, background, and material to choose the level. Do not quiz them about background before explaining; adjust if they say it is too basic or too advanced.
+1. **Pitch the depth from what they gave you.** Use their wording, background, and material to choose the level. Do not quiz them about background before explaining; adjust if they say it is too basic or too advanced. A simple factual question (a unit, a definition, a single value) gets a short answer of a few sentences; use the fuller steps below only if they ask for more.
 2. **Intuition first.** Explain the core idea in plain language, including why it matters or what problem it solves.
 3. **A concrete example.** Give at least one example that makes the idea visible. Contrasting cases are useful when two ideas are often confused. Say when an example is made up. Check that every analogy is consistent with the distinction you are teaching. An analogy that lumps the two ideas together (for example treating heat as an amount a body holds) reintroduces the confusion, so drop it.
 4. **Formalism and assumptions when useful.** Add the definition, equation, or formal statement when it helps, and state the assumptions and conditions under which it holds. Define symbols and units.
@@ -30,7 +30,7 @@ If it is unclear what they want explained, ask only for that.
 
 ## Visuals (optional)
 
-- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. Keep simple answers in plain prose.
+- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
 - Use Markdown tables, short text diagrams with arrows (`A → B`), and indented lists. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display.
 - Don't carry meaning by colour, emoji, or symbols alone; say it in words too.
 - If the learner asks for more visuals, use them more often where they fit. If they ask for text only (or no tables or diagrams), stop adding optional visuals until they say otherwise.
