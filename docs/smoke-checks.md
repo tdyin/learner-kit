@@ -458,3 +458,37 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 Notes:
 - This TR1 variation ends at a larger volume than P2, so its W (3.98 kJ) is larger than P2's reversible 3.46 kJ. "Reversible gives the most work" only compares processes between the same two states: a reversible expansion to 49.2 L would give about 7.95 kJ. The discussion step should point out that the end states differ.
 - The mean task's success standard asked for "the appropriate unit", which is slightly odd for quiz scores. This is minor.
+
+## Issue #18: adaptive `lk-recall` quizzes
+
+`lk-recall` now runs a quiz of a fixed length at a chosen coverage depth, with a progress bar, difficulty that adapts within the session, and an automatic summary at the end (spec #17). These checks replace "open-ended continuation" in RC1–RC4 with the new behavior; RC1–RC4 stay as regression checks.
+
+**How to run these checks.** Same as for issues #3–#5: a logged-in Codex session, a **fresh** session per check, **only `lk-recall` installed** (except RA16), and the sample notes from [examples/thermodynamics.md](../examples/thermodynamics.md) unless a check says otherwise. Write each scripted learner answer before reading anything that would give it away, and record it. Judge behavior, not exact wording. For every check, also confirm: one substantive question per message, the total announced before question 1 never changes, and no files are written.
+
+**Progress bar rule used for "Expected":** one segment per slot (20 segments, filled in proportion and rounded down, above 20 slots). Filled = resolved slots. Question *n* of *N* shows *n* − 1 filled while it is pending. After the last slot resolves, the bar is full.
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| RA1 | Depth missing | `$lk-recall Quiz me on these notes:` + sample notes | Asks Quick/Standard/Deep (and memory vs notes) in one message, before any question. Flags lines 3 and 5. | | Not run |
+| RA2 | Depth supplied | `$lk-recall Standard quiz from memory on these notes:` + sample notes | Doesn't ask depth or memory/notes again. Announces a total, then asks question 1 with an empty bar, and waits. No full question list. | | Not run |
+| RA3 | Depth vs difficulty | Fresh sessions with the RA2 prompt as Quick and as Deep. Answer Deep's first question. | Deep plans more coverage or a larger total than Quick. Deep's question 1 is not automatically hard. | | Not run |
+| RA4 | Bar states | Continue RA2 to the middle, the last (pending) question and completion | Question 1: 0 filled. Question *n* of *N*: *n* − 1 filled. Last pending: one short of full. After it: full bar and "*N* of *N*". Only number, total and bar: no topic counts, difficulty labels, scores or percentages. | | Not run |
+| RA5 | Two unaided successes, then a new pair | Answer two questions correctly without help, then one more correctly | The third question is noticeably harder. A fourth correct answer alone does not raise difficulty again. | | Not run |
+| RA6 | Partial, then incorrect | Give a partly correct answer, then an incorrect one | Partial: targeted feedback, then a similar-difficulty question on the gap. Incorrect: brief correction, then an easier related question. Total unchanged. | | Not run |
+| RA7 | Hinted success | "hint", then a correct answer | Same question number and bar after the hint. Correct after the hint doesn't count toward an unaided pair (no escalation even if the previous answer was unaided and correct). | | Not run |
+| RA8 | Ambiguous answer | Give an answer that could be read two ways (for R1: "ΔU = Q − W, W is the work") | One clarifying question; same number and bar; no "wrong" recorded. After clarifying, the answer counts once. | | Not run |
+| RA9 | Skip, show answer, don't remember | "skip", then "show me the answer", then "I don't remember" on three questions | Each advances the bar by one and none is called wrong. None counts toward an unaided pair. All three appear as not answered by the learner in the summary. | | Not run |
+| RA10 | Revisit within budget | Get one idea wrong early in a quiz with several slots left | A later, differently worded question on that idea uses an existing slot. The total never grows. | | Not run |
+| RA11 | Natural completion, correct final | Answer the last question correctly | Feedback, full bar, automatic summary (covered; unaided; help/corrections; skipped/shown/don't remember; gaps and next step). Then it stops: no further question. | | Not run |
+| RA12 | Completion, incorrect final | Answer the last question incorrectly | Correction, full bar, summary listing the gap. No extra question. | | Not run |
+| RA13 | Completion, skipped or shown final | "skip" (one run) or "show me the answer" (another) on the last question | Full bar and summary; the last slot is listed as skipped or shown, not as recall. No extra question. | | Not run |
+| RA14 | Early stop with a question pending | Mid-quiz, "stop" without answering the current question; then "give me a recap" | Stop: one short reply, no summary, no full bar. The recap lists the pending question as unanswered and planned questions as not reached. | | Not run |
+| RA15 | Declined handoff keeps the slot | Mid-quiz: "Is there another Learner Kit skill for this?", then "no, keep going here" | Optional suggestion; after the decline it repeats the pending question with the same number and bar. | | Not run |
+| RA16 | Regression: RC1–RC4, X3 | Rerun RC1–RC4 (only `lk-recall`) and X3 (all eight) on this revision | As in the original tables; RC4's stop gives no unrequested recap | | Not run |
+
+### Run record for issue #18
+
+- **Date:** 2026-10-01
+- **Skill version:** the commit that adds this section on branch `claude/sweet-ritchie-gkj8el` (parent `963cd09`)
+- **Static checks (Pass):** `SKILL.md` frontmatter parses as YAML with only `name` and `description` (description 378 characters, under Codex's 1,024 limit). `agents/openai.yaml` parses and still has `allow_implicit_invocation: false`. Codex's `quick_validate.py` was not available, so it was not run.
+- **Conversation checks RA1–RA16: Not run.** The change was made in a cloud container with no Codex CLI and no model login, so no conversation could be held with the skill. Run them in a logged-in Codex session and record the host, model, observed results and any fixes here before treating issue #18 as verified.
