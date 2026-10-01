@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Coach"
+  short_description: "Coach me through a homework problem step by step"
+  default_prompt: "Use $lk-coach to help me with this homework problem."
+
+policy:
+  allow_implicit_invocation: false
