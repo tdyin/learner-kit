@@ -279,3 +279,34 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 
 **Rerun needed:** PR1, PR3, PR4, TR1, EP3, RV3, RV4, X1, X2. Run them against the commit after `a45e841`.
 
+### Rerun 2
+
+- **Host / model:** same as before (Codex CLI 0.159.3, gpt-5.6-terra medium, Windows 11 Pro)
+- **Date:** 2026-10-01
+- **Skill version:** commit `e85eb1d`. Only the skill under test was installed each time. RV1 and DG1 were run only as setup for RV4 and X2; X2 ran on a fork of DG1.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| PR1 | One physically consistent task (rigid tank, so W = 0) with a success standard; it waited. It was **not labelled as generated**. | **Fail** |
+| PR3 | "Your heat term is right: Q = −5 kJ…" Named the sign error and invited a retry, with no values handed over. | Pass |
+| PR4 | Noted the missing sign, units and equation, and asked "What is your signed value of ΔU…?" without proposing one | Pass |
+| TR1 | Physically consistent variation (P_ext = 249 kPa = P_final; it equilibrates at 20.0 L). But there was no explicit invitation to attempt it, and the success standard ("use a physically consistent work expression") hinted at what changes. | **Fail** (borderline) |
+| EP3 | "0.90 J/(g·K) is closer to aluminum… Confirm the value… in its data table or textbook." The reason given (heavier atoms) is correct. | Pass |
+| RV3 | "The recap… doesn't identify the subject yet… What subject/topic was P1 about?" | Pass |
+| RV4 | "Only the first-law sign-convention question was asked, and it was not answered; the other planned ideas were not reached." | Pass |
+| X1 | "`$lk-diagnose` isn't available… I can diagnose it here." It continued with P3 and its context. | Pass |
+| X2 | After "no, keep going here" it returned to the pending three-way choice, with no solution and no +500 J | Pass |
+
+Setup-only observation: RV1 didn't flag line 3 before its first question this time; the correction appeared only in the RV4 summary.
+
+### Fixes after rerun 2
+
+- **`lk-practice` (PR1):** generated tasks start with the label "Practice problem (generated):".
+- **`lk-transfer` (TR1):**
+  - The variation is labelled as generated.
+  - The success standard describes only the form of a complete answer and must not hint at the changed method.
+  - The message ends with an explicit invitation such as "Try it unaided first. What do you get?"
+- **`lk-review` (RV1 observation):** likely errors in the notes are flagged when the plan is presented, before the first item.
+
+**Rerun needed:** PR1, TR1, RV1. Run them against the commit after `e85eb1d`.
+

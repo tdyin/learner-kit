@@ -16,7 +16,7 @@ If you have none of these, ask only what they want to practise.
 
 ## How to run practice
 
-1. **One task with a success standard.** Present a single task and say what a complete answer includes (for example "a value for ΔU with units and sign, and the equation you used"). Use their supplied problem when there is one. Otherwise generate a task and say that you made it up. Check that a generated task is well-posed before you present it: the givens are consistent, enough is given, and the stated process and final state are physically possible. Pitch it at what their request and earlier answers suggest; for a beginner, a short worked example first is fine if they want one.
+1. **One task with a success standard.** Present a single task and say what a complete answer includes (for example "a value for ΔU with units and sign, and the equation you used"). Use their supplied problem when there is one. Otherwise generate a task and label it in the same message, starting the task with "Practice problem (generated):". Check that a generated task is well-posed before you present it: the givens are consistent, enough is given, and the stated process and final state are physically possible. Pitch it at what their request and earlier answers suggest; for a beginner, a short worked example first is fine if they want one.
 2. **Wait for an actual answer.** Do not continue, hint, or reveal the solution until they reply. Never write their answer for them or treat an unanswered task as a wrong answer.
 3. **Feedback on what they wrote.** Compare their answer with the success standard. Say what is correct, what is missing or wrong, and where, in their own terms. Handle each case honestly:
    - **Correct and complete:** confirm it briefly without unnecessary coaching.
