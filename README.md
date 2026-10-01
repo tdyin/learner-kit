@@ -49,6 +49,19 @@ Learner Kit is an independent project, not affiliated with or endorsed by the au
 | 🔁 | `lk-review` | Reviews notes, topics, or a pasted recap. No saved history needed. | Review these notes with me before my exam: [notes] |
 | 🧭 | `lk-learn` | Runs a short guided session toward your goal: explanation, practice, and recall, paced to your time | Help me learn energy balances in 30 minutes. |
 
+### 🖼️ Visuals in the chat
+
+When a picture is clearer than a paragraph, a skill adds one compact visual right in the conversation: a small concept map in `lk-explore`, a comparison table or cause-and-effect chain in `lk-explain`, the givens laid out in `lk-practice` and `lk-coach`, your own steps annotated in `lk-diagnose` and `lk-coach`, a done/now/next outline in `lk-learn`, and an outcome table when `lk-review` sums up. Simple questions get plain short answers.
+
+```text
+1. Explain the first law (done) → 2. Practice problem (now) → 3. Recall check (next)
+```
+
+- **Plain text first.** Visuals are Markdown tables and text diagrams, so they work in any host. A skill uses a Mermaid diagram only when it knows your host renders it (for example, if you say so), and keeps the meaning in words too.
+- **Your choice.** Say "more visuals" or "text only" at any time. Visuals never give away an answer, a hint beyond the one you asked for, or the method a transfer task is testing.
+- **One exception: `lk-recall`.** Its progress line and end-of-quiz summary always stay, even if you ask for text only or to hide progress. Stopping early still ends the quiz straight away, with no summary.
+- **Nothing saved.** Visuals stay in the chat. No image files, exports, or records are created.
+
 A skill may suggest switching to another one, for example from `lk-practice` to `lk-diagnose`. Switching is always optional. If you decline, or the other skill isn't installed, it carries on from where you left off.
 
 ## 🚀 Install
@@ -201,6 +214,7 @@ I don't know where to start. Hints only, please.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
 - **Not a mastery measure.** Getting something right just after help shows the help worked for that problem, not that you've learned it for good.
 - **Verification varies by host.** Claude Code 2.1.282 is verified: all nine skills were discovered and the representative tutoring checks passed. Codex CLI 0.159.3 was verified at an earlier revision. Pi and Hermes have **not been tested**; their setup follows their official documentation. On the current `lk-coach` wording it has a known issue: a hint sometimes gives away the step it asks about. Checks used mostly thermodynamics material plus one non-numerical argument. Other hosts, models, and subjects may behave differently. See [docs/compatibility.md](docs/compatibility.md).
+- **Visuals depend on the host.** Visual guidance (issue #23) was checked in Claude Code only. Mermaid rendering wasn't checked in a live client; the text fallback was.
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
 ## 📁 Repository layout

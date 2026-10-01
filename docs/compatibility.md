@@ -22,6 +22,8 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 
 `lk-recall`'s fixed-length adaptive quiz (issue #18) came after these results. In **Codex** (gpt-5.6-terra, medium), checks RA1–RA16 have passing runs except RA6 and RA8, which were re-graded as Fail after review; their fix is awaiting a rerun. It hasn't been checked in **Claude Code**. Details are in [smoke-checks.md](smoke-checks.md#issue-18-adaptive-lk-recall-quizzes).
 
+In-chat visuals (issue #23) were checked in **Claude Code** 2.1.287 (claude-opus-5-5, headless) at `ee28cd2` / `1b023a4`: VI1–VI15 have passing runs after one fix (VI9). Live Mermaid rendering and **Codex** runs haven't been checked. Details are in [smoke-checks.md](smoke-checks.md#issue-23-in-chat-visuals).
+
 ## Evidence
 
 ### Codex CLI
