@@ -502,3 +502,41 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 | CR3 | Continue CR1 with the CC5 script | As CC5 |
 | CR4 | `$lk-learn` with the CC6 script | As CC6 |
 | CR5 | `$lk-review` with the CC7 script | As CC7 |
+
+### Live results at `4cd969a`
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11 Pro 10.0.26200. Run headless with `claude -p --output-format stream-json --verbose`, using `--resume` for multi-turn checks.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium), same OS. Run with `codex exec --json` and `codex exec resume`.
+- **Date:** 2026-10-01
+- **Install:**
+  - **Claude Code:** the README copy method, cloning branch HEAD `4cd969a` into `~/.claude/skills`. Only `lk-coach` for CC1, all nine for CC2–CC7, only `lk-practice` for CC8.
+  - **Codex:** the README all-nine command plus `--ref`.
+  - All sessions ran from an empty directory outside any repo, which was still empty at the end.
+- **How loading was checked:**
+  - **Claude Code:** the init event's `skills` and `slash_commands` lists, plus the transcript (`<command-name>/lk-…` and the skill body, or a `Skill` tool call).
+  - **Codex:** the `<skill>` block or a `SKILL.md` read.
+- **Harness note:** Git Bash rewrote `/lk-learn …` into a Windows path on the first CC6 attempt, so no skill was invoked. That run is invalid and is not counted. CC6 was rerun with `MSYS_NO_PATHCONV=1`.
+- **Learner answers:** the tester wrote the CC6 and CR4 learner answers before sending them and recorded them. CC5/CR3 used the scripted wrong retries (log₁₀, then °C).
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC1 | `lk-coach` alone is listed in `skills` and `slash_commands`; `/lk-coach` loaded it and started coaching with one question | Pass |
+| CC2 | All nine `lk-` skills are listed in `skills` and `slash_commands`. Checked from the init event (the data the `/` menu is built from), not in the interactive UI. | Pass |
+| CC3 | All nine installed, no slash command: no `lk-` skill loaded; plain Claude Code answered | Pass |
+| CC4 | `/lk-coach` + P2: useful start with no onboarding and one question; no `$` syntax demanded | Pass |
+| CC5 | Bounded hint ✓. Retry 1 named the log-base error ✓. **Retry 2 got another corrective hint ("use T in kelvin… What do you get for W?") and no choice was offered** ✗. Full solution correct ✓; stop ended ✓. | **Fail** |
+| CC6 | `/lk-learn`: five-step plan, started at once; "Next: …" transitions with no permission prompts; override honoured with a labelled generated problem | Pass |
+| CC7 | `/lk-review` + notes: flagged lines 3 and 5 (suggesting a textbook check for 5); typed plan; one labelled item; no invented history | Pass |
+| CC8 | `lk-practice` only: "I can't open `lk-diagnose` for you. It isn't in the list of skills installed here…" It kept helping and repeated the pending choice, with context intact. | Pass |
+| CR1 | `$lk-coach` loaded `lk-coach`; useful start with one question | Pass |
+| CR2 | No `$`: no `lk-` skill loaded | Pass |
+| CR3 | Bounded hint; retry 1 named the log error; after retry 2: "Since this is the second coached retry for W, I'll pause the hints here. Would you prefer…?" W not stated. Full solution correct; "Stopped." | Pass |
+| CR4 | `$lk-learn`: plan, immediate start, "Next: …" transitions, override honoured with a labelled generated problem | Pass |
+| CR5 | `$lk-review`: flagged lines 3 and 5, typed plan, one labelled item, no invented history | Pass |
+
+**Fix after this run (CC5):**
+- The same `lk-coach` text passed on Codex (CR3) and failed on Claude Code (CC5).
+- `lk-coach` now spells out the fallback: keep the retry count explicitly. When replying to the second unsuccessful retry, say only which part went wrong, without how to fix it, and don't ask for a recomputed answer; offer the choice and wait. A reply that ends by asking for a corrected answer counts as a third hint.
+- Hints also must not include sanity checks that give away the value. The retry-1 reply had said "a bit more than two-thirds of nRT".
+
+**Rerun needed:** CC5 and CR3, on the commit after `4cd969a`.

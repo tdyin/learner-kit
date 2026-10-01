@@ -57,8 +57,8 @@ The same nine skill folders work in every supported host. Install them **user-wi
 
 | Host | Select a skill | Status |
 |---|---|---|
-| [Codex](#codex) | `$lk-coach …` | Compatible but unverified on the current wording; verified on earlier wording |
-| [Claude Code](#claude-code) | `/lk-coach …` | Compatible but unverified |
+| [Codex](#codex) | `$lk-coach …` | Verified at `4cd969a`; one `lk-coach` change since then awaits a rerun |
+| [Claude Code](#claude-code) | `/lk-coach …` | Compatible but unverified (7 of 8 live checks passed; one fix awaits a rerun) |
 | Pi, Hermes | — | Pending: not yet supported |
 | [Other agents](#other-agents) | Your agent's own way | Not assessed |
 
