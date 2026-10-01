@@ -1,6 +1,6 @@
 # Learner Kit: First Release Implementation Plan
 
-**Status:** Ready for implementation; skills and checks are not implemented yet.
+**Status:** Implemented and merged (PRs #7, #8 and #9). All nine skills are on `main`, and every release check has a recorded pass. See [release-acceptance.md](release-acceptance.md) for the evidence and the remaining caveats.
 **Design interview:** Complete. The user confirmed the release scope and recorded decisions.
 **Release specification:** [GitHub issue #1](https://github.com/tdyin/learner-kit/issues/1), labeled `ready-for-agent`.
 **Scope:** Nine standalone tutoring skills.
@@ -98,9 +98,11 @@ If the learner wants to continue in a new chat, offer a short recap they can cop
 ```text
 README.md
 CONTEXT.md
+LICENSE
 docs/
   IMPLEMENTATION_PLAN.md
   smoke-checks.md
+  release-acceptance.md
 skills/
   lk-explore/SKILL.md
   lk-explain/SKILL.md
@@ -111,6 +113,7 @@ skills/
   lk-transfer/SKILL.md
   lk-review/SKILL.md
   lk-learn/SKILL.md
+  (each skill also has agents/openai.yaml)
 examples/
   thermodynamics.md
 ```
@@ -200,14 +203,22 @@ Future work requires a concrete need observed during use. There are no mandatory
 
 ## 10. Definition of done
 
-- [ ] All nine skill files exist and load in the documented host.
-- [ ] Each skill passes its independent-use check with no companion skills installed.
-- [ ] `lk-coach` handles homework directly with an optional attempt and no workflow setup.
-- [ ] `lk-review` works from supplied material; `lk-learn` guides a session without a runtime.
-- [ ] Shared behavior checks pass and outcomes are recorded.
-- [ ] Example answers have been verified and sources recorded.
-- [ ] README installation and invocation instructions work for one skill and all nine.
-- [ ] All nine `lk-` names and explicit-selection settings are verified; user-wide installation works outside this repository.
-- [ ] Limitations on memory, grading reliability, and learning claims are documented.
+Evidence for each item is in [release-acceptance.md](release-acceptance.md) and [smoke-checks.md](smoke-checks.md).
 
-**First implementation action:** create and load `skills/lk-coach/SKILL.md` with its invocation settings, then use it on one supplied homework problem. Build the remaining skills from that verified standalone pattern.
+- [x] All nine skill files exist and load in the documented host.
+- [x] Each skill passes its independent-use check with no companion skills installed.
+- [x] `lk-coach` handles homework directly with an optional attempt and no workflow setup.
+- [x] `lk-review` works from supplied material; `lk-learn` guides a session without a runtime.
+- [x] Shared behavior checks pass and outcomes are recorded.
+- [x] Example answers have been verified and sources recorded.
+- [x] README installation and invocation instructions work for one skill and all nine.
+- [x] All nine `lk-` names and explicit-selection settings are verified; user-wide installation works outside this repository.
+- [x] Limitations on memory, grading reliability, and learning claims are documented.
+
+**Open caveats** (not blocking):
+
+- Some checks passed on the wording just before the final targeted fixes and were not repeated afterwards.
+- TR1 has not been rerun since the last `lk-transfer` wording change, which came from a review comment.
+- Only Codex CLI 0.159.3 has been verified.
+
+The full list is in [release-acceptance.md](release-acceptance.md).
