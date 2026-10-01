@@ -458,3 +458,47 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 Notes:
 - This TR1 variation ends at a larger volume than P2, so its W (3.98 kJ) is larger than P2's reversible 3.46 kJ. "Reversible gives the most work" only compares processes between the same two states: a reversible expansion to 49.2 L would give about 7.95 kJ. The discussion step should point out that the end states differ.
 - The mean task's success standard asked for "the appropriate unit", which is slightly odd for quiz scores. This is minor.
+
+## Portability (issue #14): Claude Code and Codex
+
+Skill revision `05877f2` made the nine skills host-neutral: no `$` syntax in shared descriptions, examples or companion suggestions. It also added `disable-model-invocation: true` to each `SKILL.md`. The earlier results above were recorded on the previous wording and stay as historical evidence for Codex.
+
+### Package and install checks (no model)
+
+- **Host:** Linux cloud container
+- **Date:** 2026-10-01
+
+| Scenario | Method | Observed result | Status |
+|---|---|---|---|
+| Shared metadata parses | YAML-parse every `SKILL.md` frontmatter and `agents/openai.yaml` | All nine: `name` matches the folder, `disable-model-invocation: true`, no `$` in descriptions, `allow_implicit_invocation: false` | Pass |
+| Codex accepts the new field | Codex CLI 0.159.3 `skills/list` with the field present | No load errors; skill listed and enabled | Pass |
+| Codex: one skill and all nine | `skill-installer` from the branch into fresh `CODEX_HOME`s; `skills/list` from outside the repo | `lk-coach` alone, and all nine, listed with `scope: "user"`, no errors | Pass |
+| Codex authoring validator | `quick_validate.py` | Flags `disable-model-invocation` as an unexpected key. Expected: this validator is an authoring aid, and the loader accepts the field. | Known limitation |
+| Claude Code copy commands | README commands run with a scratch `HOME`, cloning the branch | `~/.claude/skills/lk-coach`, then all nine folders, each with `disable-model-invocation: true` | Pass (file layout only; Claude Code not run) |
+
+### Live checks still to run
+
+Judge behavior, not exact wording. Use the problems and notes in `examples/thermodynamics.md`. Record the host version, model, date and skill revision for each run.
+
+**Claude Code** (personal install in `~/.claude/skills`, fresh session started outside this repo):
+
+| # | Scenario | Expected |
+|---|---|---|
+| CC1 | One skill installed: type `/` | `lk-coach` is listed; invoking it starts coaching |
+| CC2 | All nine installed: type `/` | All nine `lk-` skills are listed |
+| CC3 | No automatic loading: in a fresh session, without a slash command, send "Help me with this thermo homework: <P2>" | No `lk-` skill loads |
+| CC4 | `/lk-coach <P2> I don't know where to start.` | Useful start with no onboarding and one question; no `$` syntax demanded |
+| CC5 | Continue CC4: "Just a hint", then two wrong retries (log₁₀, then °C), then "show me the full solution", then "stop" | Bounded hint; after the second retry, offers the choice without stating the answer; full solution on request; stop ends |
+| CC6 | `/lk-learn Help me learn first-law energy balances in 30 minutes.` Answer two steps correctly, then "Skip the recall check and give me a harder problem." | Plan and immediate start; "Next: …" transitions with no permission prompts; the override is honoured |
+| CC7 | Fresh session: `/lk-review Review these notes with me:` + sample notes | Flags lines 3 and 5, asks one labelled item, invents no history |
+| CC8 | Only `lk-practice` installed: after feedback, "Can we switch to lk-diagnose?" | Says it isn't available and carries on with the context intact |
+
+**Codex regression** (reinstall from the branch, new session outside the repo):
+
+| # | Scenario | Expected |
+|---|---|---|
+| CR1 | `$lk-coach <P2> I don't know where to start.` | As `lk-coach` check 1; selection still works without the old description wording |
+| CR2 | No `$`: "Help me with this thermo homework: <P2>" | No `lk-` skill loads |
+| CR3 | Continue CR1 with the CC5 script | As CC5 |
+| CR4 | `$lk-learn` with the CC6 script | As CC6 |
+| CR5 | `$lk-review` with the CC7 script | As CC7 |
