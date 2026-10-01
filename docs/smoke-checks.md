@@ -310,3 +310,27 @@ Setup-only observation: RV1 didn't flag line 3 before its first question this ti
 
 **Rerun needed:** PR1, TR1, RV1. Run them against the commit after `e85eb1d`.
 
+### Rerun 3
+
+- **Host / model:** same as before (Codex CLI 0.159.3, gpt-5.6-terra medium, Windows 11 Pro)
+- **Date:** 2026-10-01
+- **Skill version:** commit `bd99a65`. Only the skill under test was installed each time.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| PR1 | Starts with "Practice problem (generated):"; physically consistent; gives a success standard and waits | Pass |
+| TR1 | "Generated variation — change: reversible → irreversible", with P_ext = 150 kPa and a mechanical stop at 20.0 L (consistent; W = 1.50 kJ). The success standard covers only the form of the answer, and the message ends "Try it unaided first. What do you get?" | Pass |
+| RV1 | Flags lines 3 and 5 before the first item; the plan mixes retrieval with a calculation; it asks one item | Pass |
+
+### Status for issues #3, #4, #5
+
+Every check now has a recorded Pass on at least one run.
+
+The latest skill wording at `bd99a65` was not rerun in full. Checks that passed on earlier runs were not repeated after later edits touched shared sections of their skills:
+- the stop wording;
+- the instruction to return to a pending question after a declined handoff.
+
+Those checks are EX1–3, EP1–2, EP4–5, RC1–3, DG2–5, TR2–3, RV2 and X3.
+
+If a fully current record is needed before closing the issues, do one full pass at the final commit.
+
