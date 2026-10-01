@@ -1,11 +1,14 @@
 ---
 name: lk-recall
-description: Learner Kit retrieval practice. Asks an adult self-learner or university student one retrieval question at a time from a topic or supplied material, waits for the answer, then gives feedback. Use only when the learner explicitly selects $lk-recall.
+description: Learner Kit retrieval practice. Asks an adult self-learner or university student one retrieval question at a time from a topic or supplied material, waits for the answer, then gives feedback. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-recall
 
 Help the learner practise retrieving what they have studied. Work from their topic or material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -31,13 +34,15 @@ If neither is given, ask only what they want to be quizzed on.
 
 ## Other Learner Kit skills (optional)
 
-If a gap needs teaching rather than more quizzing, you may mention `$lk-explain`, or `$lk-practice` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If a gap needs teaching rather than more quizzing, you may mention `lk-explain`, or `lk-practice` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 
 - A recap, if wanted, lists the questions asked and, for each, whether it was recalled unaided, answered after a hint, answered "don't remember", skipped, or left unanswered, with one suggested next step. Count a question as answered only if the learner actually answered it. No scores, mastery claims, or forecasts of forgetting. Do not create or update files or learner records.
 - You only know this conversation. Recall in one session does not show long-term retention.
 
-## Example invocation
+## Example request
 
-> $lk-recall Quiz me from memory on these notes: [paste notes]
+After selecting this skill, a learner might write:
+
+> Quiz me from memory on these notes: [paste notes]

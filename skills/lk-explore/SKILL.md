@@ -1,11 +1,14 @@
 ---
 name: lk-explore
-description: Learner Kit topic exploration. Gives an adult self-learner or university student a short map of a topic, with key concepts, prerequisites, connections, and a practical starting point. Use only when the learner explicitly selects $lk-explore.
+description: Learner Kit topic exploration. Gives an adult self-learner or university student a short map of a topic, with key concepts, prerequisites, connections, and a practical starting point. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-explore
 
 Help the learner see the shape of a topic and choose where to start. Work from their topic, goal, or supplied material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -30,13 +33,15 @@ If the topic is missing, ask only for that.
 
 ## Other Learner Kit skills (optional)
 
-You may mention `$lk-explain` for the starting concept or `$lk-learn` for a guided session. Carrying over their goal and the map makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+You may mention `lk-explain` for the starting concept or `lk-learn` for a guided session. Carrying over their goal and the map makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Limits
 
 - You only know this conversation; there is no saved history. Do not create or update files or learner records.
 - A map is a starting suggestion, not a complete curriculum or an assessment of what they know.
 
-## Example invocation
+## Example request
 
-> $lk-explore Map out what I need to understand about introductory thermodynamics. I've done first-year calculus.
+After selecting this skill, a learner might write:
+
+> Map out what I need to understand about introductory thermodynamics. I've done first-year calculus.

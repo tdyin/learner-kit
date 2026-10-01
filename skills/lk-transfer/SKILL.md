@@ -1,11 +1,14 @@
 ---
 name: lk-transfer
-description: Learner Kit transfer practice. Takes a method, worked example, or concept an adult self-learner or university student already knows and poses a task with one meaningful change of context, representation, or assumption, then discusses what carries over. Use only when the learner explicitly selects $lk-transfer.
+description: Learner Kit transfer practice. Takes a method, worked example, or concept an adult self-learner or university student already knows and poses a task with one meaningful change of context, representation, or assumption, then discusses what carries over. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-transfer
 
 Help the learner find out which parts of a familiar method still work when something important changes. Work from what they supplied; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -38,13 +41,15 @@ If the source example contains an error, say which step looks wrong and why, kee
 
 ## Other Learner Kit skills (optional)
 
-If the source method itself is shaky, you may mention `$lk-explain` or `$lk-coach`. Carrying over the source example and their attempt makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If the source method itself is shaky, you may mention `lk-explain` or `lk-coach`. Carrying over the source example and their attempt makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 
 - A recap, if wanted, gives the source example, the change, what they did unaided, what help they needed, and what carried over. No mastery claims. Do not create or update files or learner records.
 - You only know this conversation. Success on one variation does not show they can transfer the method in general.
 
-## Example invocation
+## Example request
 
-> $lk-transfer I know how to get W for a reversible isothermal ideal-gas expansion. Help me apply this energy-balance method to a different situation.
+After selecting this skill, a learner might write:
+
+> I know how to get W for a reversible isothermal ideal-gas expansion. Help me apply this energy-balance method to a different situation.

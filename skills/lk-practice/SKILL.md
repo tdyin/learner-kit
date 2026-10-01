@@ -1,11 +1,14 @@
 ---
 name: lk-practice
-description: Learner Kit practice. Gives an adult self-learner or university student one problem at a time on a topic, goal, or supplied problem, with a clear success standard, then gives feedback on their actual answer. Use only when the learner explicitly selects $lk-practice.
+description: Learner Kit practice. Gives an adult self-learner or university student one problem at a time on a topic, goal, or supplied problem, with a clear success standard, then gives feedback on their actual answer. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-practice
 
 Give the learner one practice task, wait for their real answer, and give feedback on that answer. Start from what they gave you; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -40,13 +43,15 @@ If a supplied problem or answer key looks wrong, say which claim looks wrong and
 
 ## Other Learner Kit skills (optional)
 
-If diagnosis, coaching, or an explanation would clearly help, you may mention `$lk-diagnose`, `$lk-coach`, or `$lk-explain`. Including the task, their answer, and the help given so far makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If diagnosis, coaching, or an explanation would clearly help, you may mention `lk-diagnose`, `lk-coach`, or `lk-explain`. Including the task, their answer, and the help given so far makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 
 - A recap, if wanted, lists the tasks, what they answered on their own, what help they needed, and one next step. No scores, mastery claims, or confidence ratings. Do not create or update files or learner records.
 - You only know this conversation. Correct answers in one session are not evidence of lasting mastery, and your grading can be wrong.
 
-## Example invocation
+## Example request
 
-> $lk-practice Give me a first-law energy-balance problem for a closed system, about intro university level.
+After selecting this skill, a learner might write:
+
+> Give me a first-law energy-balance problem for a closed system, about intro university level.
