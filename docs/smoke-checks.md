@@ -443,3 +443,18 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 | TR1 | "Generated variation — change: reversible → irreversible", with P_ext = 249 kPa = P_final, so the final state at 20.0 L is reachable. The success standard has no hint, and it ends "Try it unaided first. What do you get?" | Pass |
 
 **Change after the reruns:** a review comment pointed out that `lk-transfer`'s final-state check assumed every task has a physical end state. The rule now applies a general well-posedness check (consistent givens, enough information, a defensible answer), and works out the implied outcome only when the task specifies a process or end state. TR1 passed at `56520ea` on the previous wording and has not been rerun.
+
+### TR1 rerun on the final `lk-transfer` wording
+
+- **Host / model:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, gpt-5.6-terra (medium)
+- **Date:** 2026-10-01
+- **Skill version:** commit `cfeb469`, with only `lk-transfer` installed. The installed `SKILL.md` contains "has a defensible answer in its field". The scratch directory was still empty at the end.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| TR1 | "Generated variation — change: reversible → irreversible": expansion at 300 K against a constant 1.00 atm until mechanical equilibrium; find V₂, W, Q, ΔU. The task is consistent and reachable: it starts at ≈ 499 kPa and stops at V₂ = nRT/P_ext ≈ 49.2 L, with W ≈ 3.98 kJ (recomputed). The success standard names no method, and the message ends "Try it unaided first. What do you get?" | Pass |
+| TR-mean (non-physics) | `$lk-transfer I know how to find the mean of a small data set. Give me a variation.` The representation changed to a frequency table (a weighted mean, answer 74). The task is well-posed, has no physics-style framing, and ends with an invitation to attempt it. | Pass |
+
+Notes:
+- This TR1 variation ends at a larger volume than P2, so its W (3.98 kJ) is larger than P2's reversible 3.46 kJ. "Reversible gives the most work" only compares processes between the same two states: a reversible expansion to 49.2 L would give about 7.95 kJ. The discussion step should point out that the end states differ.
+- The mean task's success standard asked for "the appropriate unit", which is slightly odd for quiz scores. This is minor.
