@@ -594,3 +594,11 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 | CR3 | Opened by asking for the work formula, then the **hint gave that formula** ("W_by gas = nRT ln(V_f/V_i). Try substituting the given values"). First wrong W: named the log base correctly, with no full substituted expression. Second wrong W: named the wrong part without the fix and offered the choice. Full solution correct; "Stopped." | **Fail** |
 
 **Pattern across reruns:** Codex (gpt-5.6-terra) passed CR3 at `4cd969a` and `0ffcb87`, and failed it at `4a1d03a` and `5b7cec0`. Each failure was a hint that gave away something different (ΔU = 0, then the work formula), even though the rule against exactly this is in the skill. This is recorded as a known Codex compliance issue in `lk-coach` hints. No further wording change was made at this point.
+
+## Pi and Hermes (issues #15, #16)
+
+**Not tested.** At the maintainer's direction, no live checks were run in Pi or Hermes. Setup for both comes from their official documentation (see [compatibility.md](compatibility.md)), and both are marked Compatible but unverified (not tested). Skill content and metadata didn't change in this slice, so the Codex and Claude Code results above still apply.
+
+Package check (2026-10-01, no host runtime): all nine `SKILL.md` files meet Pi's documented limits. Each name is lowercase with hyphens and at most 64 characters, matches its folder, and each description is under 1024 characters. The frontmatter uses only `name`, `description` and `disable-model-invocation`.
+
+Checks to run when Pi or Hermes is available: install one skill and all nine following the README, then reuse CC1–CC8 with the host's own selection syntax (`/skill:lk-…` in Pi, `/lk-…` in Hermes). For Hermes, record what happens on an ordinary matching request (CC3) as an observation; one negative result doesn't prove the skills are kept from loading automatically.

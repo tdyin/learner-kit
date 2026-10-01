@@ -2,10 +2,10 @@
 
 # 🎓 Learner Kit
 
-**Nine focused tutoring skills for AI coding agents like Codex and Claude Code. Pick the help you need, when you need it.**
+**Nine focused tutoring skills for AI agents like Codex, Claude Code, Pi, and Hermes. Pick the help you need, when you need it.**
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Hosts: Codex | Claude Code](https://img.shields.io/badge/hosts-Codex%20%7C%20Claude%20Code-black.svg)](docs/compatibility.md)
+[![Hosts: Codex | Claude Code | Pi | Hermes](https://img.shields.io/badge/hosts-Codex%20%7C%20Claude%20Code%20%7C%20Pi%20%7C%20Hermes-black.svg)](docs/compatibility.md)
 [![Skills: 9](https://img.shields.io/badge/skills-9-brightgreen.svg)](#-the-skills)
 
 </div>
@@ -13,8 +13,8 @@
 Learner Kit is for adult self-learners and university students who want real tutoring, not a learning platform. Paste a homework problem, a page of notes, or just a topic, choose a skill, and start. There's no account to create, no profile to fill in, and no required order to follow.
 
 - 🧩 **Standalone.** Every skill works on its own. Install one or all nine.
-- 🎯 **Explicit only.** A skill starts when you select it, with `$lk-…` in Codex or `/lk-…` in Claude Code. Both hosts can block automatic loading natively ([details](docs/compatibility.md)).
-- 💬 **Conversation-only.** The skills use only what's in the chat and never create or update learner records. Your host (Codex, Claude Code, …) may still keep chat history under its own settings.
+- 🎯 **Explicit only.** A skill starts when you select it with your agent's command, for example `$lk-coach` in Codex or `/lk-coach` in Claude Code. Codex, Claude Code and Pi can block automatic loading natively. Elsewhere, including Hermes, only the skill's own instruction keeps it from starting on its own, which is best effort ([details](docs/compatibility.md)).
+- 💬 **Conversation-only.** The skills use only what's in the chat and never create or update learner records. Your host (Codex, Claude Code, Pi, Hermes, …) may still keep chat history under its own settings.
 - 🙋 **You stay in control.** Ask for a hint, the full solution, an easier task, a skip, or a stop at any time.
 
 ## 📚 Where the idea comes from
@@ -59,7 +59,8 @@ The same nine skill folders work in every supported host. Install them **user-wi
 |---|---|---|
 | [Codex](#codex) | `$lk-coach …` | Verified at `4cd969a`; known `lk-coach` hint issue on the current wording |
 | [Claude Code](#claude-code) | `/lk-coach …` | Verified |
-| Pi, Hermes | — | Pending: not yet supported |
+| [Pi](#pi) | `/skill:lk-coach …` | Compatible but unverified (**not tested**) |
+| [Hermes](#hermes) | `/lk-coach …` | Compatible but unverified (**not tested**); explicit-only is best effort |
 | [Other agents](#other-agents) | Your agent's own way | Not assessed |
 
 ### Codex
@@ -118,13 +119,68 @@ Each `SKILL.md` sets `disable-model-invocation: true`, so Claude Code loads the 
 - **Use:** `/lk-coach Here's my homework…`
 - **Update:** refresh the clone first with `git -C /tmp/learner-kit pull`, or clone it again if `/tmp` was cleared. Then delete the old folder from `~/.claude/skills` and copy the new one in.
 
+### Pi
+
+> [!WARNING]
+> Not tested. This setup follows Pi's [skills](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) and [packages](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/packages.md) documentation, but no Learner Kit check has been run in Pi.
+
+Pi reads personal skills from `~/.agents/skills/<name>/SKILL.md`.
+
+**All nine as a Pi package.** Pi finds the skills in the repository's `skills/` folder:
+
+```bash
+pi install git:github.com/tdyin/learner-kit
+```
+
+**One skill, or all nine by copying:**
+
+```bash
+git clone --depth 1 https://github.com/tdyin/learner-kit.git /tmp/learner-kit
+mkdir -p ~/.agents/skills
+cp -R /tmp/learner-kit/skills/lk-coach ~/.agents/skills/   # one skill
+cp -R /tmp/learner-kit/skills/lk-* ~/.agents/skills/       # or all nine
+```
+
+Each `SKILL.md` sets `disable-model-invocation: true`, which Pi documents as making a skill available only through its explicit command.
+
+- **Reload:** run `/reload` in an open session after installing or updating.
+- **Use:** `/skill:lk-coach Here's my homework…`
+- **Update:** for the package, follow Pi's package documentation. For copied folders, run `git -C /tmp/learner-kit pull`, then replace the folders.
+
+### Hermes
+
+> [!WARNING]
+> Not tested. This setup follows Hermes's [skills](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/features/skills.md) and [skill-authoring](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/developer-guide/creating-skills.md) documentation, but no Learner Kit check has been run in Hermes.
+
+Hermes reads skills from `~/.hermes/skills/` and picks up new skills without a restart.
+
+```bash
+git clone --depth 1 https://github.com/tdyin/learner-kit.git /tmp/learner-kit
+mkdir -p ~/.hermes/skills
+cp -R /tmp/learner-kit/skills/lk-coach ~/.hermes/skills/   # one skill
+cp -R /tmp/learner-kit/skills/lk-* ~/.hermes/skills/       # or all nine
+```
+
+If you already keep skills in `~/.agents/skills` (for example for Pi), you can instead add that folder under `skills.external_dirs` in your Hermes config.
+
+- **Use:** `/lk-coach Here's my homework…`
+- **Explicit-only is best effort here.** Hermes's documentation describes no setting that stops the model from loading an installed skill on its own; Hermes doesn't document the `disable-model-invocation` field, so don't rely on it. Each skill tells the model to run only when you select it, but an ordinary request might still start one.
+- **Update:** run `git -C /tmp/learner-kit pull`, then replace the folders.
+
 ### Other agents
 
-The skills follow the [Agent Skills](https://agentskills.io) folder format: a `SKILL.md` with `name` and `description`. Other compatible agents may be able to load them from their own skills folder; check your agent's documentation for where that is and how to select a skill by name. Native explicit-only controls differ between agents. Where your agent has none, each skill still tells the model to run only when you ask for it, but that's best effort, not a guarantee.
+The skills use the [Agent Skills](https://agentskills.io) folder format: each skill is a folder with a `SKILL.md` that has a `name` and `description`. Other agents that support this format may be able to use them:
+
+1. **Find where your agent loads skills from**, and whether it can install from a folder or a Git repository. Check your agent's documentation; there's no universal path or command.
+2. **Install whole folders**, for example all of `skills/lk-coach/`, not just the `SKILL.md`.
+3. **Find how your agent selects a skill by name**, such as a slash command or a skill menu.
+4. **Check its activation controls.** Look for a manual-only or "don't load automatically" setting. Learner Kit sets `disable-model-invocation: true` (understood by Claude Code and Pi) and has a Codex `agents/openai.yaml`; other agents may ignore both. Without a native control, explicit-only is best effort.
+
+Supporting the same file format doesn't make an agent behave the same way. An unlisted agent hasn't been checked, and its activation and teaching behavior need their own verification.
 
 ## 🧑‍🏫 Example: homework coaching
 
-Select `lk-coach` once (`$lk-coach` in Codex, `/lk-coach` in Claude Code), then just talk. The activity continues across replies.
+Select `lk-coach` once (`$lk-coach` in Codex, `/lk-coach` in Claude Code or Hermes, `/skill:lk-coach` in Pi), then just talk. The activity continues across replies.
 
 ```text
 Here's my thermo homework: 2.0 mol of an ideal gas expands isothermally
@@ -144,7 +200,7 @@ I don't know where to start. Hints only, please.
 - **Conversation-only memory.** Skills see only the current chat. A pasted recap is treated as something you supplied, not as a verified record.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
 - **Not a mastery measure.** Getting something right just after help shows the help worked for that problem, not that you've learned it for good.
-- **Verification varies by host.** Claude Code 2.1.282 is verified: all nine skills were discovered and the representative tutoring checks passed. Codex CLI 0.159.3 was verified at an earlier revision. On the current `lk-coach` wording it has a known issue: a hint sometimes gives away the step it asks about. Checks used mostly thermodynamics material plus one non-numerical argument. Other hosts, models, and subjects may behave differently. See [docs/compatibility.md](docs/compatibility.md).
+- **Verification varies by host.** Claude Code 2.1.282 is verified: all nine skills were discovered and the representative tutoring checks passed. Codex CLI 0.159.3 was verified at an earlier revision. Pi and Hermes have **not been tested**; their setup follows their official documentation. On the current `lk-coach` wording it has a known issue: a hint sometimes gives away the step it asks about. Checks used mostly thermodynamics material plus one non-numerical argument. Other hosts, models, and subjects may behave differently. See [docs/compatibility.md](docs/compatibility.md).
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
 ## 📁 Repository layout
