@@ -1,34 +1,66 @@
-# Learner Kit
+<div align="center">
 
-Learner Kit supports adult self-learners and university students through independently usable tutoring skills.
+# 🎓 Learner Kit
 
-Each skill works on its own from your goal or material and the visible conversation. There is no runtime, account, or saved learner profile. Skills are explicit-only: they start when you select them (for example `$lk-coach`) and never activate just because a request matches their topic.
+**Nine focused tutoring skills for Codex. Pick the help you need, when you need it.**
 
-Release 1 targets Codex and includes nine skills:
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Host: Codex](https://img.shields.io/badge/host-Codex%20CLI-black.svg)](#-install)
+[![Skills: 9](https://img.shields.io/badge/skills-9-brightgreen.svg)](#-the-skills)
 
-| Skill | Use it for | Example |
-|---|---|---|
-| `lk-explore` | Map a topic: key concepts, prerequisites, connections, and where to start | `$lk-explore Map out what I need to understand about thermodynamics.` |
-| `lk-explain` | Understand a concept through intuition, an example, and formalism where useful | `$lk-explain Why are heat and temperature different?` |
-| `lk-practice` | Get one problem with a clear success standard, then feedback on your answer | `$lk-practice Give me a first-law energy-balance problem.` |
-| `lk-diagnose` | Find where your answer or reasoning went wrong, and why | `$lk-diagnose Where did my reasoning go wrong in this solution? [problem + your working]` |
-| `lk-coach` | Get help with a homework problem: hints, explanations, worked examples, retries, or a full solution. You don't need to attempt it first. | `$lk-coach Coach me through this homework problem. [problem]` |
-| `lk-recall` | Get quizzed one retrieval question at a time, from memory or with notes | `$lk-recall Quiz me from memory on these notes: [notes]` |
-| `lk-transfer` | Apply a method you know when one meaningful thing changes | `$lk-transfer Help me apply this energy-balance method to a different system.` |
-| `lk-review` | Review notes, topics, or a pasted recap. No saved history is needed. | `$lk-review Review these notes with me before my exam: [notes]` |
-| `lk-learn` | A short guided session toward a goal: explanation, practice, and recall in a sequence that fits your time | `$lk-learn Help me learn energy balances in 30 minutes.` |
+</div>
 
-Each skill works without the others. A skill may suggest switching to another one (for example from `lk-practice` to `lk-diagnose`). Switching is always optional, and if you decline or the other skill isn't installed, it keeps helping.
+Learner Kit is for adult self-learners and university students who want real tutoring, not a learning platform. Paste a homework problem, a page of notes, or just a topic, choose a skill, and start. There's no account to create, no profile to fill in, and no required order to follow.
 
-## Install in Codex
+- 🧩 **Standalone.** Every skill works on its own. Install one or all nine.
+- 🎯 **Explicit only.** A skill starts only when you select it with `$lk-…`. Ordinary chats are never hijacked.
+- 💬 **Conversation-only.** The skills use only what's in the chat and never create or update learner records. Your host, such as Codex, may still keep chat history under its own settings.
+- 🙋 **You stay in control.** Ask for a hint, the full solution, an easier task, a skip, or a stop at any time.
 
-Install skills user-wide with Codex's built-in `$skill-installer`. Codex discovers user skills in `$CODEX_HOME/skills` (by default `~/.codex/skills`). It does **not** discover this repository's `skills/` folder automatically, so you need to install even if you have cloned the repo.
+## 📚 Where the idea comes from
+
+Learner Kit is inspired by **_Make It Stick: The Science of Successful Learning_** by Peter C. Brown, Henry L. Roediger III and Mark A. McDaniel (Belknap Press of Harvard University Press, 2014; ISBN 978-0-674-72901-8). Its main message is that the study habits that *feel* productive, like rereading and highlighting, often aren't the ones that make learning last. Effortful practice is.
+
+Each skill turns one of the book's ideas into something you can do in a chat:
+
+| Idea from the book | Where you'll find it |
+|---|---|
+| **Retrieval practice:** pulling an idea from memory strengthens it more than rereading | `lk-recall` asks one question at a time, from memory first. `lk-review` mixes recall into revision. |
+| **Generation:** trying before being shown the answer | `lk-practice` and `lk-transfer` ask for your attempt before giving feedback. `lk-coach`'s hints move you one step and leave the next one to you. |
+| **Varied practice:** applying a method in new conditions | `lk-transfer` changes one meaningful thing about a problem you already know |
+| **Interleaving:** mixing different kinds of practice instead of drilling one thing | `lk-learn` and `lk-review` alternate explanation, practice and recall in a single session |
+| **Elaboration:** connecting new ideas to what you already know | `lk-explain` and `lk-explore` link concepts, examples and prerequisites |
+| **Reflection and calibration:** seeing clearly what you can do unaided | `lk-diagnose` and the honest recaps keep your first attempt separate from what you managed with help, so a lucky retry isn't mistaken for mastery |
+| **Spacing:** coming back to material over time | `lk-review` makes coming back easy with a pasted recap. It doesn't schedule reviews; when to come back is up to you. |
+
+Learner Kit is an independent project, not affiliated with or endorsed by the authors or publisher. It applies the book's ideas as tutoring habits. It does not claim measured learning gains.
+
+## ✨ The skills
+
+| | Skill | What it does | Try it |
+|---|---|---|---|
+| 🗺️ | `lk-explore` | Maps a topic: the key concepts, prerequisites, connections, and where to start | `$lk-explore Map out what I need to understand about thermodynamics.` |
+| 💡 | `lk-explain` | Explains a concept with intuition and an example, plus formalism where useful | `$lk-explain Why are heat and temperature different?` |
+| ✏️ | `lk-practice` | Gives one problem with a clear success standard, then feedback on your answer | `$lk-practice Give me a first-law energy-balance problem.` |
+| 🔍 | `lk-diagnose` | Finds where your answer or reasoning went wrong, and why | `$lk-diagnose Where did my reasoning go wrong? [problem + your working]` |
+| 🧑‍🏫 | `lk-coach` | Helps with a homework problem through hints, explanations, worked examples, or a full solution. You don't need to attempt it first. | `$lk-coach Coach me through this homework problem. [problem]` |
+| 🧠 | `lk-recall` | Quizzes you one retrieval question at a time, from memory or with your notes open | `$lk-recall Quiz me from memory on these notes: [notes]` |
+| 🔀 | `lk-transfer` | Tests a method you know by changing one meaningful thing | `$lk-transfer Help me apply this energy-balance method to a different system.` |
+| 🔁 | `lk-review` | Reviews notes, topics, or a pasted recap. No saved history needed. | `$lk-review Review these notes with me before my exam: [notes]` |
+| 🧭 | `lk-learn` | Runs a short guided session toward your goal: explanation, practice, and recall, paced to your time | `$lk-learn Help me learn energy balances in 30 minutes.` |
+
+A skill may suggest switching to another one, for example from `lk-practice` to `lk-diagnose`. Switching is always optional. If you decline, or the other skill isn't installed, it carries on from where you left off.
+
+## 🚀 Install
+
+Learner Kit installs with Codex's built-in **`$skill-installer`** into `$CODEX_HOME/skills` (by default `~/.codex/skills`), so the skills are available in every project.
+
+> [!NOTE]
+> Codex does **not** load this repository's `skills/` folder automatically. Install the skills even if you have cloned the repo.
 
 ### One skill
 
-Replace `lk-coach` with the skill you want.
-
-In any Codex chat:
+In any Codex chat (replace `lk-coach` with the skill you want):
 
 ```text
 $skill-installer install https://github.com/tdyin/learner-kit/tree/main/skills/lk-coach
@@ -41,11 +73,9 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --repo tdyin/learner-kit --path skills/lk-coach
 ```
 
-This copies the whole `lk-coach` directory, including `agents/openai.yaml`, to `~/.codex/skills/lk-coach`. That file sets `allow_implicit_invocation: false`, which makes the skill explicit-only. Start a new Codex session so the skill is picked up. It is then available in every project, not just this repository.
+### All nine
 
-### Several or all skills
-
-Pass a single `--path` followed by all the skill paths. Repeating `--path` keeps only the last one.
+Pass **one** `--path` followed by every skill path. If you repeat `--path`, only the last one is kept.
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -54,15 +84,19 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   skills/lk-coach skills/lk-recall skills/lk-transfer skills/lk-review skills/lk-learn
 ```
 
-The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
+The installer copies each whole skill directory, including `agents/openai.yaml`. That file sets `allow_implicit_invocation: false`, which is what makes the skill explicit-only.
 
-### Check it is installed
+<details>
+<summary><b>Check the install, or update a skill</b></summary>
 
-From a directory outside this repository, start `codex` and type `$`. Each installed skill should appear in the list with a "Learner Kit: …" display name.
+- **Check:** start a **new** Codex session from any directory and type `$`. Each installed skill appears with a "Learner Kit: …" display name.
+- **Update:** the installer refuses to overwrite an existing skill. Delete `~/.codex/skills/<name>`, then install again.
 
-## Use
+</details>
 
-Select the skill explicitly, then talk normally. The activity continues across replies without selecting it again.
+## 🧑‍🏫 Example: homework coaching
+
+Select a skill once, then just talk. The activity continues across replies.
 
 ```text
 $lk-coach Here's my thermo homework: 2.0 mol of an ideal gas expands isothermally
@@ -70,24 +104,22 @@ and reversibly at 300 K from 10.0 L to 20.0 L. Find W, Q and ΔU.
 I don't know where to start. Hints only, please.
 ```
 
-### Homework walkthrough with `lk-coach`
+1. **Start from the problem.** Say what help you want, for example "hints only", "walk me through it", or "just check my answer". You don't need any setup or a first attempt.
+2. **One step at a time.** You get a bounded hint or the next idea, and one question. Answer when you're ready.
+3. **Try again.** Answers after help count as coached retries, kept separate from your first attempt. If two retries on the same task don't work, the coach offers a different explanation, a worked example, an easier task, or a break.
+4. **Stay in control.** Say "show me the full solution", "give me an easier one", "skip", or "stop" at any time. Asking for the solution isn't counted as a failed attempt.
+5. **Your rules.** Mentioning homework doesn't trigger questions about course rules. If you set a limit, such as "no final answers", the coach keeps to it and checks with you if you later ask for something that conflicts.
+6. **Recap (optional).** Ask for a short recap to paste into a new chat later. Nothing is saved automatically.
 
-1. **Start from the problem.** Paste the problem and say what help you want, for example "hints only", "walk me through it", or "I just want to check my answer". You don't need to set anything up or attempt the problem first.
-2. **Get one step at a time.** The coach gives a bounded hint or the next idea and asks one question. Answer it (or don't) whenever you are ready.
-3. **Try again.** Your answer after help is treated as a coached retry, separate from your first attempt. If two coached retries on the same step don't work, the coach offers a different explanation, an analogous worked example, an easier task, or a break.
-4. **Stay in control.** At any time you can say "show me the full solution", "give me an easier one", "skip", or "stop". Asking for the solution is not counted as a failed attempt.
-5. **Assistance limits.** Mentioning homework doesn't trigger questions about course rules. If you state a limit (for example "no final answers"), the coach follows it and checks with you if you later ask for something that conflicts with it.
-6. **Recap (optional).** When you finish, you can ask for a short recap to paste into a new chat later. Nothing is saved automatically.
+## ⚠️ Limitations
 
-## Limitations
-
-- **Conversation-only memory.** Skills use only what is visible in the current chat. There is no saved history. A pasted recap is treated as something you supplied, not as a verified record.
+- **Conversation-only memory.** Skills see only the current chat. A pasted recap is treated as something you supplied, not as a verified record.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
-- **Not a mastery measure.** Getting a step correct just after help shows the help worked for that problem. It is not evidence of lasting learning.
-- **Verified in Codex only.** Installation and the recorded behavior checks were run with Codex CLI 0.159.3, mostly with thermodynamics material and one non-numerical argument. Some checks are still pending; see [docs/release-acceptance.md](docs/release-acceptance.md). Other hosts, models and subjects may behave differently.
+- **Not a mastery measure.** Getting something right just after help shows the help worked for that problem, not that you've learned it for good.
+- **Verified in Codex only.** Installation and behavior checks were run with Codex CLI 0.159.3, mostly on thermodynamics material plus one non-numerical argument. Other hosts, models, and subjects may behave differently. The remaining caveats are listed in [docs/release-acceptance.md](docs/release-acceptance.md).
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
-## Repository layout
+## 📁 Repository layout
 
 ```text
 skills/lk-<name>/SKILL.md            Skill instructions (one directory per skill)
@@ -96,4 +128,9 @@ examples/thermodynamics.md           Checked reference material used for verific
 docs/smoke-checks.md                 Recorded installation and behavior checks
 docs/release-acceptance.md           Release 1 acceptance record (spec checks mapped to evidence)
 docs/IMPLEMENTATION_PLAN.md          Release 1 plan
+LICENSE                              GNU General Public License v3.0
 ```
+
+## 📄 License
+
+Learner Kit is free software: you can redistribute it and modify it under the terms of the [GNU General Public License v3.0](LICENSE).
