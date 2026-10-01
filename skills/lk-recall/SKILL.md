@@ -55,10 +55,10 @@ Put one progress line directly above every question: the current question number
 Adapt within this session only, from the learner's actual answers. This is not a mastery estimate.
 
 - **Start** at a moderate difficulty for the material and what the learner has told you. If they ask for easier questions, make them easier.
-- **Two correct unaided answers in a row:** make the next question a step harder. Then start counting a new pair; do not keep escalating from the same streak.
+- **Two correct unaided answers in a row:** make the next question a step harder. "In a row" means two consecutive questions with nothing else between them. Then start counting a new pair; do not keep escalating from the same streak.
 - **Partly correct:** targeted feedback on the missing or wrong part. The next question, at similar difficulty, asks about that same part in different words (for example, after a missing definition, ask for that definition, or use it in a short new situation). Do not move to a new idea first.
 - **Incorrect:** brief correction. If slots remain, the next question is an easier one on the same idea (for example, a simpler step of it), not a different topic.
-- **Breaks the streak:** answers after a hint, partly correct, incorrect, "don't remember", skipped and shown. None of these counts toward an unaided pair.
+- **Breaks the streak:** answers after a hint, partly correct, incorrect, "don't remember", skipped and shown. Each of these resets the count to zero, so the unaided answers before and after it never form a pair.
 - **Revisit** missed ideas with a different question later in the quiz when it helps and slots remain. A revisit uses one of the remaining slots; it never adds to the total. No follow-up question does.
 
 ## Finish
@@ -66,7 +66,7 @@ Adapt within this session only, from the learner's actual answers. This is not a
 When the last slot is resolved, give its feedback, then in the same message:
 
 1. Show the full bar: `Done: 10 of 10 ▰▰▰▰▰▰▰▰▰▰`. A full bar means every slot was resolved, not that every answer was correct.
-2. Give a short summary, based only on this conversation:
+2. Give a short summary, based only on this conversation. Put each question in exactly one group:
    - **Covered:** the material the questions touched.
    - **Recalled unaided:** answers that were fully correct without help. Do not list part of a partly correct answer here.
    - **Needed help or correction:** answers after a hint, partly correct and incorrect answers, and answers that relied on a flagged note, each with what was missing or wrong.

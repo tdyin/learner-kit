@@ -717,8 +717,13 @@ Changes to `skills/lk-recall/SKILL.md`, made in response to the failures above:
   - Each question asks about one thing.
   - A skip moves on without giving the answer unless the learner asks.
 
-**Rerun needed** on the commit after `df6bd15`:
-- **For these fixes:** RA1, RA6, RA8, RA14 and RA16 (RC1–RC4).
-- **Revised scripts:** RA3, RA5, RA7 and RA9, with the scripts from `a4004e7`. RA9 also covers the skip wording.
+**Fix after the RA9 rerun (at `df6bd15`):**
+- "Two correct unaided answers in a row" now means two consecutive questions with nothing between them. Any streak-breaking outcome (hint, partial, incorrect, don't remember, skip, shown) resets the count to zero, so the answers before and after it never form a pair.
+- The completion summary puts each question in exactly one group.
+- The skip and copper problems seen in RA9 are covered by the `3dc2960` fixes above.
+
+**Rerun needed** on the commit that adds this note:
+- **For the fixes:** RA1, RA6, RA8, RA9, RA14 and RA16 (RC1–RC4).
+- **Streak wording changed:** RA5 and RA7. Both passed at `df6bd15`; rerun them to confirm the rule still steps up after a real pair.
 - **Spot check:** RA2/RA4/RA11 in one session, for the notes check and the progress-line placement.
-- **Not affected:** RA10, RA12, RA13 and RA15 rules didn't change.
+- **Not affected:** RA3 (passed at `df6bd15`) and RA10, RA12, RA13 and RA15 (passed at `b650e4b`). Their rules didn't change in a way they test.
