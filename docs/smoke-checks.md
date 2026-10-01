@@ -53,8 +53,27 @@ The model appears to have counted the two retries as separate first errors, beca
 - after the second unsuccessful retry, names what went wrong and offers a choice (different explanation, analogous worked example, easier task, or break) instead of another corrective hint;
 - says that bounded hints must not write out the expression for the learner to evaluate.
 
-**Rerun needed:** check 5, and checks 3 and 4 because the hint rule changed. Run them against the commit after `a8ed595`.
+### Rerun after the fix
+
+- **Host:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, run by a local agent through `codex exec --json` and `codex exec resume`, from an empty scratch directory outside any repo
+- **Model:** gpt-6-astra, reasoning effort medium
+- **Date:** 2026-09-30
+- **Skill version:** commit `7e7731b`. The skill was deleted and reinstalled with the same installer command, and the installed `SKILL.md` contains "not per error type".
+
+| # | Observed | Status |
+|---|---|---|
+| 3 | Continued without `$lk-coach`: "Yes—ΔU = 0 because…". The next step was a sign-convention question (ΔU = Q − W or ΔU = Q + W?). No formula or numbers for W were given. | Pass |
+| 4 | "'Isothermal' means the temperature stays constant—what does that tell you about ΔU?" No W or Q value and no expression to evaluate. | Pass |
+| 5 | Retry 1 got one bounded hint ("use the natural logarithm, ln…"). Retry 2: "T must be in kelvin: use 300 K, not 27 °C. Would you prefer a different explanation of why kelvin is needed, an analogous worked example, an easier task, or a break?" No expression and no answer; it waited for the learner. | Pass |
+
+Notes:
+
+- In check 4 the session file shows that the skill body was injected as a `<skill>` block rather than read with a shell command. The skill was still loaded.
+- In check 5, naming the mistake ("use 300 K") also states the fix. The rule allows that, because the reply gives no calculation or answer.
+- The sign-convention question in check 3 is about the physics content, not course rules about assistance, so it doesn't conflict with the homework rule.
+
+All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11 from the first run, and checks 3–5 from the rerun.
 
 ## Open issues
 
-- Rerun checks 3, 4 and 5 against the updated `SKILL.md` and record the results here.
+- None blocking. Recheck the `--url .../tree/main/...` install form after merge.
