@@ -336,3 +336,46 @@ If a fully current record is needed before closing the issues, do one full pass 
 
 
 **Change after rerun 3:** a review comment led to `lk-review` labelling each item "(from your notes)" or "(generated)". RV1–RV4 have not been rerun since this change.
+
+## Issue #6: lk-learn and full-release installation
+
+### Installation and discovery
+
+- **Host:** Codex CLI 0.159.3 (`@openai/codex` from npm) on Linux, in a cloud container
+- **Date:** 2026-10-01
+- **Model:** none (these checks don't call a model)
+- **Source:** branch `claude/happy-davinci-33kg6r` at `15a1c28`, and `main` for the `--url` form
+
+| Scenario | Method | Observed result | Status |
+|---|---|---|---|
+| `lk-learn` passes Codex's skill format check | `quick_validate.py skills/lk-learn` | `Skill is valid!` | Pass |
+| `lk-learn` installs alone from a clean start | Installer with `--path skills/lk-learn` into an empty `CODEX_HOME` | Installed; `openai.yaml` present with `allow_implicit_invocation: false` | Pass |
+| All nine install from a clean start | One installer run with one `--path` followed by the nine skill paths, into an empty `CODEX_HOME` | Nine directories installed, all nine with `allow_implicit_invocation: false` | Pass |
+| `--url` install form from `main` | `--url https://github.com/tdyin/learner-kit/tree/main/skills/lk-coach` | Installed `lk-coach` | Pass (resolves the open item from issue #2) |
+| Discovered user-wide, outside the repo | `codex app-server` `skills/list` from an empty directory outside the repo | With `lk-learn` only: `lk-learn:user`. With all nine: all nine listed with `scope: "user"`. | Pass |
+
+### lk-learn conversation checks
+
+Run each check in a fresh session with **only `lk-learn` installed**, so all eight companions are unavailable. Unless a check gives the learner's reply, the tester may write a short, correct learner answer to the skill's question. Write that answer before reading anything that would give it away, and record it.
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| LN1 | Goal and time | `$lk-learn Help me learn first-law energy balances in 30 minutes. I've done intro mechanics but no thermodynamics.` | A 3–5 step plan that fits 30 minutes. Starts step 1 in the same message. At most one question; no onboarding questionnaire. | | Not run |
+| LN2 | Routine transitions | Continue LN1, answering the next two questions correctly | Moves to the next step with a one-line description of what's next. No "shall we continue?" permission prompts. | | Not run |
+| LN3 | Goal change needs agreement | Continue LN2: "How does this relate to entropy?" | Answers briefly, then asks before adding entropy to the plan or changing the goal. Doesn't switch on its own. | | Not run |
+| LN4 | Learner override | Continue: "Skip the recall check and give me a harder problem." | Skips the recall step and gives a harder problem labelled "Practice problem (generated):". No pushback. | | Not run |
+| LN5 | Wrong answers and retry fallback | New session (LN1 prompt). On the first practice task, give a wrong answer, then two more wrong answers after help. | Feedback names the error. After the second unsuccessful coached retry, offers a different explanation, worked example, easier task or break, without another corrective hint. | | Not run |
+| LN6 | Stop and truthful recap | Continue LN5: "stop", then "Give me a recap I can paste into a new chat." | Stop ends in one reply, with no unrequested recap. The recap separates the initial attempt from the coached retries and lists steps not reached. No mastery claims, and no files written. | | Not run |
+| LN7 | Supplied notes with errors | `$lk-learn Help me learn this in 20 minutes:` + the sample notes from `examples/thermodynamics.md` | The plan uses the notes and flags lines 3 and 5 with reasoning before teaching them | | Not run |
+| LN8 | Standalone, no companions | Review LN1–LN7 | No attempt to load another skill. Any `lk-` suggestion is optional, and the session continues when it's declined or the skill is unavailable. | | Not run |
+| LN9 | Explicit only | Fresh session, no `$`: "Help me learn first-law energy balances in 30 minutes." | `lk-learn` not loaded | | Not run |
+
+### Final pass at the release commit
+
+Run these at the final commit, so every skill has a recorded result on its final wording:
+
+- **All nine installed:** one install run using the README command. Then `$lk-review` and `$lk-learn` in fresh sessions with the same notes, checking that each selects the intended skill (spec #1 calls these two out).
+- **lk-learn:** LN1–LN9.
+- **Checks not rerun after their skill's later edits:** EX1–EX3, EP1, EP2, EP4, EP5, RC1–RC3, DG2–DG5, TR2, TR3, RV1–RV4 and X3.
+
+The `lk-coach` checks (1–11) stay valid: `skills/lk-coach` has not changed since `7e7731b`, where checks 3–5 were rerun.
