@@ -17,6 +17,24 @@ Learner Kit is for adult self-learners and university students who want real tut
 - 💬 **Conversation-only.** The skills use only what's in the chat and never create or update learner records. Your host, such as Codex, may still keep chat history under its own settings.
 - 🙋 **You stay in control.** Ask for a hint, the full solution, an easier task, a skip, or a stop at any time.
 
+## 📚 Where the idea comes from
+
+Learner Kit is inspired by **_Make It Stick: The Science of Successful Learning_** by Peter C. Brown, Henry L. Roediger III and Mark A. McDaniel (Belknap Press of Harvard University Press, 2014; ISBN 978-0-674-72901-8). Its main message is that the study habits that *feel* productive, like rereading and highlighting, often aren't the ones that make learning last. Effortful practice is.
+
+Each skill turns one of the book's ideas into something you can do in a chat:
+
+| Idea from the book | Where you'll find it |
+|---|---|
+| **Retrieval practice:** pulling an idea from memory strengthens it more than rereading | `lk-recall` asks one question at a time, from memory first. `lk-review` mixes recall into revision. |
+| **Generation:** trying before being shown the answer | `lk-practice` and `lk-transfer` ask for your attempt before giving feedback. `lk-coach`'s hints move you one step and leave the next one to you. |
+| **Varied practice:** applying a method in new conditions | `lk-transfer` changes one meaningful thing about a problem you already know |
+| **Interleaving:** mixing different kinds of practice instead of drilling one thing | `lk-learn` and `lk-review` alternate explanation, practice and recall in a single session |
+| **Elaboration:** connecting new ideas to what you already know | `lk-explain` and `lk-explore` link concepts, examples and prerequisites |
+| **Reflection and calibration:** seeing clearly what you can do unaided | `lk-diagnose` and the honest recaps keep your first attempt separate from what you managed with help, so a lucky retry isn't mistaken for mastery |
+| **Spacing:** coming back to material over time | `lk-review` makes coming back easy with a pasted recap. It doesn't schedule reviews; when to come back is up to you. |
+
+Learner Kit is an independent project, not affiliated with or endorsed by the authors or publisher. It applies the book's ideas as tutoring habits. It does not claim measured learning gains.
+
 ## ✨ The skills
 
 | | Skill | What it does | Try it |
