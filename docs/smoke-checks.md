@@ -77,3 +77,96 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 ## Open issues
 
 - None blocking. Recheck the `--url .../tree/main/...` install form after merge.
+
+## lk-practice, lk-diagnose, lk-explore, lk-explain, lk-recall, lk-transfer, lk-review: installation and discovery
+
+- **Host:** Codex CLI 0.159.3 (`@openai/codex` from npm) on Linux, in a cloud container
+- **Date:** 2026-10-01
+- **Model:** none (these checks don't call a model)
+- **Source:** branch `claude/happy-davinci-33kg6r` at commit `19321d0`
+
+| Scenario | Method | Observed result | Status |
+|---|---|---|---|
+| All packages pass Codex's skill format check | `quick_validate.py` on each `skills/lk-*` directory | `Skill is valid!` for all eight | Pass |
+| Each new skill installs alone | `install-skill-from-github.py --path skills/<name>` into a separate, fresh `CODEX_HOME` for each of the seven | `Installed <name>` each time | Pass |
+| All eight install together | One installer run with eight `--path` values into a fresh `CODEX_HOME` | Eight directories installed, each with `agents/openai.yaml` | Pass |
+| Discovered user-wide, outside the repo | `codex app-server` `skills/list` from an empty directory outside the repo | With all eight installed, all were listed with `scope: "user"` and their "Learner Kit: …" display names. With only `lk-review` installed, only `lk-review` was listed. | Pass |
+
+## Conversation behavior: issues #3, #4, #5
+
+**Not run yet.** These need a logged-in Codex session. Run each check in a **fresh** session with **only the skill under test installed**, so companion skills are unavailable. Problems, notes and prompts are in [examples/thermodynamics.md](../examples/thermodynamics.md). For every check: confirm the skill is selected only by `$name`, wait for real answers, and look for no fabricated learner work, no mastery claims, and no files written.
+
+### lk-practice
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| PR1 | Energy-balance practice | `$lk-practice Give me a first-law energy-balance problem for a closed system, intro university level.` | One task, labelled as generated, with a success standard. It waits; no hint or solution. | | Not run |
+| PR2 | Correct answer | Supply P3 and answer "+25 kJ: Q = −5 kJ, W = −30 kJ, ΔU = Q − W" | Brief confirmation, then offers another task, help or finishing | | Not run |
+| PR3 | Partly correct / wrong answer | P3, answer "−35 kJ" | Feedback on the specific sign error. Credits the correct sign of Q. | | Not run |
+| PR4 | Ambiguous answer | P3, answer "25" (no units or sign working) | Asks one clarifying question or notes what is missing; doesn't invent reasoning | | Not run |
+| PR5 | Follow-up and controls | After PR1: "hint", then "skip", then "stop" | Bounded hint; the skip isn't a failure; stop ends the session | | Not run |
+| PR6 | Explicit only | Fresh session, no `$`: "Give me a practice problem on the first law" | `lk-practice` not loaded | | Not run |
+
+### lk-diagnose
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| DG1 | Sign-error diagnosis | `$lk-diagnose` + P4 + the supplied learner answer | Locates W = +800 J as the error, gives plausible causes tied to what was written, and asks at most two questions, one at a time | | Not run |
+| DG2 | Missing reasoning | `$lk-diagnose` P4, "I got −1100 J, why is that wrong?" (no working) | Asks for the working. Doesn't invent the learner's steps. | | Not run |
+| DG3 | Correct answer | `$lk-diagnose` P4, "ΔU = −300 − (−800) = +500 J" | Says it is correct; no diagnosis is invented | | Not run |
+| DG4 | Ambiguous / alternative | `$lk-diagnose` P4, "ΔU = q + w = −300 + 800 = 500 J" | Recognizes the q + w convention as valid. No error claimed. | | Not run |
+| DG5 | No lasting labels | Review DG1 output | No "you have a misconception about…" labels about the learner | | Not run |
+| DG6 | Controls | After DG1: "just show me the full solution" | Gives it; not described as a failed attempt | | Not run |
+
+### lk-explore
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| EX1 | Topic map | `$lk-explore Map out what I need to understand about introductory thermodynamics.` | 4–7 concepts, prerequisites, connections and a starting point. No onboarding. | | Not run |
+| EX2 | Unfamiliar topic | `$lk-explore` on a non-physics topic (for example "Bayesian inference") | Concise map and a starting point | | Not run |
+| EX3 | Redirect / stop | After EX1: "focus only on the second law", then "stop" | Adjusts the map; stop ends the session | | Not run |
+
+### lk-explain
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| EP1 | Heat vs temperature | `$lk-explain Why are heat and temperature different?` | Accurate distinction with an example (see the checked explanation). Any check question waits for an answer. | | Not run |
+| EP2 | Erroneous notes | `$lk-explain` + sample notes, "explain line 3 to me" | Flags line 3 as wrong with reasoning, and keeps the note's claim separate from the correction | | Not run |
+| EP3 | Uncertain claim | `$lk-explain` + sample notes, "explain why copper's specific heat is 0.90 J/(g·K)" | Says the value looks like aluminium's and suggests checking; doesn't invent a citation | | Not run |
+| EP4 | Non-numerical argument | `$lk-explain` + the conceptual example prompt | Identifies the second law with reasoning; no numerical rubric | | Not run |
+| EP5 | Controls | After EP1: "simpler", then "stop" | Simplifies; stop ends the session | | Not run |
+
+### lk-recall
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| RC1 | Note-based recall | `$lk-recall Quiz me from memory on these notes:` + sample notes | One question, drawn from the notes. Waits. Feedback only after the answer. | | Not run |
+| RC2 | Reference agreement | `$lk-recall` + notes, without saying memory or notes | Asks once about memory vs notes (or assumes memory and says so) | | Not run |
+| RC3 | Erroneous note | Continue RC1 until line 3 or 5 would be quizzed (or ask "quiz me on line 3") | Flags it instead of quizzing it as true | | Not run |
+| RC4 | Don't remember / hint / stop | "I don't remember", then "hint" on the next item, then "stop" | Gives the answer briefly with no penalty; cue only for the hint; stop ends the session | | Not run |
+
+### lk-transfer
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| TR1 | Transfer variation | `$lk-transfer` + P2 with its worked solution, "give me a variation" | One meaningful change (not just new numbers), with an invitation to attempt it. Doesn't reveal what changes. | | Not run |
+| TR2 | Unaided attempt, then discussion | Answer TR1 by reusing the ln formula | Feedback on the attempt, then a discussion of what carries over and what changes | | Not run |
+| TR3 | No source example | `$lk-transfer Help me apply what I know about energy balances somewhere new.` | Asks for a source example or establishes a simple one and labels it | | Not run |
+| TR4 | Controls | "full solution" on TR1, then "stop" | Gives the solution; not a failed attempt; stop ends the session | | Not run |
+
+### lk-review
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| RV1 | Fresh-chat review of notes | `$lk-review Review these notes with me before my exam:` + sample notes | Picks 3–5 ideas, mixes retrieval and practice, asks one item at a time, flags line 3 | | Not run |
+| RV2 | Absent history | `$lk-review` with no material | Asks only what to review; no questions about past sessions | | Not run |
+| RV3 | Pasted recap | `$lk-review` + a recap (for example "Recap: P1 first attempt 700 J, corrected to 300 J after a hint. Next: practise sign conventions.") | Uses it as context and doesn't invent other attempts. No due dates or claims about forgetting. | | Not run |
+| RV4 | Summary | Finish RV1 | Summary separates unaided answers, helped answers and missed items. No scores or mastery claims. | | Not run |
+
+### Cross-skill checks
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| X1 | Missing companion | In PR3 or DG1, say "yes" to a suggested switch to another `lk-` skill that isn't installed | Keeps helping in the current skill with the context intact | | Not run |
+| X2 | Declined handoff | When a skill suggests another, reply "no, keep going here" | Keeps helping; you don't need to repeat anything | | Not run |
+| X3 | Correct selection with all installed | Install all eight; invoke `$lk-review` and then (fresh session) `$lk-recall` with the same notes | Each session runs the selected skill | | Not run |
