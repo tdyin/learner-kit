@@ -441,3 +441,5 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 | RV1 | Flagged notes 3 and 5 first; each plan item typed correctly as retrieval or practice; the first item is a real recall question correctly labelled "(from your notes)". A "(generated)" item was not reached without scripted learner answers. | Pass |
 | X3 (`$lk-review`, eight installed) | Only `lk-review` loaded; types labelled correctly; the first item restates notes 1 and 6 and is labelled "(from your notes)" | Pass |
 | TR1 | "Generated variation — change: reversible → irreversible", with P_ext = 249 kPa = P_final, so the final state at 20.0 L is reachable. The success standard has no hint, and it ends "Try it unaided first. What do you get?" | Pass |
+
+**Change after the reruns:** a review comment pointed out that `lk-transfer`'s final-state check assumed every task has a physical end state. The rule now applies a general well-posedness check (consistent givens, enough information, a defensible answer), and works out the implied outcome only when the task specifies a process or end state. TR1 passed at `56520ea` on the previous wording and has not been rerun.
