@@ -379,3 +379,48 @@ Run these at the final commit, so every skill has a recorded result on its final
 - **Checks not rerun after their skill's later edits:** EX1–EX3, EP1, EP2, EP4, EP5, RC1–RC3, DG2–DG5, TR2, TR3, RV1–RV4 and X3.
 
 The `lk-coach` checks (1–11) stay valid: `skills/lk-coach` has not changed since `7e7731b`, where checks 3–5 were rerun.
+
+### Final pass results
+
+- **Host:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, logged in with ChatGPT
+- **Model:** gpt-5.6-terra, reasoning effort medium
+- **Date:** 2026-10-01
+- **Skill version:** commit `4c3520e`. Single-skill checks had only the skill under test installed. X3 had the eight original skills. The all-nine checks used the README command with `--ref` for this branch.
+- **Install note:** the README command has no `--ref`, so it installs from `main`. That is correct once this PR is merged. Before then, `main` has no `skills/lk-learn`.
+- **Skill loading:** every `$`-selected session showed a `<skill>` block for the selected skill only. LN9 showed none.
+- **Files:** no Learner Kit session wrote files. In LN9 (plain Codex, no Learner Kit skill), Codex's bundled visualize plugin wrote an HTML file into the working directory. Anyone repeating a "no files written" check should keep plain-Codex sessions separate.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| LN1 | A four-step 30-minute plan; started step 1 in the same message and ended with one question | Pass |
+| LN2 | "Correct… Next: …" twice; no permission prompts | Pass |
+| LN3 | "It's outside our 30-minute first-law plan. Would you like a brief 3-minute bridge to entropy now, or finish the energy-balance practice first?" | Pass |
+| LN4 | Skipped recall; gave a harder problem labelled "Practice problem (generated):" | Pass |
+| LN5 | Named the errors after the initial attempt and retry 1. After the second unsuccessful retry it **stated ΔU = −120 kJ** and chose an easier task itself, with no choice offered. | **Fail** |
+| LN6 | Stop gave "Session stopped." with no unrequested recap. The recap listed help topics and the correct result, but **didn't separate the initial attempt from the two unsuccessful coached retries**, and left out the unanswered easier task. | **Fail** |
+| LN7 | Flagged lines 3 and 5 with reasoning before teaching | Pass |
+| LN8 | No attempt to load another skill and no `lk-` suggestions across 13 turns | Pass |
+| LN9 | Not loaded without `$` | Pass |
+| EX1–EX3 | Seven-concept maps with starting points; second-law re-map; "Stopped." | Pass |
+| EP1, EP2, EP4, EP5 | Accurate heat vs temperature; line 3 flagged with a suggestion to confirm; second law identified; simpler version; "Stopped." | Pass |
+| RC1–RC3 | Line 3 flagged; one question at a time; memory or notes asked; quizzed the corrected version of line 3 | Pass |
+| DG2–DG5 | Asked for missing working; confirmed correct answers in both conventions; no learner labels | Pass |
+| TR2, TR3 | What carries over and what changes discussed; asked for a source example | Pass |
+| RV1 | Plan, flags and one-at-a-time all met, but a calculation with made-up numbers was labelled "retrieval (from your notes)" | **Fail** (borderline) |
+| RV2–RV4 | Asked what to review; asked what "P1" was; summary separated "asked but not answered" from "not reached" | Pass |
+| X3 | Eight installed: `$lk-review` and `$lk-recall` each loaded only the selected skill | Pass |
+| All-nine install | Nine directories, all with `allow_implicit_invocation: false` | Pass |
+| All-nine `$lk-review` | Loaded only `lk-review`; flagged lines 3 and 5 | Pass |
+| All-nine `$lk-learn` | Loaded only `lk-learn` (the selection check passed), but flagged only line 3 and not line 5 | Pass (selection); note-flagging gap |
+
+Setup-only observation: TR1 (run only as setup for TR2) again generated a variation without a mechanical stop, so the stated final state wasn't reachable. The skill corrected itself in TR2.
+
+### Fixes after the final pass
+
+- **`lk-learn` (LN5):** after the second unsuccessful coached retry, it must not state the correct value or pick the next step. It names what went wrong without the answer, offers the four options, and waits.
+- **`lk-learn` (LN6):** the recap reports, for each task, the initial answer, the number and outcome of coached retries, the help given, and whether the task was finished, skipped or left unanswered.
+- **`lk-learn` (all-nine note-flagging gap):** it checks every line of supplied notes before planning and flags each likely error before teaching from it.
+- **`lk-review` (RV1):** "(from your notes)" only when the question restates the material; anything with made-up numbers, scenarios or wording is "(generated)". Calculate or apply means practice; recall means retrieval.
+- **`lk-transfer` (TR1 observation):** before presenting a variation, work out the final state the givens imply, and add a constraint or change the givens if it doesn't match.
+
+**Rerun needed:** LN5, LN6, LN7, the all-nine `$lk-learn` check with the sample notes, RV1, X3 (`lk-review` labels), and TR1. Run them against the commit after `4c3520e`.
