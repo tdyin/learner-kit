@@ -31,8 +31,8 @@ This maps each acceptance check in the release spec ([issue #1](https://github.c
 
 | Spec check | Evidence | Status |
 |---|---|---|
-| Install one skill and all nine from the README; available outside the repo | Install tables for issues #2, #3–#5 and #6; the tester's real-host installs | One skill and all nine: Pass (Linux, no model). On the tester's host, single installs and all eight passed; **all nine there is in the final pass**. |
-| `lk-` names; explicit invocation selects the intended skill; matching requests don't load it | `lk-coach` checks 1–2; PR6; X3 | Pass. `lk-learn` (LN9) and the `lk-review`/`lk-learn` selection check are **in the final pass**. |
+| Install one skill and all nine from the README; available outside the repo | Install tables for issues #2, #3–#5 and #6; the tester's real-host installs | **Partial.** One skill and all nine passed on Linux (no model). On the tester's host, single installs and all eight passed; all nine there is in the final pass. |
+| `lk-` names; explicit invocation selects the intended skill; matching requests don't load it | `lk-coach` checks 1–2; PR6; X3 | **Partial.** Passed for the checks listed. `lk-learn` (LN9) and the `lk-review`/`lk-learn` selection check are in the final pass. |
 | Continuation after selection; context kept across optional transitions | `lk-coach` check 3; X1; X2 | Pass |
 | Correct answer | `lk-coach` check 11; PR2; DG3 | Pass |
 | Ambiguous answer | PR4; DG4 | Pass |

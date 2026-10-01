@@ -84,7 +84,7 @@ I don't know where to start. Hints only, please.
 - **Conversation-only memory.** Skills use only what is visible in the current chat. There is no saved history. A pasted recap is treated as something you supplied, not as a verified record.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
 - **Not a mastery measure.** Getting a step correct just after help shows the help worked for that problem. It is not evidence of lasting learning.
-- **Verified in Codex only.** Installation and behavior were checked with Codex CLI 0.159.3, mostly with thermodynamics material and one non-numerical argument. Other hosts, models and subjects may behave differently.
+- **Verified in Codex only.** Installation and the recorded behavior checks were run with Codex CLI 0.159.3, mostly with thermodynamics material and one non-numerical argument. Some checks are still pending; see [docs/release-acceptance.md](docs/release-acceptance.md). Other hosts, models and subjects may behave differently.
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
 ## Repository layout
