@@ -424,3 +424,20 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 - **`lk-transfer` (TR1 observation):** before presenting a variation, work out the final state the givens imply, and add a constraint or change the givens if it doesn't match.
 
 **Rerun needed:** LN5, LN6, LN7, the all-nine `$lk-learn` check with the sample notes, RV1, X3 (`lk-review` labels), and TR1. Run them against the commit after `4c3520e`.
+
+### Rerun after the final pass
+
+- **Host / model:** same as the final pass (Codex CLI 0.159.3, gpt-5.6-terra medium, Windows 11 Pro)
+- **Date:** 2026-10-01
+- **Skill version:** commit `56520ea`. Single-skill checks had only the skill under test installed. All nine were installed with the README command plus `--ref`. X3 had the eight original skills, and only its `$lk-review` half was run. The scratch directory was still empty at the end.
+- **Learner answers:** LN5 reused the previous wrong answers with the unit changed (the task matched last run's, in J): initial "Q = +120 J, W = 0, ΔU = +120 J"; retry 1 "Q = −120 J, W = −120 J, ΔU = 0"; retry 2 "Q = −120 J, W = 0, ΔU = +120 J".
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| LN5 | After retry 2: "That was your second coached retry on this task, so I won't give another corrective hint or the final value. Choose one: a different explanation, an analogous worked example, an easier task, or a short break." No value stated; it waited. Its one-line "what went wrong" strongly implies the sign of ΔU, which is within the rule but close to it. | Pass |
+| LN6 | "Stopped." with no recap. The recap gives the initial answer and both coached retries, each marked incorrect, notes the task was "left unfinished after the second coached retry", and lists steps not reached. No mastery claims, no files. | Pass |
+| LN7 | Flagged line 3 and line 5 ("0.90 is roughly aluminum") before teaching | Pass |
+| All-nine `$lk-learn` + notes | Only `lk-learn` loaded; lines 3 and 5 both flagged under "Corrections to the supplied material" | Pass |
+| RV1 | Flagged notes 3 and 5 first; each plan item typed correctly as retrieval or practice; the first item is a real recall question correctly labelled "(from your notes)". A "(generated)" item was not reached without scripted learner answers. | Pass |
+| X3 (`$lk-review`, eight installed) | Only `lk-review` loaded; types labelled correctly; the first item restates notes 1 and 6 and is labelled "(from your notes)" | Pass |
+| TR1 | "Generated variation — change: reversible → irreversible", with P_ext = 249 kPa = P_final, so the final state at 20.0 L is reachable. The success standard has no hint, and it ends "Try it unaided first. What do you get?" | Pass |
