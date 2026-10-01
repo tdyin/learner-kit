@@ -94,7 +94,7 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 
 ## Conversation behavior: issues #3, #4, #5
 
-**Not run yet.** These need a logged-in Codex session. Run each check in a **fresh** session with **only the skill under test installed**, so companion skills are unavailable. Problems, notes and prompts are in [examples/thermodynamics.md](../examples/thermodynamics.md). For every check: confirm the skill is selected only by `$name`, wait for real answers, and look for no fabricated learner work, no mastery claims, and no files written.
+**How to run these checks.** They need a logged-in Codex session. Results for each run, and the fixes made between runs, are recorded at the end of this section. Run each check in a **fresh** session with **only the skill under test installed**, so companion skills are unavailable. Problems, notes and prompts are in [examples/thermodynamics.md](../examples/thermodynamics.md). For every check: confirm the skill is selected only by `$name`, wait for real answers, and look for no fabricated learner work, no mastery claims, and no files written.
 
 ### lk-practice
 
@@ -334,3 +334,5 @@ Those checks are EX1–3, EP1–2, EP4–5, RC1–3, DG2–5, TR2–3, RV2 and X
 
 If a fully current record is needed before closing the issues, do one full pass at the final commit.
 
+
+**Change after rerun 3:** a review comment led to `lk-review` labelling each item "(from your notes)" or "(generated)". RV1–RV4 have not been rerun since this change.
