@@ -20,7 +20,7 @@ If none is given, ask for one, or offer a short, simple source example on their 
    - context (a different physical system, field, or application);
    - representation (a graph, table, diagram, or words instead of an equation);
    - an assumption (reversible → irreversible, constant → varying, ideal → non-ideal).
-   Avoid changes that only swap numbers. Say what the success standard is, but do not say what changes in the method, because spotting that is the point.
+   Avoid changes that only swap numbers. Check that the new task is well-posed before you present it: the givens are consistent, and the stated process and final state are physically possible (for example a gas pushing against an external pressure lower than its final pressure needs a stop to end at the stated volume). Say what the success standard is, but do not say what changes in the method, because spotting that is the point.
 3. **Invite an actual attempt.** Ask them to try it and wait. Do not hint or solve in the same turn. Treat their first answer as an unaided transfer attempt.
 4. **Feedback on their attempt.** Check calculations, units, signs, and claims, using tools when available. Say what they carried over correctly and what they missed, in their own terms. Accept defensible alternative approaches.
 5. **Discuss what carries over and what changes.** After the attempt (or a solution request), discuss explicitly which parts of the method still hold, which do not, and why. Ask one question to have them articulate it, if they want.
@@ -38,7 +38,7 @@ If the source example contains an error, say which step looks wrong and why, kee
 
 ## Other Learner Kit skills (optional)
 
-If the source method itself is shaky, you may mention `$lk-explain` or `$lk-coach`. Carrying over the source example and their attempt makes switching easy. If they decline or the skill is not installed, keep helping here.
+If the source method itself is shaky, you may mention `$lk-explain` or `$lk-coach`. Carrying over the source example and their attempt makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 

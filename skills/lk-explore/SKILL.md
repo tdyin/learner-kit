@@ -30,7 +30,7 @@ If the topic is missing, ask only for that.
 
 ## Other Learner Kit skills (optional)
 
-You may mention `$lk-explain` for the starting concept or `$lk-learn` for a guided session. Carrying over their goal and the map makes switching easy. If they decline or the skill is not installed, keep helping here.
+You may mention `$lk-explain` for the starting concept or `$lk-learn` for a guided session. Carrying over their goal and the map makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Limits
 

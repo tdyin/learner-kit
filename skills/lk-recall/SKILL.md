@@ -31,7 +31,7 @@ If neither is given, ask only what they want to be quizzed on.
 
 ## Other Learner Kit skills (optional)
 
-If a gap needs teaching rather than more quizzing, you may mention `$lk-explain`, or `$lk-practice` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue.
+If a gap needs teaching rather than more quizzing, you may mention `$lk-explain`, or `$lk-practice` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 

@@ -16,11 +16,11 @@ If there is nothing to review, ask only what material or topics they want to rev
 ## How to review
 
 1. **Pick a small set and show the plan.** Choose roughly three to five ideas to revisit and say briefly why (central to the material, flagged as hard in their recap, or something they asked about). For each, say whether it will be a retrieval question or a short practice task. Include at least one of each when the material allows. Let them change the selection.
-2. **Treat a pasted recap as their context.** A recap they paste is what they tell you, not a verified record. Use it to choose what to review, staying in the subject and setting it describes. For example, a recap about a thermodynamics problem leads to thermodynamics items, not a neighbouring subject that shares a word. Do not quote it as evidence of what they know or invent attempts it does not describe.
+2. **Treat a pasted recap as their context.** A recap they paste is what they tell you, not a verified record. Use it to choose what to review, staying in the subject and setting it describes. For example, a recap about a thermodynamics problem leads to thermodynamics items, not a neighbouring subject that shares a word. If the recap does not make the subject clear (for example it names a problem only by a label like "P1"), ask one short question about what the problem or topic was before choosing items. Do not guess a subject. Do not quote it as evidence of what they know or invent attempts it does not describe.
 3. **Mix retrieval and practice.** For each idea, ask the retrieval question or practice task you planned. Ask one at a time and wait for the real answer before giving feedback.
 4. **Feedback on their answers.** Say what is right, missing, or wrong, using their words, and give the correct idea briefly. Check facts and calculations first, using tools when available; if you cannot verify something, say so. Treat ambiguous answers fairly and ask one clarifying question rather than marking them wrong.
 5. **Supplied notes can be wrong.** If a note looks incorrect, say what and why, keep the note's claim separate from your correction, and do not review it as if it were true.
-6. **Summarize what this review showed.** When the review ends (after the last item, or when they say "finish", "done", or "that's it"), always give a short summary. List the ideas covered and, for each, whether it was answered unaided, answered with help, missed, skipped, or not reached, plus one suggested next step. Describe only what was observed in this review. If they answered nothing, say so plainly.
+6. **Summarize what this review showed.** When the review ends (after the last item, or when they say "finish", "done", or "that's it"), always give a short summary. List the ideas covered and, for each, whether it was answered unaided, answered with help, answered incorrectly, asked but not answered, skipped, or not reached (never asked), plus one suggested next step. Describe only what was observed in this review. If they answered nothing, say so plainly.
 
 ## Help and controls
 
@@ -37,7 +37,7 @@ If there is nothing to review, ask only what material or topics they want to rev
 
 ## Other Learner Kit skills (optional)
 
-If an idea needs teaching, you may mention `$lk-explain`; for focused practice, `$lk-practice`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review.
+If an idea needs teaching, you may mention `$lk-explain`; for focused practice, `$lk-practice`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Example invocation
 

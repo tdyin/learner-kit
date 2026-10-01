@@ -160,7 +160,7 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 |---|---|---|---|---|---|
 | RV1 | Fresh-chat review of notes | `$lk-review Review these notes with me before my exam:` + sample notes | Picks 3–5 ideas, mixes retrieval and practice, asks one item at a time, flags line 3 | | Not run |
 | RV2 | Absent history | `$lk-review` with no material | Asks only what to review; no questions about past sessions | | Not run |
-| RV3 | Pasted recap | `$lk-review` + a recap (for example "Recap: P1 first attempt 700 J, corrected to 300 J after a hint. Next: practise sign conventions.") | Uses it as context and doesn't invent other attempts. No due dates or claims about forgetting. | | Not run |
+| RV3 | Pasted recap | `$lk-review` + a recap (for example "Recap: P1 first attempt 700 J, corrected to 300 J after a hint. Next: practise sign conventions.") | The recap names the problem only as "P1", so it asks one short question about which problem or topic that was, or stays clearly within that subject. Doesn't drift to another subject; doesn't invent other attempts. No due dates or claims about forgetting. | | Not run |
 | RV4 | Summary | Finish RV1 | Summary separates unaided answers, helped answers and missed items. No scores or mastery claims. | | Not run |
 
 ### Cross-skill checks
@@ -236,4 +236,46 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 - **X1, X2:** redesigned so the learner triggers the handoff situation instead of waiting for the skill to suggest one.
 
 **Rerun needed:** PR3, PR4, PR5 and PR2 (feedback rules changed); DG1 and DG6; EP1, EP2, EP3 and EP5; RC1 and RC4; RV1, RV3 and RV4; TR4 (stop wording); and X1, X2 (redesigned). Run them against the commit after `19150f7`.
+
+### Rerun 1 after the fixes
+
+- **Host / model:** same as the first run (Codex CLI 0.159.3, gpt-5.6-terra medium, Windows 11 Pro)
+- **Date:** 2026-10-01
+- **Skill version:** commit `a45e841`. Only the skill under test was installed each time; the installed `lk-review` contained the new summary rule. PR1 and TR1 were rerun only as setup for PR5 and TR4. X2 ran on a `codex exec fork` of the DG1 session.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| PR2 | "Correct… ΔU = +25 kJ." Offered another problem. | Pass |
+| PR3 | Named the sign error and invited a retry, but didn't credit the correct Q and handed over both signed values (in a different convention) for the retry | **Fail** (borderline) |
+| PR4 | "Your magnitude is right: 25 kJ. To make it complete, state the sign, units, and energy-balance equation. Is your result ΔU = +25 kJ?" Nothing marked correct and no reasoning invented. The question proposes the sign itself, which is a minor issue. | Pass |
+| PR5 | Hint without values; "Skipped…"; "Stopped." | Pass |
+| DG1 | Credited Q, located W = +800 J and a likely cause, then offered the three choices. It did **not** state +500 J. | Pass |
+| DG6 | Full solution; not described as a failed attempt | Pass |
+| EP1 | Consistent analogy ("total thermal energy" against temperature) and an accurate distinction | Pass |
+| EP2 | Flagged line 3 and gave a separate, better version | Pass |
+| EP3 | Called line 5 "likely a transcription error" and gave ≈0.385 with a correct per-mole reason. It didn't mention aluminium or suggest checking a table or the source; it settled the question with its own web-search citation. | **Fail** |
+| EP5 | Simpler version; "Stopped." | Pass |
+| RC1 | Flagged lines 3 and 5, then asked one question and waited | Pass |
+| RC4 | "Stopped. If you want, I can give a brief recap of what was asked." No unrequested recap. | Pass |
+| TR4 | Full solution with what carried over and what changed; "Stopped." The generated TR1 task (P_ext = 1.00 atm) was not well-posed: the gas is still at about 2.46 atm at 20.0 L, so a stop would be needed. | Pass (task issue noted) |
+| RV1 | The plan labels each item (retrieval or practice) and includes both; it flagged lines 3 and 5 and asked one item | Pass |
+| RV3 | Drifted to mechanics again. The recap only says "P1", so the subject is genuinely unclear from the recap alone. | **Fail** |
+| RV4 | A summary now appears ("no questions were answered"), but the asked-but-unanswered item was labelled "not reached" | **Fail** (borderline) |
+| X1 | "`$lk-diagnose` isn't available in this session, but we can do the same focused diagnosis here." It used P3 and −35 kJ without asking for them again. | Pass |
+| X2 | Suggested `$lk-coach` or `$lk-practice` as options. After "no, keep going here" it jumped to the full solution (+500 J) instead of returning to the pending choice. | **Fail** (borderline) |
+
+### Fixes after rerun 1
+
+- **`lk-practice` (PR3, PR4, TR1 note):**
+  - Wrong answers start by saying explicitly what is right, then name the error. The corrected values are not handed over; the learner fixes the step in their own convention.
+  - When something is missing, ask for it without proposing the value.
+  - Generated tasks must be well-posed.
+- **`lk-transfer` (TR1 note):** generated variations must be well-posed, for example with a stop when the external pressure is below the final gas pressure.
+- **`lk-explain` (EP3):** if the source of the wrong value is recognisable (another substance, unit, typo), say so. Always end a correction by suggesting the learner confirm it in a table, their textbook or the note's source, even after finding a reference.
+- **`lk-review` (RV3, RV4):**
+  - If a recap doesn't make the subject clear, ask one short question instead of guessing. The RV3 expected result was updated to match.
+  - Summary categories now separate "asked but not answered" from "not reached (never asked)".
+- **All seven new skills (X2):** after a declined or unavailable handoff, pick up exactly where the conversation left off, repeating any pending question or choice. A decline is not a request for the answer.
+
+**Rerun needed:** PR1, PR3, PR4, TR1, EP3, RV3, RV4, X1, X2. Run them against the commit after `a45e841`.
 
