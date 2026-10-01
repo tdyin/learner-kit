@@ -9,7 +9,7 @@ This set grows across release slices. Current contents: concept notes, two first
 - **Sign convention:** first law written as ΔU = Q − W, where Q is heat **added to** the system and W is work done **by** the system on its surroundings. This follows OpenStax *University Physics Volume 2*, Chapter 3 ("The First Law of Thermodynamics"), <https://openstax.org/books/university-physics-volume-2/pages/3-introduction>.
   - Chemistry texts often write ΔU = q + w, where w is work done **on** the system. Both give the same physical answer: w = −W. Accept either convention when the learner states it and applies it consistently.
 - **Units:** SI. Energy in joules (J), volume in litres (L) or m³, temperature in kelvin (K).
-- **Gas constant:** R = 8.314462618 J·mol⁻¹·K⁻¹ (exact under the 2019 SI; CODATA, <https://physics.nist.gov/cgi-bin/cuu/Value?r>). R = 8.314 J·mol⁻¹·K⁻¹ is fine for three significant figures.
+- **Gas constant:** R = 8.314 462 618 153 24 J·mol⁻¹·K⁻¹ (exact under the 2019 SI as N_A·k; CODATA, <https://physics.nist.gov/cgi-bin/cuu/Value?r>). R = 8.314 J·mol⁻¹·K⁻¹ is fine for three significant figures.
 - **Verification:** the arithmetic below was recomputed in Python (`math.log`) on 2026-10-01.
 
 ## Concept notes
@@ -47,7 +47,7 @@ In the ΔU = q + w convention, q = +500 J and w = −200 J, which gives the same
 
 **Bounded-hint ladder** (for checking that hints stay bounded):
 
-1. What does an ideal gas's internal energy depend on? What does that tell you about ΔU here?
+1. Since an ideal gas's internal energy depends only on temperature, what must ΔU be for this process?
 2. For a reversible process, W = ∫P dV. Use the ideal-gas law to write P in terms of V at constant T.
 3. Evaluate the integral between V₁ and V₂, then use the first law for Q.
 

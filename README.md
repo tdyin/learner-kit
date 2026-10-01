@@ -33,7 +33,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
 
 This copies the whole `lk-coach` directory, including `agents/openai.yaml`, to `~/.codex/skills/lk-coach`. That file sets `allow_implicit_invocation: false`, which makes the skill explicit-only. Start a new Codex session so the skill is picked up. It is then available in every project, not just this repository.
 
-To install several skills at once, pass more `--path` values (for example `--path skills/lk-coach skills/lk-practice`). The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
+When more skills are released, you can install several at once by passing more `--path` values. The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
 
 ### Check it is installed
 
