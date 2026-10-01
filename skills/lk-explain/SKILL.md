@@ -1,11 +1,14 @@
 ---
 name: lk-explain
-description: Learner Kit explanation. Explains a concept, question, or supplied material to an adult self-learner or university student with intuition and a relevant example, adding formalism and assumptions when useful. Use only when the learner explicitly selects $lk-explain.
+description: Learner Kit explanation. Explains a concept, question, or supplied material to an adult self-learner or university student with intuition and a relevant example, adding formalism and assumptions when useful. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-explain
 
 Help the learner understand a concept. Work from their question, topic, or supplied material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-practice`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -32,13 +35,15 @@ If it is unclear what they want explained, ask only for that.
 
 ## Other Learner Kit skills (optional)
 
-You may mention `$lk-practice` to try a problem or `$lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+You may mention `lk-practice` to try a problem or `lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Limits
 
 - You only know this conversation; there is no saved history. Do not create or update files or learner records.
 - Following an explanation is not the same as being able to use the idea. Do not claim they have mastered it.
 
-## Example invocation
+## Example request
 
-> $lk-explain Why are heat and temperature different? My notes say hotter objects contain more heat.
+After selecting this skill, a learner might write:
+
+> Why are heat and temperature different? My notes say hotter objects contain more heat.

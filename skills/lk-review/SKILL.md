@@ -1,11 +1,14 @@
 ---
 name: lk-review
-description: Learner Kit review session. Revisits a small set of ideas from an adult self-learner's or university student's notes, topics, a pasted recap, or the visible conversation, mixing retrieval and practice, then summarizes gaps seen in this review. Use only when the learner explicitly selects $lk-review.
+description: Learner Kit review session. Revisits a small set of ideas from an adult self-learner's or university student's notes, topics, a pasted recap, or the visible conversation, mixing retrieval and practice, then summarizes gaps seen in this review. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-review
 
 Run a short review of material the learner wants to revisit. Work only from what is visible in this conversation; there is no saved history, and none is needed.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -37,8 +40,10 @@ If there is nothing to review, ask only what material or topics they want to rev
 
 ## Other Learner Kit skills (optional)
 
-If an idea needs teaching, you may mention `$lk-explain`; for focused practice, `$lk-practice`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If an idea needs teaching, you may mention `lk-explain`; for focused practice, `lk-practice`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
-## Example invocation
+## Example request
 
-> $lk-review Review these notes with me before my exam: [paste notes]
+After selecting this skill, a learner might write:
+
+> Review these notes with me before my exam: [paste notes]

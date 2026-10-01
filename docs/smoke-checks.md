@@ -458,3 +458,139 @@ Setup-only observation: TR1 (run only as setup for TR2) again generated a variat
 Notes:
 - This TR1 variation ends at a larger volume than P2, so its W (3.98 kJ) is larger than P2's reversible 3.46 kJ. "Reversible gives the most work" only compares processes between the same two states: a reversible expansion to 49.2 L would give about 7.95 kJ. The discussion step should point out that the end states differ.
 - The mean task's success standard asked for "the appropriate unit", which is slightly odd for quiz scores. This is minor.
+
+## Portability (issue #14): Claude Code and Codex
+
+Skill revision `05877f2` made the nine skills host-neutral: no `$` syntax in shared descriptions, examples or companion suggestions. It also added `disable-model-invocation: true` to each `SKILL.md`. The earlier results above were recorded on the previous wording and stay as historical evidence for Codex.
+
+### Package and install checks (no model)
+
+- **Host:** Linux cloud container
+- **Date:** 2026-10-01
+
+| Scenario | Method | Observed result | Status |
+|---|---|---|---|
+| Shared metadata parses | YAML-parse every `SKILL.md` frontmatter and `agents/openai.yaml` | All nine: `name` matches the folder, `disable-model-invocation: true`, no `$` in descriptions, `allow_implicit_invocation: false` | Pass |
+| Codex accepts the new field | Codex CLI 0.159.3 `skills/list` with the field present | No load errors; skill listed and enabled | Pass |
+| Codex: one skill and all nine | `skill-installer` from the branch into fresh `CODEX_HOME`s; `skills/list` from outside the repo | `lk-coach` alone, and all nine, listed with `scope: "user"`, no errors | Pass |
+| Codex authoring validator | `quick_validate.py` | Flags `disable-model-invocation` as an unexpected key. Expected: this validator is an authoring aid, and the loader accepts the field. | Known limitation |
+| Claude Code copy commands | README commands run with a scratch `HOME`, cloning the branch | `~/.claude/skills/lk-coach`, then all nine folders, each with `disable-model-invocation: true` | Pass (file layout only; Claude Code not run) |
+
+### Live checks still to run
+
+Judge behavior, not exact wording. Use the problems and notes in `examples/thermodynamics.md`. Record the host version, model, date and skill revision for each run.
+
+**Claude Code** (personal install in `~/.claude/skills`, fresh session started outside this repo):
+
+| # | Scenario | Expected |
+|---|---|---|
+| CC1 | One skill installed: type `/` | `lk-coach` is listed; invoking it starts coaching |
+| CC2 | All nine installed: type `/` | All nine `lk-` skills are listed |
+| CC3 | No automatic loading: in a fresh session, without a slash command, send "Help me with this thermo homework: <P2>" | No `lk-` skill loads |
+| CC4 | `/lk-coach <P2> I don't know where to start.` | Useful start with no onboarding and one question; no `$` syntax demanded |
+| CC5 | Continue CC4: "Just a hint", then two wrong retries (log₁₀, then °C), then "show me the full solution", then "stop" | Bounded hint; after the second retry, offers the choice without stating the answer; full solution on request; stop ends |
+| CC6 | `/lk-learn Help me learn first-law energy balances in 30 minutes.` Answer two steps correctly, then "Skip the recall check and give me a harder problem." | Plan and immediate start; "Next: …" transitions with no permission prompts; the override is honoured |
+| CC7 | Fresh session: `/lk-review Review these notes with me:` + sample notes | Flags lines 3 and 5, asks one labelled item, invents no history |
+| CC8 | Only `lk-practice` installed: after feedback, "Can we switch to lk-diagnose?" | Says it isn't available and carries on with the context intact |
+
+**Codex regression** (reinstall from the branch, new session outside the repo):
+
+| # | Scenario | Expected |
+|---|---|---|
+| CR1 | `$lk-coach <P2> I don't know where to start.` | As `lk-coach` check 1; selection still works without the old description wording |
+| CR2 | No `$`: "Help me with this thermo homework: <P2>" | No `lk-` skill loads |
+| CR3 | Continue CR1 with the CC5 script | As CC5 |
+| CR4 | `$lk-learn` with the CC6 script | As CC6 |
+| CR5 | `$lk-review` with the CC7 script | As CC7 |
+
+### Live results at `4cd969a`
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11 Pro 10.0.26200. Run headless with `claude -p --output-format stream-json --verbose`, using `--resume` for multi-turn checks.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium), same OS. Run with `codex exec --json` and `codex exec resume`.
+- **Date:** 2026-10-01
+- **Install:**
+  - **Claude Code:** the README copy method, cloning branch HEAD `4cd969a` into `~/.claude/skills`. Only `lk-coach` for CC1, all nine for CC2–CC7, only `lk-practice` for CC8.
+  - **Codex:** the README all-nine command plus `--ref`.
+  - All sessions ran from an empty directory outside any repo, which was still empty at the end.
+- **How loading was checked:**
+  - **Claude Code:** the init event's `skills` and `slash_commands` lists, plus the transcript (`<command-name>/lk-…` and the skill body, or a `Skill` tool call).
+  - **Codex:** the `<skill>` block or a `SKILL.md` read.
+- **Harness note:** Git Bash rewrote `/lk-learn …` into a Windows path on the first CC6 attempt, so no skill was invoked. That run is invalid and is not counted. CC6 was rerun with `MSYS_NO_PATHCONV=1`.
+- **Learner answers:** the tester wrote the CC6 and CR4 learner answers before sending them and recorded them. CC5/CR3 used the scripted wrong retries (log₁₀, then °C).
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC1 | `lk-coach` alone is listed in `skills` and `slash_commands`; `/lk-coach` loaded it and started coaching with one question | Pass |
+| CC2 | All nine `lk-` skills are listed in `skills` and `slash_commands`. Checked from the init event (the data the `/` menu is built from), not in the interactive UI. | Pass |
+| CC3 | All nine installed, no slash command: no `lk-` skill loaded; plain Claude Code answered | Pass |
+| CC4 | `/lk-coach` + P2: useful start with no onboarding and one question; no `$` syntax demanded | Pass |
+| CC5 | Bounded hint ✓. Retry 1 named the log-base error ✓. **Retry 2 got another corrective hint ("use T in kelvin… What do you get for W?") and no choice was offered** ✗. Full solution correct ✓; stop ended ✓. | **Fail** |
+| CC6 | `/lk-learn`: five-step plan, started at once; "Next: …" transitions with no permission prompts; override honoured with a labelled generated problem | Pass |
+| CC7 | `/lk-review` + notes: flagged lines 3 and 5 (suggesting a textbook check for 5); typed plan; one labelled item; no invented history | Pass |
+| CC8 | `lk-practice` only: "I can't open `lk-diagnose` for you. It isn't in the list of skills installed here…" It kept helping and repeated the pending choice, with context intact. | Pass |
+| CR1 | `$lk-coach` loaded `lk-coach`; useful start with one question | Pass |
+| CR2 | No `$`: no `lk-` skill loaded | Pass |
+| CR3 | Bounded hint; retry 1 named the log error; after retry 2: "Since this is the second coached retry for W, I'll pause the hints here. Would you prefer…?" W not stated. Full solution correct; "Stopped." | Pass |
+| CR4 | `$lk-learn`: plan, immediate start, "Next: …" transitions, override honoured with a labelled generated problem | Pass |
+| CR5 | `$lk-review`: flagged lines 3 and 5, typed plan, one labelled item, no invented history | Pass |
+
+**Fix after this run (CC5):**
+- The same `lk-coach` text passed on Codex (CR3) and failed on Claude Code (CC5).
+- `lk-coach` now spells out the fallback: keep the retry count explicitly. When replying to the second unsuccessful retry, say only which part went wrong, without how to fix it, and don't ask for a recomputed answer; offer the choice and wait. A reply that ends by asking for a corrected answer counts as a third hint.
+- Hints also must not include sanity checks that give away the value. The retry-1 reply had said "a bit more than two-thirds of nRT".
+
+**Rerun needed:** CC5 and CR3, on the commit after `4cd969a`.
+
+### Rerun at `0ffcb87` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless with `MSYS_NO_PATHCONV=1`.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** all nine installed on both hosts from `0ffcb87`. The installed `lk-coach` contains "counts as a third hint". The scratch directory was still empty at the end.
+- **Script:** CC5 on Claude Code and CR3 on Codex.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | The hint revealed no value. After the °C retry it said how to fix it ("need T in kelvin, and the problem already gives it in kelvin") and asked "what do you get for W?", with no choice offered. Its own note read "Coached retries on W so far: 1 unsuccessful". It had treated the log₁₀ answer as a first attempt at W because the earlier hint was about ΔU. Full solution correct; stop ended. | **Fail** |
+| CR3 | After the °C retry: "This is coached retry 2: the temperature was switched to Celsius, but this gas-law calculation requires an absolute temperature. Would you like a different explanation, a made-up analogous example, an easier version, or a break?" No recomputation requested and no value stated. Full solution correct; "Stopped." | Pass |
+
+**Observed outside the Expected column (CR3, retry 1):** Codex misdescribed the log-base error as "arithmetic/units" and wrote out the full expression for the learner to evaluate. The skill's bounded-hint rule already forbids writing out the expression. This was recorded as a model-compliance gap and needed no wording change.
+
+**Fix after this run:**
+- `lk-coach` now defines a "task" as the whole problem the learner brought, not each quantity within it.
+- After any help on the problem, every later wrong or incomplete answer to any part of it is an unsuccessful coached retry. The skill gives the example: after a hint about ΔU, a wrong W is retry 1 and a second wrong W is retry 2.
+
+**Rerun needed:** CC5 and CR3 on the commit after `0ffcb87`.
+
+### Rerun at `4a1d03a` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** `lk-coach` reinstalled from `4a1d03a` on both hosts, with all nine installed. The scratch directory was still empty at the end.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | Hint revealed no value. First wrong W: named the log-base error, labelled "(Coached retry count for this problem: 1.)", and wrote out no expression. Second wrong W: "the mistake is the **temperature value** … (Coached retry count for this problem: 2.) Instead of another hint, how would you like to continue?" It gave four options, said nothing about how to fix it, and asked for no recomputation. Full solution correct; stop ended. | Pass |
+| CR3 | **Hint stated the answer:** "Since the temperature stays at 300 K, ΔU is zero." First wrong W: misdiagnosed as arithmetic and wrote out "2.0 × 8.314 × 300 × ln(2)". Second-retry fallback correct. Full solution correct; "Stopped." | **Fail** |
+
+**Fix after this run:**
+- A hint must not state the result of the step it points to, or answer the question just asked.
+- Corrections must not write out a corrected expression with numbers substituted.
+- Before naming a mistake, work out what the learner actually did, so the real error is named. For example, a value that is correct for a base-10 log means the wrong log was used, not an arithmetic slip.
+
+**Rerun needed:** CC5 and CR3 on the commit after `4a1d03a`, because the shared text changed for both hosts.
+
+### Rerun at `5b7cec0` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** `lk-coach` reinstalled from `5b7cec0` on both hosts, with all nine installed. The installed file contains "is the answer, not a hint". The scratch directory was still empty at the end.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | Hint states no result. First wrong W: named the base-10 log, wrote out no substituted expression, labelled retry 1. Second wrong W: "the temperature you put in is where this goes wrong. (Coached retry count for this problem: 2.) Rather than another hint, here are some options…", with four options, no fix and no recompute request. Full solution correct; stop ended. Second consecutive pass. | Pass |
+| CR3 | Opened by asking for the work formula, then the **hint gave that formula** ("W_by gas = nRT ln(V_f/V_i). Try substituting the given values"). First wrong W: named the log base correctly, with no full substituted expression. Second wrong W: named the wrong part without the fix and offered the choice. Full solution correct; "Stopped." | **Fail** |
+
+**Pattern across reruns:** Codex (gpt-5.6-terra) passed CR3 at `4cd969a` and `0ffcb87`, and failed it at `4a1d03a` and `5b7cec0`. Each failure was a hint that gave away something different (ΔU = 0, then the work formula), even though the rule against exactly this is in the skill. This is recorded as a known Codex compliance issue in `lk-coach` hints. No further wording change was made at this point.

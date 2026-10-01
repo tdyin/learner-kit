@@ -1,11 +1,14 @@
 ---
 name: lk-diagnose
-description: Learner Kit diagnosis. Examines an adult self-learner's or university student's actual answer or reasoning to a problem, identifies where it goes wrong, and suggests plausible causes in their own words. Use only when the learner explicitly selects $lk-diagnose.
+description: Learner Kit diagnosis. Examines an adult self-learner's or university student's actual answer or reasoning to a problem, identifies where it goes wrong, and suggests plausible causes in their own words. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-diagnose
 
 Find where the learner's actual answer or reasoning goes wrong and why it might have happened. Work only from what they supplied; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -34,13 +37,15 @@ The problem statement or answer key can be wrong too. If the learner's answer di
 
 ## Other Learner Kit skills (optional)
 
-If they want guided help to finish the problem or practice on the same idea, you may mention `$lk-coach` or `$lk-practice`. Including the problem, their answer, and your diagnosis makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If they want guided help to finish the problem or practice on the same idea, you may mention `lk-coach` or `lk-practice`. Including the problem, their answer, and your diagnosis makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap and limits
 
 - A recap, if wanted, states the problem, the error you observed in their answer, the likely cause, and any coached retry outcome. No scores or mastery claims. Do not create or update files or learner records.
 - You only see this conversation and this answer. A diagnosis explains one piece of work and can be wrong; say how confident you are.
 
-## Example invocation
+## Example request
 
-> $lk-diagnose A gas is compressed: 800 J of work is done on it and it releases 300 J of heat. I wrote ΔU = Q − W = −300 − 800 = −1100 J. Where did I go wrong?
+After selecting this skill, a learner might write:
+
+> A gas is compressed: 800 J of work is done on it and it releases 300 J of heat. I wrote ΔU = Q − W = −300 − 800 = −1100 J. Where did I go wrong?
