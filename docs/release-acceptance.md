@@ -50,7 +50,7 @@ This maps each acceptance check in the release spec ([issue #1](https://github.c
 | Conceptual or argumentative answer | EP4 | Pass (`4c3520e`) |
 | `lk-learn` routine transitions without prompts; asks before a goal change or difficulty jump | LN2–LN4 | Pass (`4c3520e`) |
 | Homework help without course-rule questions; conflict with a stated limit → clarify | `lk-coach` checks 1 and 10 | Pass |
-| Example answers checked against references | `examples/thermodynamics.md` (recomputed in Python; sources, units and sign conventions recorded) | Pass |
+| Example answers checked against references | `examples/thermodynamics.md` (recomputed in Python; sources, units and sign conventions recorded) | Pass. The concept-note rule on isothermal expansion was corrected for #11: heat is absorbed only when the gas does positive work, and free expansion is a counterexample. No problem answer changed. |
 
 ## Blocking conditions (from the spec)
 

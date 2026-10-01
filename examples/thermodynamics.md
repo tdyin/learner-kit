@@ -12,6 +12,7 @@ Contents: concept notes; five problems (P5 is a transfer variant of P2) with a d
 - **Gas constant:** R = 8.314 462 618 153 24 J·mol⁻¹·K⁻¹ (exact under the 2019 SI as N_A·k; CODATA, <https://physics.nist.gov/cgi-bin/cuu/Value?r>). R = 8.314 J·mol⁻¹·K⁻¹ is fine for three significant figures.
 - **Specific heats:** water ≈ 4.19 kJ·kg⁻¹·K⁻¹, copper ≈ 0.385 kJ·kg⁻¹·K⁻¹, aluminium ≈ 0.90 kJ·kg⁻¹·K⁻¹ near room temperature (OpenStax *University Physics Volume 2*, §1.5 "Heat Transfer, Specific Heat, and Calorimetry"). Tables differ in the third digit; the answers below are given to two significant figures so they do not depend on which table is used.
 - **Second law:** Kelvin–Planck statement as in OpenStax *University Physics Volume 2*, Chapter 4 ("The Second Law of Thermodynamics").
+- **Free expansion:** OpenStax *University Physics Volume 2*, §4.7 "Entropy on a Microscopic Scale", <https://openstax.org/books/university-physics-volume-2/pages/4-7-entropy-on-a-microscopic-scale>.
 - **Verification:** the arithmetic below was recomputed in Python on 2026-10-01.
 
 ## Concept notes
@@ -19,7 +20,8 @@ Contents: concept notes; five problems (P5 is a transfer variant of P2) with a d
 - **Internal energy U** is a state function. ΔU depends only on the initial and final states, not on the path.
 - **Heat Q and work W** are energy transfers that depend on the path. A system does not "contain" heat or work.
 - **Ideal gas:** U depends only on temperature, so ΔU = 0 for any isothermal process of an ideal gas.
-- **Isothermal does not mean adiabatic.** Constant temperature does not mean Q = 0. A gas that expands isothermally must absorb heat to stay at constant T.
+- **Isothermal expansion and heat.** Constant temperature does not by itself mean Q = 0. For an ideal gas that expands isothermally **and does positive net work**, ΔU = 0, so Q = W > 0 and the gas absorbs heat. P2 and P5 are examples.
+- **Exception: free expansion.** An ideal gas expanding into a vacuum inside an insulated container does no work and exchanges no heat: Q = W = ΔU = 0, and its temperature does not change. That process is both isothermal and adiabatic, so the two are not mutually exclusive. A learner who gives this counterexample is correct. (OpenStax *University Physics Volume 2*, §4.7 "Entropy on a Microscopic Scale", free expansion of an ideal gas.)
 - **Reversible isothermal work (ideal gas):** W = nRT ln(V₂/V₁). It is positive for an expansion under the convention above. The logarithm is natural.
 
 ## Problems
@@ -143,7 +145,7 @@ Paste these as learner-supplied notes. Line 3 is **deliberately wrong**. Line 5 
 | Mistake | What it produces | Where it comes from |
 |---|---|---|
 | Adding W instead of subtracting it (P1) | ΔU = 700 J | Mixing the Q − W and q + w conventions |
-| Setting Q = 0 because "temperature is constant" (P2) | Q = 0, so ΔU = −W | Confusing isothermal with adiabatic |
+| Setting Q = 0 because "temperature is constant" (P2) | Q = 0, so ΔU = −W | Assuming constant temperature means no heat transfer. In P2 the gas does positive work, so Q = W > 0. (Q = 0 only fits a process with no work either, such as free expansion.) |
 | Using log₁₀ instead of ln (P2) | W ≈ 1.50 kJ | Calculator habit |
 | Using T in °C (P2) | W ≈ 311 J | Not converting to kelvin |
 | Assuming ΔU ≠ 0 because the gas "did work" (P2) | Non-zero ΔU | Not using the fact that ideal-gas U depends only on T |

@@ -127,7 +127,6 @@ skills/lk-<name>/agents/openai.yaml  Codex UI metadata and explicit-only policy
 examples/thermodynamics.md           Checked reference material used for verification
 docs/smoke-checks.md                 Recorded installation and behavior checks
 docs/release-acceptance.md           Release 1 acceptance record (spec checks mapped to evidence)
-docs/IMPLEMENTATION_PLAN.md          Release 1 plan
 LICENSE                              GNU General Public License v3.0
 ```
 
