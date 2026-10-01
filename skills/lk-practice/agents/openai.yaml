@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Practice"
+  short_description: "Practice one problem and get feedback"
+  default_prompt: "Use $lk-practice to give me a practice problem on this topic."
+
+policy:
+  allow_implicit_invocation: false

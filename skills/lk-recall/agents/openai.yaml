@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Recall"
+  short_description: "Quiz me one retrieval question at a time"
+  default_prompt: "Use $lk-recall to quiz me on this material."
+
+policy:
+  allow_implicit_invocation: false
