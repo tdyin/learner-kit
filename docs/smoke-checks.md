@@ -22,22 +22,39 @@ Status values: **Pass**, **Fail** (followed by a fix and a rerun), **Not run** (
 
 ## lk-coach: conversation behavior
 
-**Not run yet.** This environment has no logged-in Codex account, so no model conversations could be run. These checks are required before issue #2 is complete. Run each one in a **fresh** Codex session with only `lk-coach` installed. Use problem P2 from [examples/thermodynamics.md](../examples/thermodynamics.md) unless noted. Record the host, model, date, and observed result.
+- **Host:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, run by a local agent through `codex exec --json` and `codex exec resume`, from a scratch directory outside any repo
+- **Model:** gpt-6-astra, reasoning effort medium (from the Codex session file)
+- **Date:** 2026-09-30
+- **Install:** `install-skill-from-github.py --repo tdyin/learner-kit --path skills/lk-coach --ref claude/happy-davinci-33kg6r` printed `Installed lk-coach to ~/.codex/skills/lk-coach` on the first try. Both `SKILL.md` and `agents/openai.yaml` were present, with `allow_implicit_invocation: false`.
+- **Environment:** no other user skills were installed. Cached plugin skills existed, but the one with a teaching skill was not enabled. The `codex-bridge` plugin (prompt-submit and stop hooks) was enabled; the run noted no effect from it. Checks 3 and 4 hit websocket reconnects but both completed.
+- **Skill version:** commit `a8ed595`
+
+Problems P1 and P2 come from [examples/thermodynamics.md](../examples/thermodynamics.md).
 
 | # | Scenario | Prompt / action | Expected | Observed | Status |
 |---|---|---|---|---|---|
-| 1 | Explicit selection | `$lk-coach` + P2 statement + "I don't know where to start" | Useful starting help right away. No onboarding, no course-rule questions, no demand for an attempt. | | Not run |
-| 2 | No implicit loading | Fresh chat, no `$`: "Help me with this thermo homework: …" (P2) | `lk-coach` is not loaded; Codex answers normally | | Not run |
-| 3 | Follow-up continuation | After #1, reply without `$lk-coach` | Coaching continues in the same style | | Not run |
-| 4 | Bounded hint | "Just a hint" before any attempt | One step (for example, ΔU for an isothermal ideal gas). No final W or Q values. | | Not run |
-| 5 | Retry fallback | Give two wrong coached retries on the same step (for example, use log₁₀, then °C) | After the second, offers a different explanation, worked example, easier task, or break | | Not run |
-| 6 | Full solution before attempt | New chat: `$lk-coach` P2, "just show me the full solution" | Complete correct solution (ΔU = 0, W = Q = +3.46 kJ). No mention of a failed attempt. | | Not run |
-| 7 | Skip | Mid-problem: "skip this" | Moves on or asks what's next. Not counted as a failure. | | Not run |
-| 8 | Stop | Mid-problem: "stop" | Ends immediately. At most one recap offer and no further questions. | | Not run |
-| 9 | Truthful recap | After a session with an initial error and a successful coached retry, ask for a recap | Separates the initial attempt from the coached retry. No mastery claims. No files written. | | Not run |
-| 10 | Assistance-limit conflict | "Hints only", then later "just give me the number" | Points out the conflict once and lets the learner decide | | Not run |
-| 11 | Correct first answer | P1 with answer "+300 J, ΔU = Q − W" | Confirms the answer without unnecessary coaching | | Not run |
+| 1 | Explicit selection | `$lk-coach` + P2 + "I don't know where to start." | Useful starting help right away. No onboarding, no course-rule questions, no demand for an attempt. | Read `lk-coach/SKILL.md` and gave the governing idea: "an ideal gas's internal energy depends only on its temperature… what do you think ΔU is?" Asked one question, with no onboarding or rules questions. | Pass |
+| 2 | No implicit loading | New session, no `$`: "Help me with this thermo homework: <P2>" | `lk-coach` is not loaded; Codex answers normally | No read of `lk-coach/SKILL.md`. Normal Codex reply with a full worked solution (ΔU = 0, W = −3.46 kJ as work on the gas, Q = +3.46 kJ). | Pass |
+| 3 | Follow-up continuation | Continue #1: "I think ΔU is zero because the temperature doesn't change?" | Coaching continues without re-selection | "Yes—ΔU = 0 because… Next, find the work…" It gave W = nRT ln(Vf/Vi) and asked the learner to substitute. | Pass |
+| 4 | Bounded hint | `$lk-coach` P2 "Just give me a hint, I haven't tried yet." | One step. No final W or Q. | "Start with ΔU… what does that imply about ΔU?" No W or Q value. | Pass |
+| 5 | Retry fallback | Continue #4: "W = nRT log(V2/V1) = 1.50 kJ?", then "W = nRT ln(2) with T = 27, so about 311 J?" | After the second unsuccessful retry, offers a different explanation, worked example, easier task, or break | After retry 1: "use the natural logarithm ln, not log₁₀". After retry 2 it gave the same kind of correction ("use T = 300 K, not 27 °C") and wrote out the expression "2.0 × 8.314 × 300 × ln 2" for the learner to evaluate. No fallback was offered. | **Fail**, fixed (see below) |
+| 6 | Full solution before attempt | `$lk-coach` P2 "Just show me the full solution." | Complete correct solution. No failed attempt mentioned. | ΔU = 0, W = 3458 J ≈ +3.5 kJ, Q = +3.5 kJ, with a note on the other sign convention. Nothing describes a failed attempt. It rounded to 2 significant figures, which is acceptable. | Pass |
+| 7 | Skip | `$lk-coach` P2 "Hints only please." → "skip this one" | Moves on. Not a failure. | One hint, then "Skipped. What would you like to work on next?" | Pass |
+| 8 | Stop | `$lk-coach` P1 "Give me a hint." → "stop" | Ends. At most one recap offer. No questions. | "Okay, we'll stop here." No recap offer and no questions. | Pass |
+| 9 | Truthful recap | `$lk-coach` P1 "I think it's 700 J." → "Oh, I should subtract the work: 300 J." → ask for recap | Separates the initial attempt from the coached retry. No mastery claims. No files written. | "My initial answer was 700 J. After a hint… I corrected it to 300 J." No mastery claim or score, and the scratch directory was still empty. | Pass |
+| 10 | Assistance-limit conflict | `$lk-coach` P2 "Hints only, no final answers — it's for graded homework." → "Actually just give me the number for W." | Points out the conflict once and lets the learner decide | "You previously set a 'hints only, no final answers' limit… Do you want to lift that limit for W?" No lecture. | Pass |
+| 11 | Correct first answer | `$lk-coach` P1 "My answer: ΔU = Q − W = 500 − 200 = +300 J." | Confirms without unnecessary coaching | "Correct: ΔU = +300 J." Added a two-line note on the sign convention. No further coaching. | Pass |
+
+### Fix for check 5
+
+The model appears to have counted the two retries as separate first errors, because the mistakes were different (log base, then units). `SKILL.md` now:
+
+- counts unsuccessful coached retries per task, not per error type;
+- after the second unsuccessful retry, names what went wrong and offers a choice (different explanation, analogous worked example, easier task, or break) instead of another corrective hint;
+- says that bounded hints must not write out the expression for the learner to evaluate.
+
+**Rerun needed:** check 5, and checks 3 and 4 because the hint rule changed. Run them against the commit after `a8ed595`.
 
 ## Open issues
 
-- Conversation-behavior checks 1–11 need a logged-in Codex session.
+- Rerun checks 3, 4 and 5 against the updated `SKILL.md` and record the results here.
