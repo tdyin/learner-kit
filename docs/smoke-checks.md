@@ -580,3 +580,17 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 - Before naming a mistake, work out what the learner actually did, so the real error is named. For example, a value that is correct for a base-10 log means the wrong log was used, not an arithmetic slip.
 
 **Rerun needed:** CC5 and CR3 on the commit after `4a1d03a`, because the shared text changed for both hosts.
+
+### Rerun at `5b7cec0` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** `lk-coach` reinstalled from `5b7cec0` on both hosts, with all nine installed. The installed file contains "is the answer, not a hint". The scratch directory was still empty at the end.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | Hint states no result. First wrong W: named the base-10 log, wrote out no substituted expression, labelled retry 1. Second wrong W: "the temperature you put in is where this goes wrong. (Coached retry count for this problem: 2.) Rather than another hint, here are some options…", with four options, no fix and no recompute request. Full solution correct; stop ended. Second consecutive pass. | Pass |
+| CR3 | Opened by asking for the work formula, then the **hint gave that formula** ("W_by gas = nRT ln(V_f/V_i). Try substituting the given values"). First wrong W: named the log base correctly, with no full substituted expression. Second wrong W: named the wrong part without the fix and offered the choice. Full solution correct; "Stopped." | **Fail** |
+
+**Pattern across reruns:** Codex (gpt-5.6-terra) passed CR3 at `4cd969a` and `0ffcb87`, and failed it at `4a1d03a` and `5b7cec0`. Each failure was a hint that gave away something different (ΔU = 0, then the work formula), even though the rule against exactly this is in the skill. This is recorded as a known Codex compliance issue in `lk-coach` hints. No further wording change was made at this point.
