@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Explain"
+  short_description: "Explain a concept with intuition and examples"
+  default_prompt: "Use $lk-explain to explain this concept to me."
+
+policy:
+  allow_implicit_invocation: false

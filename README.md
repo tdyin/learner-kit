@@ -6,17 +6,28 @@ Each skill works on its own from your goal or material and the visible conversat
 
 Release 1 targets Codex. Available now:
 
-| Skill | Use it for |
-|---|---|
-| `lk-coach` | Help with a specific homework problem: hints, short explanations, worked examples, retries, or a full solution on request. A prior attempt is optional. |
+| Skill | Use it for | Example |
+|---|---|---|
+| `lk-explore` | Map a topic: key concepts, prerequisites, connections, and where to start | `$lk-explore Map out what I need to understand about thermodynamics.` |
+| `lk-explain` | Understand a concept through intuition, an example, and formalism where useful | `$lk-explain Why are heat and temperature different?` |
+| `lk-practice` | Get one problem with a clear success standard, then feedback on your answer | `$lk-practice Give me a first-law energy-balance problem.` |
+| `lk-diagnose` | Find where your answer or reasoning went wrong, and why | `$lk-diagnose Where did my reasoning go wrong in this solution? [problem + your working]` |
+| `lk-coach` | Get help with a homework problem: hints, explanations, worked examples, retries, or a full solution. You don't need to attempt it first. | `$lk-coach Coach me through this homework problem. [problem]` |
+| `lk-recall` | Get quizzed one retrieval question at a time, from memory or with notes | `$lk-recall Quiz me from memory on these notes: [notes]` |
+| `lk-transfer` | Apply a method you know when one meaningful thing changes | `$lk-transfer Help me apply this energy-balance method to a different system.` |
+| `lk-review` | Review notes, topics, or a pasted recap. No saved history is needed. | `$lk-review Review these notes with me before my exam: [notes]` |
 
-The other eight skills (`lk-explore`, `lk-explain`, `lk-practice`, `lk-diagnose`, `lk-recall`, `lk-transfer`, `lk-review`, `lk-learn`) are planned. See [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md).
+`lk-learn` (a guided session from a goal) is planned. See [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md).
+
+Each skill works without the others. A skill may suggest switching to another one (for example from `lk-practice` to `lk-diagnose`). Switching is always optional, and if you decline or the other skill isn't installed, it keeps helping.
 
 ## Install in Codex
 
 Install skills user-wide with Codex's built-in `$skill-installer`. Codex discovers user skills in `$CODEX_HOME/skills` (by default `~/.codex/skills`). It does **not** discover this repository's `skills/` folder automatically, so you need to install even if you have cloned the repo.
 
 ### One skill
+
+Replace `lk-coach` with the skill you want.
 
 In any Codex chat:
 
@@ -33,11 +44,22 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
 
 This copies the whole `lk-coach` directory, including `agents/openai.yaml`, to `~/.codex/skills/lk-coach`. That file sets `allow_implicit_invocation: false`, which makes the skill explicit-only. Start a new Codex session so the skill is picked up. It is then available in every project, not just this repository.
 
-When more skills are released, you can install several at once by passing more `--path` values. The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
+### Several or all skills
+
+Pass a single `--path` followed by all the skill paths. Repeating `--path` keeps only the last one.
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo tdyin/learner-kit --path \
+  skills/lk-explore skills/lk-explain skills/lk-practice skills/lk-diagnose \
+  skills/lk-coach skills/lk-recall skills/lk-transfer skills/lk-review
+```
+
+The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
 
 ### Check it is installed
 
-From a directory outside this repository, start `codex` and type `$`. `lk-coach` ("Learner Kit: Coach") should appear in the skill list.
+From a directory outside this repository, start `codex` and type `$`. Each installed skill should appear in the list with a "Learner Kit: …" display name.
 
 ## Use
 
@@ -68,9 +90,9 @@ I don't know where to start. Hints only, please.
 ## Repository layout
 
 ```text
-skills/lk-coach/SKILL.md           Skill instructions
-skills/lk-coach/agents/openai.yaml Codex UI metadata and explicit-only policy
-examples/thermodynamics.md         Checked reference problems used for verification
-docs/smoke-checks.md               Recorded installation and behavior checks
-docs/IMPLEMENTATION_PLAN.md        Release 1 plan
+skills/lk-<name>/SKILL.md            Skill instructions (one directory per skill)
+skills/lk-<name>/agents/openai.yaml  Codex UI metadata and explicit-only policy
+examples/thermodynamics.md           Checked reference material used for verification
+docs/smoke-checks.md                 Recorded installation and behavior checks
+docs/IMPLEMENTATION_PLAN.md          Release 1 plan
 ```

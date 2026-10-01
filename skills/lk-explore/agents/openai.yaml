@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Explore"
+  short_description: "Map a topic and choose a starting point"
+  default_prompt: "Use $lk-explore to map out this topic for me."
+
+policy:
+  allow_implicit_invocation: false

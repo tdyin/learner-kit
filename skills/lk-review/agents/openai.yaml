@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learner Kit: Review"
+  short_description: "Review notes or topics without saved history"
+  default_prompt: "Use $lk-review to review these notes with me."
+
+policy:
+  allow_implicit_invocation: false
