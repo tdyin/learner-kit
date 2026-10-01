@@ -687,3 +687,28 @@ Checks to run when Pi or Hermes is available: install one skill and all nine fol
 - One question message was preceded by "I'll raise the difficulty slightly since you've had two correct unaided answers". That isn't in the bar, but it is a difficulty remark.
 - In the RA2/RA4 session the last question asked two things at once ("what is heat … and what is copper's approximate specific heat"), and it quizzed corrections the skill had just given.
 - After "skip", the reply also stated the answer ("Skipped. The work expression is W = nRT ln(V₂/V₁)"), so the skip worked like a show-answer.
+
+### Fixes after the first run (issue #18)
+
+Changes to `skills/lk-recall/SKILL.md`, made in response to the failures above:
+
+- **RA1 (line 5 not flagged; a wrong value graded as correct):** before the setup questions or question 1, the skill now checks every line of supplied notes and flags each likely error in that first message. A flagged line is never quizzed as true: a question that needs the fact gives the corrected version and says it's a correction. An answer that relies on a flagged claim or value isn't counted as correct recall.
+- **RA6 (follow-ups don't target the gap; partial answer listed as unaided):**
+  - After a partly correct answer, the next question asks about the same missing or wrong part in different words.
+  - After an incorrect answer, the next question is an easier one on the same idea, not a different topic.
+  - The summary lists only fully correct answers under "Recalled unaided". Partial answers go under "Needed help or correction" with what was missing.
+- **RA8 (ambiguous answer graded):** the skill now separates the two cases. A partly correct answer has a required part missing or wrong. An ambiguous answer has every part present, but one is stated too loosely to judge. The examples in the skill are generic (an unstated direction, sign or convention), not the RA8 test answer, so passing doesn't depend on matching the script. For an ambiguous answer, the skill asks one clarifying question without supplying the detail and doesn't grade the answer or advance until it's clarified.
+- **RA14, RA16/RC4 (stop gives an unrequested recap; pending question called "not reached"):**
+  - The stop reply is one short line ("Stopped."), optionally with a one-line offer of a recap. It doesn't say how any question went or what was reached; that information belongs in a recap.
+  - In a recap, a question asked but pending at the stop is "asked, not answered", never "not reached".
+- **Ungraded observations:**
+  - The progress line now sits directly above each question rather than "starting" the message, which matches feedback and the next question sharing one message.
+  - Difficulty changes are never announced.
+  - Each question asks about one thing.
+  - A skip moves on without giving the answer unless the learner asks.
+
+**Rerun needed** on the commit after `df6bd15`:
+- **For these fixes:** RA1, RA6, RA8, RA14 and RA16 (RC1–RC4).
+- **Revised scripts:** RA3, RA5, RA7 and RA9, with the scripts from `a4004e7`. RA9 also covers the skip wording.
+- **Spot check:** RA2/RA4/RA11 in one session, for the notes check and the progress-line placement.
+- **Not affected:** RA10, RA12, RA13 and RA15 rules didn't change.

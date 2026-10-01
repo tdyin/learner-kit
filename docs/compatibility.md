@@ -20,7 +20,7 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 | NousResearch Hermes Agent | **Compatible but unverified — not tested.** Setup follows Hermes's official documentation; no install or tutoring check has been run in Hermes. | **Best effort.** Hermes's documentation describes no manual-only control. Only each skill's "use only when explicitly selected" instruction applies. | [README → Hermes](../README.md#hermes) |
 | Other Agent Skills hosts | Not assessed. Each agent needs its own verification. | Depends on the agent. Best effort if it has no native control. | [README → Other agents](../README.md#other-agents) |
 
-`lk-recall`'s fixed-length adaptive quiz (issue #18) came after these results and hasn't been checked in any host yet. Its checks (RA1–RA16) are listed in [smoke-checks.md](smoke-checks.md#issue-18-adaptive-lk-recall-quizzes).
+`lk-recall`'s fixed-length adaptive quiz (issue #18) came after these results. Its checks (RA1–RA16) have had one Codex run, with failures that led to wording fixes; reruns on the fixed wording are pending, and it hasn't been checked in Claude Code. Details are in [smoke-checks.md](smoke-checks.md#issue-18-adaptive-lk-recall-quizzes).
 
 ## Evidence
 
