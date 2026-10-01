@@ -167,6 +167,73 @@ All 11 conversation checks now pass on the current skill: checks 1, 2 and 6–11
 
 | # | Scenario | Prompt / action | Expected | Observed | Status |
 |---|---|---|---|---|---|
-| X1 | Missing companion | In PR3 or DG1, say "yes" to a suggested switch to another `lk-` skill that isn't installed | Keeps helping in the current skill with the context intact | | Not run |
-| X2 | Declined handoff | When a skill suggests another, reply "no, keep going here" | Keeps helping; you don't need to repeat anything | | Not run |
+| X1 | Missing companion | Only `lk-practice` installed. After PR3 feedback: "Can we switch to $lk-diagnose for this?" | Says the skill isn't available here and keeps helping in `lk-practice`, using P3 and the learner's −35 kJ answer without asking for them again | | Not run |
+| X2 | Declined handoff | Only `lk-diagnose` installed. After DG1: "Is there another Learner Kit skill that would help with this?" Then, after it suggests one: "no, keep going here" | Suggests a relevant `lk-` skill as optional. After the decline, it continues the diagnosis with the context intact and doesn't make the learner repeat anything. | | Not run |
 | X3 | Correct selection with all installed | Install all eight; invoke `$lk-review` and then (fresh session) `$lk-recall` with the same notes | Each session runs the selected skill | | Not run |
+
+### Results, first run (issues #3, #4, #5)
+
+- **Host:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, logged in with ChatGPT. Run by a local agent through `codex exec --json`, `codex exec resume` and, for TR4, `codex exec fork` of the TR1 session.
+- **Model:** gpt-5.6-terra, reasoning effort medium (from the session files)
+- **Date:** 2026-10-01
+- **Skill version:** commit `19150f7`. Only the skill under test was installed for each check; X3 had all eight installed. Every `$`-selected session showed a `<skill>` block for the selected skill. PR6 (no `$`) showed none. The scratch directory was still empty at the end.
+- **Installer note:** repeating `--path` once per skill installs only the last one. The README now says to pass a single `--path` followed by all the skill paths.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| PR1 | Generated task labelled "(made up)", with a success standard. It waited. | Pass |
+| PR2 | "Correct: ΔU = +25 kJ." Offered another problem. | Pass |
+| PR3 | "Not quite: ΔU = +25 kJ" followed by the full corrected solution. It never named the sign error or credited the correct Q. | **Fail** |
+| PR4 | Marked a bare "25" correct and filled in the units and a convention the learner never stated | **Fail** |
+| PR5 | Hint without values; "Skipped…"; "Stopped." | Pass |
+| PR6 | Not loaded without `$`; plain Codex reply | Pass |
+| DG1 | Located W = 800 J as the error, credited Q, gave a cause tied to what was written, and asked one question. It also stated +500 J before offering the choice in step 5 (see the fixes below). | Pass |
+| DG2 | Asked for the sign setup and invented no steps | Pass |
+| DG3 | "Your answer is correct … No error to diagnose." | Pass |
+| DG4 | Accepted the q + w convention; no error claimed | Pass |
+| DG5 | Described the answer, not the learner; no labels | Pass |
+| DG6 | Gave the full solution; not described as a failed attempt | Pass |
+| EX1 | Seven concepts, dependencies, starting point and first activity | Pass |
+| EX2 | Bayesian inference map with a starting point | Pass |
+| EX3 | Second-law re-map; "Stopped." | Pass |
+| EP1 | Core distinction right, but one analogy lumped "Heat/thermal energy" together as a stored total | **Fail** (borderline) |
+| EP2 | Flagged line 3 with reasoning; gave a corrected version separately | Pass |
+| EP3 | Said 0.90 looks like aluminium and gave ≈0.385, but suggested no check and gave an inaccurate reason for copper's low specific heat (the established reason is the heavy atoms, ~3R per mole) | **Fail** |
+| EP4 | Identified the second law (Kelvin–Planck); no numerical rubric | Pass |
+| EP5 | Simpler version; "Stopped." | Pass |
+| RC1 | Flagged lines 3 and 5, then asked one question and waited | Pass |
+| RC2 | Asked memory or notes | Pass |
+| RC3 | Quizzed the corrected version of line 3 instead | Pass |
+| RC4 | "Don't remember" and hint handled well. On stop it gave an unrequested recap that called an unanswered item "completed". | **Fail** (borderline) |
+| TR1 | One meaningful change (irreversible expansion); didn't reveal what changes | Pass |
+| TR2 | Feedback, then what carried over and what changed | Pass |
+| TR3 | Asked for a source example | Pass |
+| TR4 | Full solution; not described as a failure; "Stopped." | Pass |
+| RV1 | Picked five ideas and flagged line 3, but the plan didn't show a mix of retrieval and practice | **Fail** (borderline) |
+| RV2 | Asked only what to review | Pass |
+| RV3 | Used the recap with no invented attempts, but the first item drifted to the mechanics work–energy theorem | **Fail** (borderline) |
+| RV4 | "Review ended." No summary. | **Fail** |
+| X1 | Not run: no skill suggested a handoff, so there was nothing to accept. Redesigned so the learner asks to switch. | Not run |
+| X2 | Not run: as for X1. Redesigned so the learner asks for a suggestion. | Not run |
+| X3 | With all eight installed, `$lk-review` and `$lk-recall` each loaded only the selected skill | Pass |
+
+### Fixes after the first run
+
+- **`lk-practice` (PR3, PR4):**
+  - Wrong answers get feedback that credits the correct parts and names the step and likely reason, not a full corrected solution.
+  - Incomplete answers (missing sign, units or working that the success standard asks for) are not marked correct. The skill says what is missing and asks for it, without supplying it or a convention.
+- **`lk-explain` (EP1, EP3):**
+  - Analogies must be consistent with the distinction being taught.
+  - Corrected values are given as approximate, with a suggestion to check a standard table or the source.
+  - Causal explanations are given only when they are the established ones; otherwise the skill says it is unsure.
+- **`lk-recall` (RC4):** on stop, end in one short reply and give a recap only if asked. The recap counts a question as answered only if the learner answered it.
+- **`lk-review` (RV1, RV3, RV4):**
+  - The plan labels each item as retrieval or practice and includes both when the material allows.
+  - A pasted recap keeps items in its own subject and setting.
+  - Ending with "finish", "done" or after the last item always produces the summary, including items that were not reached. "Stop" ends and offers the summary in one line.
+- **`lk-diagnose` (DG1 note):** step 5 now says not to state the corrected final answer before the learner chooses how to proceed.
+- **`lk-practice`, `lk-diagnose`, `lk-transfer`:** the stop rule now has the same wording as `lk-recall`: end in one reply and recap only if asked.
+- **X1, X2:** redesigned so the learner triggers the handoff situation instead of waiting for the skill to suggest one.
+
+**Rerun needed:** PR3, PR4, PR5 and PR2 (feedback rules changed); DG1 and DG6; EP1, EP2, EP3 and EP5; RC1 and RC4; RV1, RV3 and RV4; TR4 (stop wording); and X1, X2 (redesigned). Run them against the commit after `19150f7`.
+

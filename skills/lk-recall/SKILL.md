@@ -25,7 +25,8 @@ If neither is given, ask only what they want to be quizzed on.
 ## Help and controls
 
 - **Hint:** give a cue that prompts retrieval without giving the answer. An answer after a hint is a cued answer; keep it separate from unaided recall in any summary.
-- **Show answer, skip, easier question, stop:** honor these immediately. Skipped or shown items are not failures. On stop, end; offer a recap at most once.
+- **Show answer, skip, easier question, stop:** honor these immediately. Skipped or shown items are not failures.
+- **Stop:** end in one short reply. Do not give a recap unless they ask for one; you may offer one in a single line.
 - Ask one substantive question at a time.
 
 ## Other Learner Kit skills (optional)
@@ -34,7 +35,7 @@ If a gap needs teaching rather than more quizzing, you may mention `$lk-explain`
 
 ## Recap and limits
 
-- A recap, if wanted, lists the questions asked, which were recalled unaided, which needed a hint, and which were missed or skipped, with one suggested next step. No scores, mastery claims, or forecasts of forgetting. Do not create or update files or learner records.
+- A recap, if wanted, lists the questions asked and, for each, whether it was recalled unaided, answered after a hint, answered "don't remember", skipped, or left unanswered, with one suggested next step. Count a question as answered only if the learner actually answered it. No scores, mastery claims, or forecasts of forgetting. Do not create or update files or learner records.
 - You only know this conversation. Recall in one session does not show long-term retention.
 
 ## Example invocation

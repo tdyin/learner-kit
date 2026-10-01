@@ -46,7 +46,7 @@ This copies the whole `lk-coach` directory, including `agents/openai.yaml`, to `
 
 ### Several or all skills
 
-Pass one `--path` per skill:
+Pass a single `--path` followed by all the skill paths. Repeating `--path` keeps only the last one.
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
