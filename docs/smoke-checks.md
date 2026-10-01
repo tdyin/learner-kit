@@ -728,7 +728,7 @@ Changes to `skills/lk-recall/SKILL.md`, made in response to the failures above:
 - **Spot check:** RA2/RA4/RA11 in one session, for the notes check and the progress-line placement.
 - **Not affected:** RA3 (passed at `df6bd15`) and RA10, RA12, RA13 and RA15 (passed at `b650e4b`). Their rules didn't change in a way they test.
 
-**RA8 at `7ebb806` (partial report from the local tester, not yet recorded in full):** still a Fail. To "If a system absorbs 120 J of heat and does 50 J of work, what is its change in internal energy?", the answer "The internal energy changes by 70 J" got "Correct: ΔU = Q − W = 120 J − 50 J = **+70 J**", and the bar advanced. In a second session the old script's answer ("ΔU = Q − W, W is the work") was genuinely partial for the question asked, so it didn't test ambiguity.
+**RA8 at `7ebb806` (see the superseded RA8 row in the rerun below):** still a Fail. To "If a system absorbs 120 J of heat and does 50 J of work, what is its change in internal energy?", the answer "The internal energy changes by 70 J" got "Correct: ΔU = Q − W = 120 J − 50 J = **+70 J**", and the bar advanced. In a second session the old script's answer ("ΔU = Q − W, W is the work") was genuinely partial for the question asked, so it didn't test ambiguity.
 
 **Fix:** the skill now says never to complete an answer for the learner: if a sign, direction, unit or condition the question depends on is missing, don't fill it in and call it correct; ask which they meant. The RA8 script now uses a magnitude without a sign, so the ambiguity doesn't depend on which question is asked first. **Rerun:** RA8 on the commit that adds this note. The rule change is narrow, so the other `7ebb806` reruns stand.
 
