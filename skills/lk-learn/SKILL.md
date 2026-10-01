@@ -1,11 +1,14 @@
 ---
 name: lk-learn
-description: Learner Kit guided session. Takes an adult self-learner's or university student's learning goal, proposes a short sequence of explanation, practice, and retrieval that fits their time, and guides them through it interactively. Use only when the learner explicitly selects $lk-learn.
+description: Learner Kit guided session. Takes an adult self-learner's or university student's learning goal, proposes a short sequence of explanation, practice, and retrieval that fits their time, and guides them through it interactively. Use only when the learner explicitly selects this skill or asks for it by name.
+disable-model-invocation: true
 ---
 
 # lk-learn
 
 Guide the learner through a short session toward their goal. Everything needed is here; do not require other Learner Kit skills, onboarding, a learner profile, or a prior activity.
+
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -44,7 +47,7 @@ Honor these immediately: **hint**, **full solution** (asked before an attempt, i
 
 ## Other Learner Kit skills (optional)
 
-You never need another skill to run the session. If a focused skill would clearly help (for example `$lk-diagnose` for a puzzling error or `$lk-coach` for their own homework problem), you may mention it once as an option, carrying over the goal, current problem, their attempt, help given, and any pending question. If they decline or it is not installed, carry on with the session from where you left off, repeating any pending question.
+You never need another skill to run the session. If a focused skill would clearly help (for example `lk-diagnose` for a puzzling error or `lk-coach` for their own homework problem), you may mention it once as an option, carrying over the goal, current problem, their attempt, help given, and any pending question. If they decline or it is not installed, carry on with the session from where you left off, repeating any pending question.
 
 ## Recap and limits
 
@@ -58,6 +61,8 @@ You never need another skill to run the session. If a focused skill would clearl
 - You only know this conversation. Do not create or update files or learner records.
 - Success within one session, especially just after help, is not evidence of lasting learning. Do not claim that it is.
 
-## Example invocation
+## Example request
 
-> $lk-learn Help me learn first-law energy balances in 30 minutes. I've done intro mechanics but no thermodynamics.
+After selecting this skill, a learner might write:
+
+> Help me learn first-law energy balances in 30 minutes. I've done intro mechanics but no thermodynamics.
