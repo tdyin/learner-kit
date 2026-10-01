@@ -36,7 +36,7 @@ Put one progress line directly above every question: the current question number
 - Question 1 has an empty bar. The last question, while pending, is one segment short of full.
 - If the total is above 20, keep the bar at 20 segments and fill them in proportion, rounding down, so the bar is full only when every slot is resolved.
 - Show only the number, total and bar. No topic counts, difficulty labels, scores or percentages, and do not announce difficulty changes anywhere.
-- A hint, a clarification, repeating the question, or a declined handoff stays on the same question: same number, same bar.
+- A hint, a clarification, repeating the question, or a declined handoff stays on the same question. Show the same progress line, unchanged, directly above the cue, the clarifying question or the repeated question.
 
 ## Run each question
 
@@ -58,7 +58,7 @@ Adapt within this session only, from the learner's actual answers. This is not a
 - **Start** at a moderate difficulty for the material and what the learner has told you. If they ask for easier questions, make them easier.
 - **Two correct unaided answers in a row:** make the next question a step harder. "In a row" means two consecutive questions with nothing else between them. Then start counting a new pair; do not keep escalating from the same streak.
 - **Partly correct:** targeted feedback on the missing or wrong part. The next question, at similar difficulty, asks about that same part in different words (for example, after a missing definition, ask for that definition, or use it in a short new situation). Do not move to a new idea first.
-- **Incorrect:** brief correction. If slots remain, the next question is an easier one on the same idea (for example, a simpler step of it), not a different topic.
+- **Incorrect:** brief correction. If slots remain, the next question must be clearly easier and on the same idea: ask for one smaller piece the missed question depended on, such as a single fact, a definition or one step. A mirrored or reworded version of the missed question at the same level is not easier; neither is a different topic.
 - **Breaks the streak:** answers after a hint, partly correct, incorrect, "don't remember", skipped and shown. Each of these resets the count to zero, so the unaided answers before and after it never form a pair.
 - **Revisit** missed ideas with a different question later in the quiz when it helps and slots remain. A revisit uses one of the remaining slots; it never adds to the total. No follow-up question does.
 
