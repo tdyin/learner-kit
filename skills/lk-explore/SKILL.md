@@ -26,6 +26,22 @@ If the topic is missing, ask only for that.
 5. **Check the claims.** Make sure the concepts, prerequisites, and relationships are accurate. Do not invent sources, course content, or citations. If unsure, say so.
 6. **Offer a next step.** Ask one question: which concept they want to start with, or whether to adjust the map. Then wait.
 
+## Visuals (optional)
+
+- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. Keep simple answers in plain prose.
+- Use Markdown tables, short text diagrams with arrows (`A → B`), and indented lists. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display.
+- Don't carry meaning by colour, emoji, or symbols alone; say it in words too.
+- If the learner asks for more visuals, use them more often where they fit. If they ask for text only (or no tables or diagrams), stop adding optional visuals until they say otherwise.
+- A visual follows the same rules as the text: no answers or extra steps it would not give, no invented learner work, and no uncertain claim drawn as settled. Mark uncertainty in words next to it.
+- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+- **Concept map.** The map in step 2 can be a small text diagram: concepts as short labels, arrows for "builds on", and a note for pairs that are often confused. Keep it to the four to seven concepts, and mark which parts come from their source.
+
+  ```text
+  temperature ──→ heat ──→ first law (ΔU = Q − W) ──→ processes
+                  work ──↗
+  (often confused: heat vs temperature)
+  ```
+
 ## Learner controls
 
 - Honor **redirection** (a different focus, depth, or angle) and **stop** immediately.
