@@ -336,3 +336,110 @@ If a fully current record is needed before closing the issues, do one full pass 
 
 
 **Change after rerun 3:** a review comment led to `lk-review` labelling each item "(from your notes)" or "(generated)". RV1–RV4 have not been rerun since this change.
+
+## Issue #6: lk-learn and full-release installation
+
+### Installation and discovery
+
+- **Host:** Codex CLI 0.159.3 (`@openai/codex` from npm) on Linux, in a cloud container
+- **Date:** 2026-10-01
+- **Model:** none (these checks don't call a model)
+- **Source:** branch `claude/happy-davinci-33kg6r` at `15a1c28`, and `main` for the `--url` form
+
+| Scenario | Method | Observed result | Status |
+|---|---|---|---|
+| `lk-learn` passes Codex's skill format check | `quick_validate.py skills/lk-learn` | `Skill is valid!` | Pass |
+| `lk-learn` installs alone from a clean start | Installer with `--path skills/lk-learn` into an empty `CODEX_HOME` | Installed; `openai.yaml` present with `allow_implicit_invocation: false` | Pass |
+| All nine install from a clean start | One installer run with one `--path` followed by the nine skill paths, into an empty `CODEX_HOME` | Nine directories installed, all nine with `allow_implicit_invocation: false` | Pass |
+| `--url` install form from `main` | `--url https://github.com/tdyin/learner-kit/tree/main/skills/lk-coach` | Installed `lk-coach` | Pass (resolves the open item from issue #2) |
+| Discovered user-wide, outside the repo | `codex app-server` `skills/list` from an empty directory outside the repo | With `lk-learn` only: `lk-learn:user`. With all nine: all nine listed with `scope: "user"`. | Pass |
+
+### lk-learn conversation checks
+
+Run each check in a fresh session with **only `lk-learn` installed**, so all eight companions are unavailable. Unless a check gives the learner's reply, the tester may write a short, correct learner answer to the skill's question. Write that answer before reading anything that would give it away, and record it.
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| LN1 | Goal and time | `$lk-learn Help me learn first-law energy balances in 30 minutes. I've done intro mechanics but no thermodynamics.` | A 3–5 step plan that fits 30 minutes. Starts step 1 in the same message. At most one question; no onboarding questionnaire. | | Not run |
+| LN2 | Routine transitions | Continue LN1, answering the next two questions correctly | Moves to the next step with a one-line description of what's next. No "shall we continue?" permission prompts. | | Not run |
+| LN3 | Goal change needs agreement | Continue LN2: "How does this relate to entropy?" | Answers briefly, then asks before adding entropy to the plan or changing the goal. Doesn't switch on its own. | | Not run |
+| LN4 | Learner override | Continue: "Skip the recall check and give me a harder problem." | Skips the recall step and gives a harder problem labelled "Practice problem (generated):". No pushback. | | Not run |
+| LN5 | Wrong answers and retry fallback | New session (LN1 prompt). On the first practice task, give a wrong answer, then two more wrong answers after help. | Feedback names the error. After the second unsuccessful coached retry, offers a different explanation, worked example, easier task or break, without another corrective hint. | | Not run |
+| LN6 | Stop and truthful recap | Continue LN5: "stop", then "Give me a recap I can paste into a new chat." | Stop ends in one reply, with no unrequested recap. The recap separates the initial attempt from the coached retries and lists steps not reached. No mastery claims, and no files written. | | Not run |
+| LN7 | Supplied notes with errors | `$lk-learn Help me learn this in 20 minutes:` + the sample notes from `examples/thermodynamics.md` | The plan uses the notes and flags lines 3 and 5 with reasoning before teaching them | | Not run |
+| LN8 | Standalone, no companions | Review LN1–LN7 | No attempt to load another skill. Any `lk-` suggestion is optional, and the session continues when it's declined or the skill is unavailable. | | Not run |
+| LN9 | Explicit only | Fresh session, no `$`: "Help me learn first-law energy balances in 30 minutes." | `lk-learn` not loaded | | Not run |
+
+### Final pass at the release commit
+
+Run these at the final commit, so every skill has a recorded result on its final wording:
+
+- **All nine installed:** one install run using the README command. Then `$lk-review` and `$lk-learn` in fresh sessions with the same notes, checking that each selects the intended skill (spec #1 calls these two out).
+- **lk-learn:** LN1–LN9.
+- **Checks not rerun after their skill's later edits:** EX1–EX3, EP1, EP2, EP4, EP5, RC1–RC3, DG2–DG5, TR2, TR3, RV1–RV4 and X3.
+
+The `lk-coach` checks (1–11) stay valid: `skills/lk-coach` has not changed since `7e7731b`, where checks 3–5 were rerun.
+
+### Final pass results
+
+- **Host:** Codex CLI 0.159.3 on Windows 11 Pro 10.0.26200, logged in with ChatGPT
+- **Model:** gpt-5.6-terra, reasoning effort medium
+- **Date:** 2026-10-01
+- **Skill version:** commit `4c3520e`. Single-skill checks had only the skill under test installed. X3 had the eight original skills. The all-nine checks used the README command with `--ref` for this branch.
+- **Install note:** the README command has no `--ref`, so it installs from `main`. That is correct once this PR is merged. Before then, `main` has no `skills/lk-learn`.
+- **Skill loading:** every `$`-selected session showed a `<skill>` block for the selected skill only. LN9 showed none.
+- **Files:** no Learner Kit session wrote files. In LN9 (plain Codex, no Learner Kit skill), Codex's bundled visualize plugin wrote an HTML file into the working directory. Anyone repeating a "no files written" check should keep plain-Codex sessions separate.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| LN1 | A four-step 30-minute plan; started step 1 in the same message and ended with one question | Pass |
+| LN2 | "Correct… Next: …" twice; no permission prompts | Pass |
+| LN3 | "It's outside our 30-minute first-law plan. Would you like a brief 3-minute bridge to entropy now, or finish the energy-balance practice first?" | Pass |
+| LN4 | Skipped recall; gave a harder problem labelled "Practice problem (generated):" | Pass |
+| LN5 | Named the errors after the initial attempt and retry 1. After the second unsuccessful retry it **stated ΔU = −120 kJ** and chose an easier task itself, with no choice offered. | **Fail** |
+| LN6 | Stop gave "Session stopped." with no unrequested recap. The recap listed help topics and the correct result, but **didn't separate the initial attempt from the two unsuccessful coached retries**, and left out the unanswered easier task. | **Fail** |
+| LN7 | Flagged lines 3 and 5 with reasoning before teaching | Pass |
+| LN8 | No attempt to load another skill and no `lk-` suggestions across 13 turns | Pass |
+| LN9 | Not loaded without `$` | Pass |
+| EX1–EX3 | Seven-concept maps with starting points; second-law re-map; "Stopped." | Pass |
+| EP1, EP2, EP4, EP5 | Accurate heat vs temperature; line 3 flagged with a suggestion to confirm; second law identified; simpler version; "Stopped." | Pass |
+| RC1–RC3 | Line 3 flagged; one question at a time; memory or notes asked; quizzed the corrected version of line 3 | Pass |
+| DG2–DG5 | Asked for missing working; confirmed correct answers in both conventions; no learner labels | Pass |
+| TR2, TR3 | What carries over and what changes discussed; asked for a source example | Pass |
+| RV1 | Plan, flags and one-at-a-time all met, but a calculation with made-up numbers was labelled "retrieval (from your notes)" | **Fail** (borderline) |
+| RV2–RV4 | Asked what to review; asked what "P1" was; summary separated "asked but not answered" from "not reached" | Pass |
+| X3 | Eight installed: `$lk-review` and `$lk-recall` each loaded only the selected skill | Pass |
+| All-nine install | Nine directories, all with `allow_implicit_invocation: false` | Pass |
+| All-nine `$lk-review` | Loaded only `lk-review`; flagged lines 3 and 5 | Pass |
+| All-nine `$lk-learn` | Loaded only `lk-learn` (the selection check passed), but flagged only line 3 and not line 5 | Pass (selection); note-flagging gap |
+
+Setup-only observation: TR1 (run only as setup for TR2) again generated a variation without a mechanical stop, so the stated final state wasn't reachable. The skill corrected itself in TR2.
+
+### Fixes after the final pass
+
+- **`lk-learn` (LN5):** after the second unsuccessful coached retry, it must not state the correct value or pick the next step. It names what went wrong without the answer, offers the four options, and waits.
+- **`lk-learn` (LN6):** the recap reports, for each task, the initial answer, the number and outcome of coached retries, the help given, and whether the task was finished, skipped or left unanswered.
+- **`lk-learn` (all-nine note-flagging gap):** it checks every line of supplied notes before planning and flags each likely error before teaching from it.
+- **`lk-review` (RV1):** "(from your notes)" only when the question restates the material; anything with made-up numbers, scenarios or wording is "(generated)". Calculate or apply means practice; recall means retrieval.
+- **`lk-transfer` (TR1 observation):** before presenting a variation, work out the final state the givens imply, and add a constraint or change the givens if it doesn't match.
+
+**Rerun needed:** LN5, LN6, LN7, the all-nine `$lk-learn` check with the sample notes, RV1, X3 (`lk-review` labels), and TR1. Run them against the commit after `4c3520e`.
+
+### Rerun after the final pass
+
+- **Host / model:** same as the final pass (Codex CLI 0.159.3, gpt-5.6-terra medium, Windows 11 Pro)
+- **Date:** 2026-10-01
+- **Skill version:** commit `56520ea`. Single-skill checks had only the skill under test installed. All nine were installed with the README command plus `--ref`. X3 had the eight original skills, and only its `$lk-review` half was run. The scratch directory was still empty at the end.
+- **Learner answers:** LN5 reused the previous wrong answers with the unit changed (the task matched last run's, in J): initial "Q = +120 J, W = 0, ΔU = +120 J"; retry 1 "Q = −120 J, W = −120 J, ΔU = 0"; retry 2 "Q = −120 J, W = 0, ΔU = +120 J".
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| LN5 | After retry 2: "That was your second coached retry on this task, so I won't give another corrective hint or the final value. Choose one: a different explanation, an analogous worked example, an easier task, or a short break." No value stated; it waited. Its one-line "what went wrong" strongly implies the sign of ΔU, which is within the rule but close to it. | Pass |
+| LN6 | "Stopped." with no recap. The recap gives the initial answer and both coached retries, each marked incorrect, notes the task was "left unfinished after the second coached retry", and lists steps not reached. No mastery claims, no files. | Pass |
+| LN7 | Flagged line 3 and line 5 ("0.90 is roughly aluminum") before teaching | Pass |
+| All-nine `$lk-learn` + notes | Only `lk-learn` loaded; lines 3 and 5 both flagged under "Corrections to the supplied material" | Pass |
+| RV1 | Flagged notes 3 and 5 first; each plan item typed correctly as retrieval or practice; the first item is a real recall question correctly labelled "(from your notes)". A "(generated)" item was not reached without scripted learner answers. | Pass |
+| X3 (`$lk-review`, eight installed) | Only `lk-review` loaded; types labelled correctly; the first item restates notes 1 and 6 and is labelled "(from your notes)" | Pass |
+| TR1 | "Generated variation — change: reversible → irreversible", with P_ext = 249 kPa = P_final, so the final state at 20.0 L is reachable. The success standard has no hint, and it ends "Try it unaided first. What do you get?" | Pass |
+
+**Change after the reruns:** a review comment pointed out that `lk-transfer`'s final-state check assumed every task has a physical end state. The rule now applies a general well-posedness check (consistent givens, enough information, a defensible answer), and works out the implied outcome only when the task specifies a process or end state. TR1 passed at `56520ea` on the previous wording and has not been rerun.

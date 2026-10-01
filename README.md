@@ -4,7 +4,7 @@ Learner Kit supports adult self-learners and university students through indepen
 
 Each skill works on its own from your goal or material and the visible conversation. There is no runtime, account, or saved learner profile. Skills are explicit-only: they start when you select them (for example `$lk-coach`) and never activate just because a request matches their topic.
 
-Release 1 targets Codex. Available now:
+Release 1 targets Codex and includes nine skills:
 
 | Skill | Use it for | Example |
 |---|---|---|
@@ -16,8 +16,7 @@ Release 1 targets Codex. Available now:
 | `lk-recall` | Get quizzed one retrieval question at a time, from memory or with notes | `$lk-recall Quiz me from memory on these notes: [notes]` |
 | `lk-transfer` | Apply a method you know when one meaningful thing changes | `$lk-transfer Help me apply this energy-balance method to a different system.` |
 | `lk-review` | Review notes, topics, or a pasted recap. No saved history is needed. | `$lk-review Review these notes with me before my exam: [notes]` |
-
-`lk-learn` (a guided session from a goal) is planned. See [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md).
+| `lk-learn` | A short guided session toward a goal: explanation, practice, and recall in a sequence that fits your time | `$lk-learn Help me learn energy balances in 30 minutes.` |
 
 Each skill works without the others. A skill may suggest switching to another one (for example from `lk-practice` to `lk-diagnose`). Switching is always optional, and if you decline or the other skill isn't installed, it keeps helping.
 
@@ -52,7 +51,7 @@ Pass a single `--path` followed by all the skill paths. Repeating `--path` keeps
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
   --repo tdyin/learner-kit --path \
   skills/lk-explore skills/lk-explain skills/lk-practice skills/lk-diagnose \
-  skills/lk-coach skills/lk-recall skills/lk-transfer skills/lk-review
+  skills/lk-coach skills/lk-recall skills/lk-transfer skills/lk-review skills/lk-learn
 ```
 
 The installer refuses to overwrite an existing skill. To update a skill, delete `~/.codex/skills/<name>` first.
@@ -85,6 +84,7 @@ I don't know where to start. Hints only, please.
 - **Conversation-only memory.** Skills use only what is visible in the current chat. There is no saved history. A pasted recap is treated as something you supplied, not as a verified record.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
 - **Not a mastery measure.** Getting a step correct just after help shows the help worked for that problem. It is not evidence of lasting learning.
+- **Verified in Codex only.** Installation and the recorded behavior checks were run with Codex CLI 0.159.3, mostly with thermodynamics material and one non-numerical argument. Some checks are still pending; see [docs/release-acceptance.md](docs/release-acceptance.md). Other hosts, models and subjects may behave differently.
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
 ## Repository layout
@@ -94,5 +94,6 @@ skills/lk-<name>/SKILL.md            Skill instructions (one directory per skill
 skills/lk-<name>/agents/openai.yaml  Codex UI metadata and explicit-only policy
 examples/thermodynamics.md           Checked reference material used for verification
 docs/smoke-checks.md                 Recorded installation and behavior checks
+docs/release-acceptance.md           Release 1 acceptance record (spec checks mapped to evidence)
 docs/IMPLEMENTATION_PLAN.md          Release 1 plan
 ```
