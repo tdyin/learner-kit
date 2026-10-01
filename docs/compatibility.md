@@ -5,20 +5,20 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 ## Status labels
 
 - **Verified:** in a recorded environment, installation worked, all nine skills were discovered, and representative tutoring checks passed.
-- **Compatible but unverified:** the host's current official documentation supports this setup, but the live checks are incomplete or haven't been run.
+- **Compatible but unverified:** the host's current official documentation supports this setup, but the live checks are incomplete or haven't been run. Where no check has run at all, the table says **not tested**.
 - **Pending:** not yet covered. Don't rely on it.
 
 **Activation enforcement** is reported separately from status. It says whether the host itself prevents a skill from loading on ordinary requests (native), or whether only the skill's own "use only when explicitly selected" instruction does (best effort).
 
 ## Hosts
 
-| Host | Status at the current revision | Activation enforcement | Setup |
+| Host | Status (recorded evidence) | Activation enforcement | Setup |
 |---|---|---|---|
-| Codex CLI | **Verified** at `4cd969a`: all nine installed and discovered, CR1–CR5 passed. At the current revision (`5b7cec0`), `lk-coach` has a **known issue**: in 2 of the last 4 CR3 runs, a hint gave away the answer to the step it asked about. All other `lk-coach` behavior passed. | Native: `agents/openai.yaml` sets `policy.allow_implicit_invocation: false` | [README → Codex](../README.md#codex) |
-| Claude Code | **Verified** at `5b7cec0`: all nine installed and discovered, CC1–CC8 passed. CC5 passed at `4a1d03a` and again at `5b7cec0`. Only the `5b7cec0` run used the final `lk-coach` wording. the other skills haven't changed since their pass at `4cd969a`. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [README → Claude Code](../README.md#claude-code) |
-| Pi coding agent | **Pending** (follow-up to #13) | Not yet configured | Not yet documented |
-| NousResearch Hermes Agent | **Pending** (follow-up to #13) | Not yet assessed | Not yet documented |
-| Other Agent Skills hosts | Not assessed | Best effort: the instruction in each skill only | [README → Other agents](../README.md#other-agents) |
+| Codex CLI | **Verified** at `4cd969a`: all nine installed and discovered, CR1–CR5 passed. On the latest tested `lk-coach` revision (`5b7cec0`), `lk-coach` has a **known issue**: in 2 of the last 4 CR3 runs, a hint gave away the answer to the step it asked about. All other `lk-coach` behavior passed. | Native: `agents/openai.yaml` sets `policy.allow_implicit_invocation: false` | [README → Codex](../README.md#codex) |
+| Claude Code | **Verified.** CC1–CC4 and CC6–CC8 passed at `4cd969a`, with all nine installed and discovered. CC5 (`lk-coach`) passed at `4a1d03a` and again at `5b7cec0`; only the `5b7cec0` run used the final `lk-coach` wording. One line in `lk-explain` changed afterwards (`fcd0346`): its example of another skill now names `lk-practice`. This didn't change the teaching behavior and wasn't rerun. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [README → Claude Code](../README.md#claude-code) |
+| Pi coding agent | **Compatible but unverified — not tested.** Setup follows Pi's official documentation; no install or tutoring check has been run in Pi. | Native (documented, not observed): Pi supports `disable-model-invocation: true` in `SKILL.md` | [README → Pi](../README.md#pi) |
+| NousResearch Hermes Agent | **Compatible but unverified — not tested.** Setup follows Hermes's official documentation; no install or tutoring check has been run in Hermes. | **Best effort.** Hermes's documentation describes no manual-only control. Only each skill's "use only when explicitly selected" instruction applies. | [README → Hermes](../README.md#hermes) |
+| Other Agent Skills hosts | Not assessed. Each agent needs its own verification. | Depends on the agent. Best effort if it has no native control. | [README → Other agents](../README.md#other-agents) |
 
 ## Evidence
 
@@ -50,6 +50,27 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 - **Follow-up:** CC5 failed at `4cd969a` and `0ffcb87` (third corrective hint, then a retry miscount). It passed at `4a1d03a` and `5b7cec0` after `lk-coach` defined retries per whole problem and tightened the fallback. Claude Code 2.1.282 with claude-opus-5-5 is now Verified.
 - **Known limitation:** `disable-model-invocation` is a Claude Code extension to the Agent Skills format. Claude Code's docs note that strict Agent Skills packaging, such as uploading to claude.ai, rejects fields the specification doesn't allow. These packages are meant for directory installation and aren't packaged for upload.
 
-### Pi coding agent and Hermes Agent
+### Pi coding agent
 
-Not covered by this revision. They're follow-ups under #13. Don't treat either host as supported until its row says otherwise.
+- **Documentation reviewed** (2026-10-01): [Pi skills](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md) and [Pi packages](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/packages.md).
+  - User skills live in `~/.agents/skills/`.
+  - `disable-model-invocation: true` makes a skill "available only through its explicit command".
+  - You invoke a skill with `/skill:name [arguments]`, and run `/reload` after changes.
+  - Unknown frontmatter fields produce warnings, not load failures.
+  - Names must be lowercase with hyphens, up to 64 characters; descriptions are capped at 1024 characters.
+  - `pi install git:…` discovers skills from a package's `skills/` folder.
+- **Package check (no Pi runtime):** all nine `SKILL.md` files meet Pi's name and description limits. Their frontmatter uses only `name`, `description` and `disable-model-invocation`.
+- **Live checks:** not run. At the maintainer's direction, Pi wasn't tested in this round. Install, discovery, explicit selection, the no-auto-load check and the tutoring checks are all outstanding. Codex and Claude Code results don't carry over to Pi.
+
+### NousResearch Hermes Agent
+
+- **Documentation reviewed** (2026-10-01): [Hermes skills](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/features/skills.md) and [creating skills](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/developer-guide/creating-skills.md).
+  - Skills live in `~/.hermes/skills/`, and extra folders can be added with `skills.external_dirs`.
+  - Every installed skill is available as `/skill-name`, and new skills are picked up without a restart.
+  - The format is described as compatible with the Agent Skills standard.
+- **Activation:** the docs describe no manual-only or "don't load automatically" setting. The only related controls, `requires_*` and `fallback_for_*`, are about visibility, not invocation. They don't say how unknown fields such as `disable-model-invocation` are treated, so we make no claim either way. Explicit-only behavior in Hermes is best effort.
+- **Live checks:** not run. At the maintainer's direction, Hermes wasn't tested in this round. Install, discovery, explicit selection, observed matching-request behavior and the tutoring checks are all outstanding. Codex and Claude Code results don't carry over to Hermes.
+
+### Other Agent Skills hosts
+
+Sharing the file format doesn't mean an agent will behave the same way. An unlisted agent hasn't been checked; its discovery, activation controls and teaching behavior need their own verification. General setup guidance is in [README → Other agents](../README.md#other-agents).
