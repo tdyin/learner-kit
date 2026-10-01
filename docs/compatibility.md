@@ -15,7 +15,7 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 | Host | Status at the current revision | Activation enforcement | Setup |
 |---|---|---|---|
 | Codex CLI | **Verified** at `4cd969a`: all nine installed and discovered, CR1–CR5 passed. At the current revision (`5b7cec0`), `lk-coach` has a **known issue**: in 2 of the last 4 CR3 runs, a hint gave away the answer to the step it asked about. All other `lk-coach` behavior passed. | Native: `agents/openai.yaml` sets `policy.allow_implicit_invocation: false` | [README → Codex](../README.md#codex) |
-| Claude Code | **Verified** at `5b7cec0`: all nine installed and discovered, CC1–CC8 passed. CC5 passed on the final `lk-coach` wording, twice in a row; the other skills haven't changed since their pass at `4cd969a`. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [README → Claude Code](../README.md#claude-code) |
+| Claude Code | **Verified** at `5b7cec0`: all nine installed and discovered, CC1–CC8 passed. CC5 passed at `4a1d03a` and again at `5b7cec0`. Only the `5b7cec0` run used the final `lk-coach` wording. the other skills haven't changed since their pass at `4cd969a`. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [README → Claude Code](../README.md#claude-code) |
 | Pi coding agent | **Pending** (follow-up to #13) | Not yet configured | Not yet documented |
 | NousResearch Hermes Agent | **Pending** (follow-up to #13) | Not yet assessed | Not yet documented |
 | Other Agent Skills hosts | Not assessed | Best effort: the instruction in each skill only | [README → Other agents](../README.md#other-agents) |

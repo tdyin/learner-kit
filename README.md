@@ -116,7 +116,7 @@ Each `SKILL.md` sets `disable-model-invocation: true`, so Claude Code loads the 
 - **Reload:** Claude Code notices new skills in `~/.claude/skills/` during a session. If that folder didn't exist when the session started, run `/reload-skills`.
 - **Check:** type `/` and look for the `lk-` skills.
 - **Use:** `/lk-coach Here's my homework…`
-- **Update:** copy the folder again to replace it.
+- **Update:** refresh the clone first with `git -C /tmp/learner-kit pull`, or clone it again if `/tmp` was cleared. Then delete the old folder from `~/.claude/skills` and copy the new one in.
 
 ### Other agents
 
@@ -144,7 +144,7 @@ I don't know where to start. Hints only, please.
 - **Conversation-only memory.** Skills see only the current chat. A pasted recap is treated as something you supplied, not as a verified record.
 - **Grading can be wrong.** Feedback comes from the host model. It should state uncertainty, but it can still misjudge an answer.
 - **Not a mastery measure.** Getting something right just after help shows the help worked for that problem, not that you've learned it for good.
-- **Verification varies by host.** Tutoring behavior was checked in Codex CLI 0.159.3 on earlier wording, mostly with thermodynamics material plus one non-numerical argument. Claude Code support so far comes from its official documentation; live checks are pending. Other hosts, models, and subjects may behave differently. See [docs/compatibility.md](docs/compatibility.md) and [docs/release-acceptance.md](docs/release-acceptance.md).
+- **Verification varies by host.** Claude Code 2.1.282 is verified: all nine skills were discovered and the representative tutoring checks passed. Codex CLI 0.159.3 was verified at an earlier revision. On the current `lk-coach` wording it has a known issue: a hint sometimes gives away the step it asks about. Checks used mostly thermodynamics material plus one non-numerical argument. Other hosts, models, and subjects may behave differently. See [docs/compatibility.md](docs/compatibility.md).
 - **Instructions, not guarantees.** The skills are instructions to a model. Observed behavior is recorded in [docs/smoke-checks.md](docs/smoke-checks.md).
 
 ## 📁 Repository layout
