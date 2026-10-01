@@ -44,7 +44,7 @@ Learner Kit is an independent project, not affiliated with or endorsed by the au
 | ✏️ | `lk-practice` | Gives one problem with a clear success standard, then feedback on your answer | Give me a first-law energy-balance problem. |
 | 🔍 | `lk-diagnose` | Finds where your answer or reasoning went wrong, and why | Where did my reasoning go wrong? [problem + your working] |
 | 🧑‍🏫 | `lk-coach` | Helps with a homework problem through hints, explanations, worked examples, or a full solution. You don't need to attempt it first. | Coach me through this homework problem. [problem] |
-| 🧠 | `lk-recall` | Quizzes you one retrieval question at a time, from memory or with your notes open | Quiz me from memory on these notes: [notes] |
+| 🧠 | `lk-recall` | Runs a quiz of a set length (Quick, Standard or Deep), one retrieval question at a time with a progress bar. Difficulty adapts to your answers, and it ends with a summary. | Quiz me from memory on these notes: [notes] |
 | 🔀 | `lk-transfer` | Tests a method you know by changing one meaningful thing | Help me apply this energy-balance method to a different system. |
 | 🔁 | `lk-review` | Reviews notes, topics, or a pasted recap. No saved history needed. | Review these notes with me before my exam: [notes] |
 | 🧭 | `lk-learn` | Runs a short guided session toward your goal: explanation, practice, and recall, paced to your time | Help me learn energy balances in 30 minutes. |

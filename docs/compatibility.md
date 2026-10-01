@@ -20,6 +20,8 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 | NousResearch Hermes Agent | **Compatible but unverified — not tested.** Setup follows Hermes's official documentation; no install or tutoring check has been run in Hermes. | **Best effort.** Hermes's documentation describes no manual-only control. Only each skill's "use only when explicitly selected" instruction applies. | [README → Hermes](../README.md#hermes) |
 | Other Agent Skills hosts | Not assessed. Each agent needs its own verification. | Depends on the agent. Best effort if it has no native control. | [README → Other agents](../README.md#other-agents) |
 
+`lk-recall`'s fixed-length adaptive quiz (issue #18) came after these results. In **Codex** (gpt-5.6-terra, medium), checks RA1–RA16 have passing runs except RA6 and RA8, which were re-graded as Fail after review; their fix is awaiting a rerun. It hasn't been checked in **Claude Code**. Details are in [smoke-checks.md](smoke-checks.md#issue-18-adaptive-lk-recall-quizzes).
+
 ## Evidence
 
 ### Codex CLI

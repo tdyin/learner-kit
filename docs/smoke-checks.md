@@ -602,3 +602,193 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 Package check (2026-10-01, no host runtime): all nine `SKILL.md` files meet Pi's documented limits. Each name is lowercase with hyphens and at most 64 characters, matches its folder, and each description is under 1024 characters. The frontmatter uses only `name`, `description` and `disable-model-invocation`.
 
 Checks to run when Pi or Hermes is available: install one skill and all nine following the README, then reuse CC1–CC8 with the host's own selection syntax (`/skill:lk-…` in Pi, `/lk-…` in Hermes). For Hermes, record what happens on an ordinary matching request (CC3) as an observation; one negative result doesn't prove the skills are kept from loading automatically.
+
+## Issue #18: adaptive `lk-recall` quizzes
+
+`lk-recall` now runs a quiz of a fixed length at a chosen coverage depth, with a progress bar, difficulty that adapts within the session, and an automatic summary at the end (spec #17). These checks replace "open-ended continuation" in RC1–RC4 with the new behavior; RC1–RC4 stay as regression checks.
+
+**How to run these checks.** In a logged-in Codex or Claude Code session (record which). Select `lk-recall` with the host's own syntax (`$lk-recall` in Codex, `/lk-recall` in Claude Code) followed by the prompt shown. Use a **fresh** session per check, **only `lk-recall` installed** (except RA16), and the sample notes from [examples/thermodynamics.md](../examples/thermodynamics.md) unless a check says otherwise. Write each scripted learner answer before reading anything that would give it away, and record it. Judge behavior, not exact wording. If a check needs more questions than the announced total (RA5, RA9), use a Deep quiz, or rerun and ask for at least that many questions in the opening prompt; record which. For every check, also confirm: one substantive question per message, the total announced before question 1 never changes, and no files are written.
+
+**Progress bar rule used for "Expected":** one segment per slot (20 segments, filled in proportion and rounded down, above 20 slots). Filled = resolved slots. Question *n* of *N* shows *n* − 1 filled while it is pending. After the last slot resolves, the bar is full.
+
+| # | Scenario | Prompt / action | Expected | Observed | Status |
+|---|---|---|---|---|---|
+| RA1 | Depth missing | Select `lk-recall`: `Quiz me on these notes:` + sample notes | Asks Quick/Standard/Deep (and memory vs notes) in one message, before any question. Flags lines 3 and 5. | One message: "How detailed would you like it: **Quick**, **Standard**, or **Deep**? And will you answer from **memory** or with your **notes open**?" No question before it. It flagged line 3 ("heat is energy transferred because of a temperature difference, not thermal energy stored in a body") but **not line 5** (copper 0.90). | **Fail** |
+| RA2 | Depth supplied | Select `lk-recall`: `Standard quiz from memory on these notes:` + sample notes | Doesn't ask depth or memory/notes again. Announces a total, then asks question 1 with an empty bar, and waits. No full question list. | "You chose a Standard quiz and answering from memory; I'll use 6 questions". It flagged lines 3 and 5, then "Question 1 of 6 ▱▱▱▱▱▱" with one question, and waited. No setup questions and no question list. | Pass |
+| RA3 | Depth vs difficulty | Two fresh sessions with the RA2 prompt, one as Quick and one as Deep. Answer every question in both until each quiz completes, giving the same kind of answers. | Deep's total is at least Quick's. Deep's questions and summary cover ideas or details that Quick's don't (for example, lines 4 and 6 of the notes, or follow-ups on an idea); compare the actual questions, not stated plans. Deep's question 1 is not noticeably harder than Quick's question 1. | Run at `df6bd15` (revised script). Quick: 5 questions; Deep: 12 questions, both answered correctly to completion. Deep's extra questions went beyond Quick: a 200 g copper calculation with the corrected 0.385, "Why can't W = nRT ln(V₂/V₁) automatically be used for every isothermal expansion…" (path dependence, a follow-up on line 4), adiabatic compression with 300 J done on the gas, "Give a … example in which heat is added … but its temperature does not increase", naming the two corrected notes, and a closing "which does more work—an isothermal or an adiabatic expansion?" comparison. Q1s were equivalent (Quick: "absorbs 120 J … does 50 J … ΔU?"; Deep: "absorbs 250 J … does 90 J … ΔU, and why?"). Both summaries were full-bar completions. | Pass |
+| RA4 | Bar states | Continue RA2 to the middle, the last (pending) question and completion | Question 1: 0 filled. Question *n* of *N*: *n* − 1 filled. Last pending: one short of full. After it: full bar and "*N* of *N*". Only number, total and bar: no topic counts, difficulty labels, scores or percentages. | Q1 `▱▱▱▱▱▱`, Q2 `▰▱▱▱▱▱`, Q3 `▰▰▱▱▱▱`, Q4 `▰▰▰▱▱▱`, Q5 `▰▰▰▰▱▱`, Q6 (last, pending) `▰▰▰▰▰▱`, then "Done: 6 of 6 ▰▰▰▰▰▰". Progress lines held only the number, total and bar. Total stayed 6. | Pass |
+| RA5 | Two unaided successes, then a new pair | In a quiz of at least 6 questions, answer questions 1–4 correctly without help, and record each question | Question 3 is noticeably harder than questions 1–2. Question 4 is about as hard as question 3 (one correct answer after an increase doesn't raise it again). Question 5 is harder again, after the fresh pair of 3 and 4. | Run at `df6bd15` (revised script), Standard quiz of 8. Q1 "what do Q and W mean", Q2 "isothermal ΔU and why" (both recall, answered unaided). Q3 stepped up to an application ("expands … doing 250 J of work … What is Q, including its sign?"). Q4 was a definition ("distinction between heat and … internal energy"), so no second step-up. It was easier than Q3 rather than "about as hard". Q5, after the Q3–Q4 pair, was a calculation ("100 g copper sample by 10 K" with c = 0.385). All bars `n − 1` filled; total stayed 8. | Pass |
+| RA6 | Partial, then incorrect | Give a partly correct answer, then an incorrect one | Partial: targeted feedback, then a similar-difficulty question on the gap. Incorrect: brief correction, then a clearly easier question on the same idea (one smaller piece of it). A mirrored or reworded question at the same level is a Fail. Total unchanged. | Partial Q1 (Q defined, W missing): targeted feedback "Missing piece: positive W is work done by the system", but **Q2 moved to isothermal ΔU instead of probing W**. Incorrect Q2 ("ΔU = Q"): brief correction, but **Q3 was heat vs internal energy, unrelated to the isothermal idea**. The final summary listed Q1 under "Recalled unaided: first law equation and Q" and **omitted the missing W piece** from "Needed help or correction". Total stayed 7. | **Fail** |
+| RA7 | Hint breaks the streak | Answer question 1 correctly without help. On question 2, ask for a "hint", then answer correctly. Answer question 3 correctly without help, and record question 4. | After the hint: same question number and bar. Question 3 is not harder than question 2 (the hinted answer didn't complete a pair with question 1). Question 4 is not harder than question 3 (questions 1 and 3 aren't combined into a pair across the hinted answer). The summary lists question 2 as answered after a hint. | Run at `df6bd15` (revised script), Standard quiz of 7. Q1 correct unaided. Q2 "hint" gave "Question 2 of 7 ▰▱▱▱▱▱▱" again with a cue; the correct answer was recorded "as a cued answer". Q3 (heat vs internal energy) was not harder than Q2. After an unaided Q3, Q4 ("Give the expression for the work … How does its sign change…") was not harder than Q3. Completion summary: "Question 2 used a hint". | Pass |
+| RA8 | Ambiguous answer | On the first question whose correct answer has a sign or direction (for example, a ΔU, W or Q for a stated process), give the right magnitude with no sign or direction ("It changes by 70 J"). If no such question comes up by question 3, ask "Can I have a question with a numerical answer?" first. Record the question. | One clarifying question about the sign or direction, without supplying it, with the same progress line (number and bar) directly above it; no grade recorded. After clarifying, the answer is graded once. Filling in the sign and marking it correct is a Fail. | | Not run |
+| RA9 | Skip, show answer, don't remember | In a quiz of at least 8 questions: answer question 1 correctly without help, "skip" question 2, answer question 3 correctly, "show me the answer" on question 4, answer question 5 correctly, "I don't remember" on question 6, answer question 7 correctly. Continue to completion. | Skip, show and don't remember each advance the bar by one and are not called wrong. None of them completes or bridges an unaided pair: questions 4, 6 and 8 are not harder than the question before them. The completion summary lists questions 2, 4 and 6 as not answered by the learner, separately from unaided recall. | Run at `df6bd15` (revised script), Deep quiz of 12. Skip (Q2), show (Q4) and "I don't remember" (Q6) each advanced the bar by one, and none was called wrong. Q4 and Q6 were not harder than Q3 and Q5. **Q8 was a step up from Q7**: Q7 was recall ("In an adiabatic process, what is Q, and what relationship follows…"), and Q8 was application ("compressed adiabatically … determine the signs of W and ΔU, and infer what happens to its temperature"). That suggests Q5 and Q7 were treated as a pair across the "I don't remember" on Q6. The summary lists Q2, Q4 and Q6 under "Not answered by you", but also lists the skipped Q2 under "Needed help or correction". "skip" still revealed the answer. Two copper questions used the notes' 0.90 ("Using the specific heat in your notes", "Using c = 0.90") and were graded correct, including "copper calorimetry" under "Recalled unaided". | **Fail** |
+| RA10 | Revisit within budget | Get one idea wrong early in a quiz with several slots left | A later, differently worded question on that idea uses an existing slot. The total never grows. | Q2 (isothermal: ΔU = 0, so Q = W) answered incorrectly. Q5 of 7 revisited it with different wording ("volume triples … express W … and state the relationship between Q and W"). The total stayed 7 and the bar advanced normally. | Pass |
+| RA11 | Natural completion, correct final | Answer the last question correctly | Feedback, full bar, automatic summary (covered; unaided; help/corrections; skipped/shown/don't remember; gaps and next step). Then it stops: no further question. | Observed in the RA2/RA4 session: correct Q6 gave "Correct." and then, in the same message, "Done: 6 of 6 ▰▰▰▰▰▰" with Covered / Recalled unaided / Needed help or correction / Not answered by you / Gaps and next step. No further question. | Pass |
+| RA12 | Completion, incorrect final | Answer the last question incorrectly | Correction, full bar, summary listing the gap. No extra question. | Final answer "ΔU = +W, so the internal energy increases" gave "Not quite: Q = 0, but ΔU = Q − W = −W …", then "Done: 6 of 6 ▰▰▰▰▰▰". The summary lists the adiabatic sign under "Needed help or correction" and in "Gaps and next step". No extra question. | Pass |
+| RA13 | Completion, skipped or shown final | "skip" (one run) or "show me the answer" (another) on the last question | Full bar and summary; the last slot is listed as skipped or shown, not as recall. No extra question. | Skip run: "Skipped. … Done: 7 of 7 ▰▰▰▰▰▰▰" with "Not answered by you: the adiabatic-expansion question was skipped." Shown run: "Shown: … Done: 7 of 7 ▰▰▰▰▰▰▰" with the last question under "Not answered by you … shown". No extra question in either. | Pass |
+| RA14 | Early stop with a question pending | Mid-quiz, "stop" without answering the current question; then "give me a recap" | Stop: one short reply, no summary, no full bar. The recap lists the pending question as unanswered and planned questions as not reached. | "stop" with Q2 pending gave "Stopped. Question 1 was partly recalled; Questions 2–6 were not reached." That's a short reply with no full bar, but it includes an **unrequested recap** and calls the pending Q2 "not reached". The requested recap repeated "Questions 2–6: Not reached" and **didn't list Q2 as asked but unanswered**. | **Fail** |
+| RA15 | Declined handoff keeps the slot | Mid-quiz: "Is there another Learner Kit skill for this?", then "no, keep going here" | Optional suggestion; after the decline it repeats the pending question with the same number and bar. | "Yes—`$lk-explain` can teach a gap step by step, and `$lk-practice` can give applied problems. They aren't available in this session, but I can explain or make practice problems here." It then repeated "Question 2 of 6 ▰▱▱▱▱▱". After "no, keep going here" it repeated the same Q2 with the same number and bar. | Pass |
+| RA16 | Regression: RC1–RC4, X3 | Rerun RC1–RC4 (only `lk-recall`) and X3 (all eight) on this revision | As in the original tables; RC4's stop gives no unrequested recap | RC1: asks depth first (memory already given), then after "Standard", one question from the notes, and waits. RC2: asks depth and memory/notes. RC3: "Your line 3 is incorrect as written. From memory: what is heat…". RC4: "I don't remember" gets a brief answer and moves on; "hint" gives a cue only, same bar. **But "stop" adds an unrequested recap**: "Quiz stopped. The first-law question was answered 'don't remember'; the current question … was left unanswered." X3 (all eight): `$lk-review` loaded only `lk-review`; `$lk-recall` loaded only `lk-recall`. | **Fail** (RC4) |
+
+### Run record for issue #18
+
+- **Host:** Codex CLI 0.159.3 (`codex exec --json` / `codex exec resume`), logged in with ChatGPT, on Windows 11 Pro 10.0.26200. Run by a local agent.
+- **Model:** gpt-5.6-terra, reasoning effort medium (from the Codex session files)
+- **Date:** 2026-10-01
+- **Commit tested:** `b650e4b` on `claude/sweet-ritchie-gkj8el`. The installed `lk-recall/SKILL.md` matched `b650e4b` exactly. The merge `e62e1c8` arrived after the runs; it changes only `lk-recall`'s host-neutral wording (description, `disable-model-invocation: true`, companion names without `$`, example requests), not the quiz rules. RA15's suggestion wording (`$lk-explain`) reflects `b650e4b`.
+- **Install:** `~/.codex/skills/lk-*` deleted, then `install-skill-from-github.py --repo tdyin/learner-kit --ref claude/sweet-ritchie-gkj8el --path skills/lk-recall`, so only `lk-recall` was installed for RA1–RA15 and RC1–RC4. For X3, the eight original skills were installed from the same branch in one `--path` run. The user-level skills folder was used (cleared of other `lk-` skills) rather than a separate `CODEX_HOME`, so the login stayed in place. Every `$lk-recall` session had the `lk-recall` `<skill>` block.
+- **Static checks:**
+  - `quick_validate.py skills/lk-recall` at `b650e4b`: "Skill is valid!"
+  - At `e62e1c8` it reports "Unexpected key(s) in SKILL.md frontmatter: disable-model-invocation". This is the same known validator limitation recorded for the other skills, since the loader accepts the field.
+- **Sessions:**
+  - **RA1:** a single session.
+  - **RA2, RA4, RA11:** one Standard session (6 questions) answered correctly to the end.
+  - **RA3:** separate Quick and Deep sessions.
+  - **RA5 and RA12:** one Standard session (6): five correct, then a wrong final answer.
+  - **RA6, RA10 and RA13 (skip):** one Standard session (7).
+  - **RA7, RA9 and RA13 (shown):** one Standard session (7).
+  - **RA8, RA15 and RA14:** one Standard session (6).
+  - **RC1–RC4:** one session.
+  - **X3:** two sessions.
+- **RC1 setup reply:** RC1's prompt gives no depth, so the skill asked for one. I replied "Standard", which isn't in the original RC script.
+- **Learner answers:** every learner message was written and logged before it was sent, and before the reply that would grade it. Examples:
+  - RA6 partial: "ΔU = Q − W. Q is the heat added to the system."
+  - RA6 incorrect: "ΔU = Q, because all the heat added goes into raising the internal energy."
+  - RA8: "ΔU = Q − W, W is the work"
+  - RA12: "Q = 0, and ΔU = +W, so the internal energy increases."
+- **Files:** none written. The scratch working directory stayed empty.
+- **Result (first run, `b650e4b`):** 7 Pass (RA2, RA4, RA10, RA11, RA12, RA13, RA15), 5 Fail (RA1, RA6, RA8, RA14, RA16).
+- **Revised scripts (RA3, RA5, RA7, RA9), rerun at `df6bd15`:**
+  - `a4004e7` rewrote these four scripts while the first runs were in progress, so I reran them on the revised scripts.
+  - **Skill version:** the rerun installed `lk-recall` from the branch at `df6bd15`. Its quiz rules match `b650e4b`, plus the host-neutral wording. These reruns came **before** the fixes in `3dc2960`.
+  - **Results:** RA3, RA5 and RA7 pass; RA9 fails.
+  - **Setup:** each rerun was a fresh session with only `lk-recall` installed, on the same host, model and effort. RA3 Quick and Deep and RA9 (Deep, 12 questions) ran to completion; RA5 used a Standard quiz of 8 and RA7 one of 7. The total met the script's minimum in each. Every learner answer was written and logged before sending (41 messages).
+  - **Network:** several turns hit Codex websocket reconnects ("idle timeout waiting for websocket") but completed.
+  - **Scratch directory:** still empty afterwards.
+- **RA9 failure, at `df6bd15`:**
+  - Q8 ("compressed adiabatically … determine the signs of W and ΔU, and infer what happens to its temperature") was a step up from Q7 ("In an adiabatic process, what is Q, and what relationship follows between ΔU and W?"). Q5 and Q7 were correct, but Q6 was "I don't remember", so the step-up shouldn't have happened.
+  - The summary listed the skipped Q2 under both "Needed help or correction" and "Not answered by you".
+  - The skip revealed the answer, and two copper questions using the notes' 0.90 were graded correct. Those last two match RA1/RA6 failures that `3dc2960` addresses.
+
+#### Failures
+
+- **RA1, line 5 not flagged.** The setup reply flagged only line 3. Across all sessions, the copper value (line 5) was flagged up front only in RA2 and RA3-Quick. RA1, RA3-Deep, the RC session and the four other Standard sessions flagged only line 3 at the start; the RA5/RA12 session flagged copper later, at Q4. In two of the Standard sessions the 0.90 value was then **quizzed as if true**:
+  - In the RA6/RA10 session, "How much heat is required to raise … 50 g of copper by 10 K, using the specific heat in your notes?" The answer "50 × 0.90 × 10 = 450 J" was marked "Correct: Q = mcΔT = 450 J" and later counted under "Recalled unaided: … copper calculation".
+  - In the RA7/RA9 session, "Using c = 0.90 J/(g·K), how much heat is transferred to it?" Only after "I don't remember" did it say "Your note's value is incorrect: copper is about 0.385".
+
+  Gap: the "flag it … do not quiz them on it as if it were true" rule isn't applied reliably to line 5, and a wrong note was graded as correct recall.
+- **RA6, partial and incorrect follow-ups don't target the gap.**
+  - After the partial Q1 ("Missing piece: positive W is work done by the system"), the next question was "For an ideal gas undergoing an isothermal process, what is ΔU, and why?", which doesn't probe W.
+  - After the incorrect Q2 ("ΔU = Q"), the next question was "What is heat in thermodynamics, and how does it differ from internal energy?", which isn't related to the isothermal idea.
+  - The summary then listed Q1 as "Recalled unaided: first law equation and Q" and left the missing W piece out of "Needed help or correction".
+
+  Gap: the "partly correct → probe the gap" and "incorrect → easier related question" steps weren't followed, and the summary didn't separate the partial answer.
+- **RA8, ambiguous answer graded instead of clarified.** "ΔU = Q − W, W is the work" got "That's partly right: ΔU = Q − W. In this convention, W is work **done by the system** …", then "Question 2 of 6 ▰▱▱▱▱▱". Gap: no clarifying question, an outcome was recorded, and the bar advanced.
+- **RA14, stop includes a recap and mislabels the pending question.**
+  - "stop" gave "Stopped. Question 1 was partly recalled; Questions 2–6 were not reached."
+  - "give me a recap" gave "Question 1: Partly recalled … Questions 2–6: Not reached."
+
+  Gap: the stop reply carries an unrequested recap, and Q2, which had been asked and was pending, is reported as "not reached" instead of unanswered.
+- **RA16 / RC4, stop adds an unrequested recap.** "stop" gave "Quiz stopped. The first-law question was answered 'don't remember'; the current question on the corrected meaning of heat was left unanswered." Gap: same as RA14, since the skill says to give a recap only if asked. Here the pending question was labelled correctly.
+
+#### Other observations (not graded)
+
+- In several sessions the first message has a short preamble or correction before the progress line, so the progress line isn't literally the first line.
+- One question message was preceded by "I'll raise the difficulty slightly since you've had two correct unaided answers". That isn't in the bar, but it is a difficulty remark.
+- In the RA2/RA4 session the last question asked two things at once ("what is heat … and what is copper's approximate specific heat"), and it quizzed corrections the skill had just given.
+- After "skip", the reply also stated the answer ("Skipped. The work expression is W = nRT ln(V₂/V₁)"), so the skip worked like a show-answer.
+
+### Fixes after the first run (issue #18)
+
+Changes to `skills/lk-recall/SKILL.md`, made in response to the failures above:
+
+- **RA1 (line 5 not flagged; a wrong value graded as correct):** before the setup questions or question 1, the skill now checks every line of supplied notes and flags each likely error in that first message. A flagged line is never quizzed as true: a question that needs the fact gives the corrected version and says it's a correction. An answer that relies on a flagged claim or value isn't counted as correct recall.
+- **RA6 (follow-ups don't target the gap; partial answer listed as unaided):**
+  - After a partly correct answer, the next question asks about the same missing or wrong part in different words.
+  - After an incorrect answer, the next question is an easier one on the same idea, not a different topic.
+  - The summary lists only fully correct answers under "Recalled unaided". Partial answers go under "Needed help or correction" with what was missing.
+- **RA8 (ambiguous answer graded):** the skill now separates the two cases. A partly correct answer has a required part missing or wrong. An ambiguous answer has every part present, but one is stated too loosely to judge. The examples in the skill are generic (an unstated direction, sign or convention), not the RA8 test answer, so passing doesn't depend on matching the script. For an ambiguous answer, the skill asks one clarifying question without supplying the detail and doesn't grade the answer or advance until it's clarified.
+- **RA14, RA16/RC4 (stop gives an unrequested recap; pending question called "not reached"):**
+  - The stop reply is one short line ("Stopped."), optionally with a one-line offer of a recap. It doesn't say how any question went or what was reached; that information belongs in a recap.
+  - In a recap, a question asked but pending at the stop is "asked, not answered", never "not reached".
+- **Ungraded observations:**
+  - The progress line now sits directly above each question rather than "starting" the message, which matches feedback and the next question sharing one message.
+  - Difficulty changes are never announced.
+  - Each question asks about one thing.
+  - A skip moves on without giving the answer unless the learner asks.
+
+**Fix after the RA9 rerun (at `df6bd15`):**
+- "Two correct unaided answers in a row" now means two consecutive questions with nothing between them. Any streak-breaking outcome (hint, partial, incorrect, don't remember, skip, shown) resets the count to zero, so the answers before and after it never form a pair.
+- The completion summary puts each question in exactly one group.
+- The skip and copper problems seen in RA9 are covered by the `3dc2960` fixes above.
+
+**Rerun needed** on the commit that adds this note:
+- **For the fixes:** RA1, RA6, RA8, RA9, RA14 and RA16 (RC1–RC4).
+- **Streak wording changed:** RA5 and RA7. Both passed at `df6bd15`; rerun them to confirm the rule still steps up after a real pair.
+- **Spot check:** RA2/RA4/RA11 in one session, for the notes check and the progress-line placement.
+- **Not affected:** RA3 (passed at `df6bd15`) and RA10, RA12, RA13 and RA15 (passed at `b650e4b`). Their rules didn't change in a way they test.
+
+**RA8 at `7ebb806` (see the superseded RA8 row in the rerun below):** still a Fail. To "If a system absorbs 120 J of heat and does 50 J of work, what is its change in internal energy?", the answer "The internal energy changes by 70 J" got "Correct: ΔU = Q − W = 120 J − 50 J = **+70 J**", and the bar advanced. In a second session the old script's answer ("ΔU = Q − W, W is the work") was genuinely partial for the question asked, so it didn't test ambiguity.
+
+**Fix:** the skill now says never to complete an answer for the learner: if a sign, direction, unit or condition the question depends on is missing, don't fill it in and call it correct; ask which they meant. The RA8 script now uses a magnitude without a sign, so the ambiguity doesn't depend on which question is asked first. **Rerun:** RA8 on the commit that adds this note. The rule change is narrow, so the other `7ebb806` reruns stand.
+
+### Rerun at `7ebb806` / `95216a6`
+
+- **Host:** Codex CLI 0.159.3 (`codex exec --json` / `codex exec resume`), logged in with ChatGPT, on Windows 11 Pro 10.0.26200. Run by a local agent.
+- **Model:** gpt-5.6-terra, reasoning effort medium (from the Codex session files)
+- **Date:** 2026-10-01
+- **Commits:**
+  - At `7ebb806` (installed `SKILL.md` matched and contained "Put each question in exactly one group"): RA1, RA5, RA6, RA7, RA9, RA14, RC1–RC4, the RA2/RA4/RA11 spot check, and the first two RA8 sessions.
+  - At `95216a6` (installed `SKILL.md` matched `HEAD` and contained "Never complete an answer for them"): X3 and the two RA8 sessions on the revised script.
+- **Install:** `~/.codex/skills/lk-*` deleted before each install. Only `lk-recall` was installed for every check except X3, which had the eight original skills from one `--path` run on `claude/sweet-ritchie-gkj8el`.
+- **Method:**
+  - Each check started in a fresh `$lk-recall` session with the sample notes; Standard quizzes unless stated.
+  - Every learner message was written and logged before it was sent (list below).
+  - The scratch working directory stayed empty.
+  - Some turns hit Codex websocket reconnects but completed. One RA5 reply appeared twice in the event stream after a reconnect; the content was identical.
+
+| # | Commit | Observed | Status |
+|---|---|---|---|
+| RA1 | `7ebb806` | The first message flags note 3 ("heat is energy transferred because of a temperature difference; it is not thermal energy 'contained' in a body") and note 5 ("copper's specific heat is about 0.385 J/(g·K) … not 0.90 … Please check your source"). In the same message it asks "Quick, Standard, or Deep? And will you answer from memory or with your notes open?" No question before setup. | Pass |
+| RA5 | `7ebb806` | Standard, 7 questions. Q1 (ΔU for 150 J in, 40 J out) and Q2 (isothermal ΔU) were answered unaided. Q3 stepped up to a calculation ("calculate the work … 1.00 mol … 300 K from V₁ to 2V₁"). Q4 ("what must the heat transfer Q be relative to W, and why?") was about as hard as Q3. Q5, after the Q3–Q4 pair, stepped up again ("compressed adiabatically. State the signs of Q, W and ΔU … and what happens to its temperature"). | Pass |
+| RA6 | `7ebb806` | Partial Q1 got "Partly correct … You left out W: it is work done by the system", then Q2 "A gas expands and does work … is W positive or negative?", which probes the gap. Incorrect Q2 got "Not quite … expansion gives W > 0", then Q3 "If a gas is compressed by its surroundings, is W positive or negative?" (same idea, about as hard). The completion summary lists only fully correct answers under "Recalled unaided" and puts "W was initially omitted … you initially gave the wrong sign for work during expansion" under "Needed help or correction". Total stayed 7. | **Fail** (re-graded after review) |
+| RA7 | `7ebb806` | Standard, 7 questions. Q1 correct unaided. "hint" on Q2 gave "Question 2 of 7 ▰▱▱▱▱▱▱" again with a cue; the answer after the hint was recorded "as recalled with a cue". Q3 (work formula) wasn't harder than Q2, and Q4 (definition of heat) wasn't harder than Q3. The summary lists "Recalled unaided: Questions 1, 3, 4, 5, 6, and 7" and "Needed help or correction: Question 2—after a hint". | Pass |
+| RA8 | `95216a6` | Two fresh sessions on the revised script. In both, Q1–Q2 had no signed answer, and Q3 was the first question with a sign. Session A, Q3 "does 250 J of work. What is the net heat transfer Q, including its sign?" with "The heat transfer is 250 J": "Which sign do you mean for Q: +250 J or −250 J?" After "+250 J": "Correct: Q = +250 J", then "Question 4 of 8 ▰▰▰▱▱▱▱▱". Session B, Q3 "V₁ to 3V₁. Express the work … including its sign" with "The work has magnitude nRT ln 3": "Which sign do you mean for that work under the convention W = work done by the system?" After "Positive …": "Correct … W = +nRT ln 3", then "Question 4 of 7 ▰▰▰▱▱▱▱". Each asked one clarifying question without supplying the sign, recorded no grade until the clarification, and graded once. No slot was added. The clarifying replies didn't repeat the progress line, but the number and bar were unchanged when the quiz resumed. | **Fail** (re-graded after review) |
+| RA8 (superseded) | `7ebb806` | Old script. Session 1: Q1 asked what each term means, so "ΔU = Q − W, W is the work" was genuinely partial and was graded "Partly correct". Session 2: "The internal energy changes by 70 J" got "Correct: ΔU = Q − W = 120 J − 50 J = +70 J". The sign was filled in, the answer graded, and the bar advanced. That led to the `95216a6` fix. | Fail (fixed) |
+| RA9 | `7ebb806` | Deep, 12 questions. "skip" on Q2 moved on without revealing the answer. "show me the answer" on Q4 and "I don't remember" on Q6 each advanced the bar by one and weren't called wrong. Q4, Q6 and Q8 weren't harder than the question before. Q8 ("what sign does W have for an isothermal compression…?") was a small follow-up to Q7, with no step-up across the "I don't remember". Copper was quizzed only with the corrected value. Summary: "Recalled unaided: Q1, Q3, Q5, Q7–Q12 … Needed help or correction: none … Not answered by you: Q2 skipped; Q4 answer shown; Q6 'don't remember.'" Each question is in exactly one group. "Done: 12 of 12" with a full bar. | Pass |
+| RA14 | `7ebb806` | After Q1, "stop" with Q2 pending gave "Stopped." with no outcomes and no full bar. "give me a recap" gave "Question 1 — recalled unaided … Question 2 — asked, not answered … Questions 3–7 — not reached." | Pass |
+| RA16 | `7ebb806` / `95216a6` | RC1: notes 3 and 5 flagged, memory acknowledged, depth asked. After "Standard": "Standard quiz: 7 questions. Question 1 of 7 ▱▱▱▱▱▱▱" with one question. RC2 (at `95216a6`, notes without saying memory or notes): flags notes 3 and 5, then "How detailed should the quiz be: Quick, Standard, or Deep? And will you answer from memory or with notes open?", asking memory-or-notes once. RC3: "quiz me on line 3" gave "Correcting line 3: what is heat in thermodynamics, and what kind of energy does a body contain instead?" in the same slot (Q2). RC4: "I don't remember" gave the answer briefly and moved to Q2 on ▰▱▱▱▱▱▱; "hint" gave a cue only with the same number and bar; "stop" gave just "Stopped." with no recap. X3 at `95216a6` (eight installed): `$lk-review` loaded only `lk-review`; `$lk-recall` loaded only `lk-recall`. | Pass |
+| Spot RA2/RA4/RA11 | `7ebb806` | The first message had a line-by-line notes check ("3. Incorrect … 5. Incorrect: copper's specific heat is about 0.39 J/(g·K), not 0.90"), then "Standard quiz: 7 questions." The progress line sat directly above each question. Bars went from Q1 ▱▱▱▱▱▱▱ to Q7 ▰▰▰▰▰▰▱, then "Done: 7 of 7 ▰▰▰▰▰▰▰" with the summary in the same message ("Recalled unaided: all seven questions"). No difficulty announcements; each question asked about one thing. | Pass |
+
+**Result (as recorded):** every rerun check was marked Pass. **Re-graded after review:** RA6 and RA8 are Fail; see below. All other checks RA1–RA16 have a passing run on their latest relevant commit (RA3 at `df6bd15`; RA10, RA12, RA13 and RA15 at `b650e4b`).
+
+**Observations (not graded):**
+- X3's `$lk-review` session flagged note 3 but not note 5. `lk-review` isn't part of this change.
+- The spot-check flag said 0.39 J/(g·K) (rounded) where other sessions said 0.385.
+
+**Logged learner answers** (in send order, by session):
+- RA5: "ΔU = Q − W = 150 − 40 = +110 J." · "ΔU = 0, because an ideal gas's internal energy depends only on temperature, which doesn't change." · "W = (1.00)(8.314)(300) ln 2 ≈ 2494 × 0.693 ≈ +1.73 kJ, positive because the gas expands." · "Q = W, because ΔU = 0 for an isothermal ideal gas, so ΔU = Q − W gives Q = W: the heat absorbed equals the work done."
+- RA6: "ΔU is the change in internal energy and Q is the heat added to the system." · "Negative, because energy leaves the gas." · "Negative, because the surroundings do work on the gas." · "ΔU = 0, because an ideal gas's internal energy depends only on temperature, which is constant." · "W = nRT ln(V2/V1); it's positive when V2 > V1, that is, for an expansion." · "Q = W, and both are positive: heat flows in and the gas does work." · "Q = 0, W is positive, and ΔU = −W is negative: the gas uses its own internal energy to do the work."
+- RA7: "ΔU = Q − W. Positive Q is heat added to the system; positive W is work done by the system on its surroundings." · "hint" · "ΔU = 0, because temperature stays constant and an ideal gas's internal energy depends only on temperature." · "W = nRT ln(V2/V1), where V2/V1 is the ratio of the final volume to the initial volume." · "Heat is energy transferred because of a temperature difference between objects; it flows from hotter to colder." · "ΔU = 0, and Q = W = +200 J." · "ΔU = Q − W = 0 − (−150) = +150 J." · "Q = mcΔT = 10 g × 0.385 J/(g·K) × 2 K = 7.7 J."
+- RA8 at `95216a6`, session A: "Positive Q means heat flows into the system; positive W means the system does work on its surroundings." · "ΔU = 0, because an ideal gas's internal energy depends only on temperature, which stays constant." · "The heat transfer is 250 J." · "+250 J: heat flows into the gas."
+- RA8 at `95216a6`, session B: "ΔU = Q − W. Positive Q is heat added to the system; positive W is work done by the system on its surroundings." · "ΔU = 0, because an ideal gas's internal energy depends only on temperature, which stays constant." · "The work has magnitude nRT ln 3." · "Positive: W = +nRT ln 3, since the gas does work as it expands."
+- RA8 at `7ebb806` (superseded): "ΔU = Q − W, W is the work" (session 1) · "The internal energy changes by 70 J." (session 2)
+- RA9: "Positive Q means heat flows into the system; positive W means the system does work on its surroundings." · "skip" · "Its temperature." · "show me the answer" · "Heat is energy transferred because of a temperature difference between a system and its surroundings." · "I don't remember" · "W = nRT ln(V2/V1)." · "W is negative, because ln(V2/V1) < 0; it means work is done on the gas by the surroundings." · "ΔU = 0 (isothermal ideal gas), so Q = W = −500 J: heat leaves the gas." · "Adiabatic means no heat exchange, Q = 0, so the first law becomes ΔU = −W." · "ΔU = −W = +800 J, so internal energy rises and the ideal gas's temperature goes up, because the work done on it is stored as internal energy with no heat lost." · "ΔU = Q − W = 300 − 500 = −200 J, so the internal energy falls."
+- RA14: "Positive Q means heat flows into the system; positive W means the system does work on its surroundings." · "stop" · "give me a recap"
+- RC1–RC4: "Standard" (setup reply; not in the original script) · "I don't remember" · "hint" · "quiz me on line 3" · "stop"
+- Spot check: "It changes by Q − W: the heat absorbed adds to the internal energy and the work done on the surroundings subtracts from it." · "Because an ideal gas's internal energy depends only on temperature, and the temperature doesn't change." · "W is negative because work is done on the gas; since ΔU = 0, Q = W, so Q is also negative and the same size: heat leaves the gas." · "W = nRT ln(V2/V1); it's positive when V2 > V1 (expansion)." · "Heat is energy transferred because of a temperature difference; internal energy is the energy the body actually contains." · "About 0.385 J/(g·K)." · "Its internal energy decreases: Q = 0, so ΔU = −W, and positive W makes ΔU negative."
+
+### Re-grade after review, and fix
+
+A review of the rerun record found two checks marked Pass whose observations don't meet their own expected behavior:
+
+- **RA6:** after the incorrect expansion-sign answer, the next question was the mirrored compression-sign question, which the record calls "about as hard". The expected behavior and the skill both require an *easier* related question.
+- **RA8:** the clarifying question (sign of Q, sign of W) had no progress line above it. The number and bar were unchanged when the quiz resumed, but the skill puts a progress line above every question, clarifications included.
+
+**Fix** in `skills/lk-recall/SKILL.md`:
+- After an incorrect answer, the next question must be clearly easier and on the same idea. It asks for one smaller piece the missed question depended on (a single fact, a definition or one step). A mirrored or reworded version at the same level doesn't count.
+- A hint, a clarifying question, a repeated question or a declined handoff shows the same progress line, unchanged, directly above it.
+
+RA6's and RA8's expected behavior now say this explicitly.
+
+**Rerun needed** on the commit that adds this note: RA6 and RA8 (both RA8 sessions). RA7 is a quick check that the hint reply still shows the unchanged progress line.
