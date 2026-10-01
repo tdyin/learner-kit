@@ -540,3 +540,24 @@ Judge behavior, not exact wording. Use the problems and notes in `examples/therm
 - Hints also must not include sanity checks that give away the value. The retry-1 reply had said "a bit more than two-thirds of nRT".
 
 **Rerun needed:** CC5 and CR3, on the commit after `4cd969a`.
+
+### Rerun at `0ffcb87` (lk-coach only)
+
+- **Claude Code:** 2.1.282, claude-opus-5-5, Windows 11, run headless with `MSYS_NO_PATHCONV=1`.
+- **Codex:** CLI 0.159.3, gpt-5.6-terra (medium).
+- **Date:** 2026-10-01
+- **Install:** all nine installed on both hosts from `0ffcb87`. The installed `lk-coach` contains "counts as a third hint". The scratch directory was still empty at the end.
+- **Script:** CC5 on Claude Code and CR3 on Codex.
+
+| # | Observed (summary) | Status |
+|---|---|---|
+| CC5 | The hint revealed no value. After the °C retry it said how to fix it ("need T in kelvin, and the problem already gives it in kelvin") and asked "what do you get for W?", with no choice offered. Its own note read "Coached retries on W so far: 1 unsuccessful". It had treated the log₁₀ answer as a first attempt at W because the earlier hint was about ΔU. Full solution correct; stop ended. | **Fail** |
+| CR3 | After the °C retry: "This is coached retry 2: the temperature was switched to Celsius, but this gas-law calculation requires an absolute temperature. Would you like a different explanation, a made-up analogous example, an easier version, or a break?" No recomputation requested and no value stated. Full solution correct; "Stopped." | Pass |
+
+**Observed outside the Expected column (CR3, retry 1):** Codex misdescribed the log-base error as "arithmetic/units" and wrote out the full expression for the learner to evaluate. The skill's bounded-hint rule already forbids writing out the expression. This was recorded as a model-compliance gap and needed no wording change.
+
+**Fix after this run:**
+- `lk-coach` now defines a "task" as the whole problem the learner brought, not each quantity within it.
+- After any help on the problem, every later wrong or incomplete answer to any part of it is an unsuccessful coached retry. The skill gives the example: after a hint about ΔU, a wrong W is retry 1 and a second wrong W is retry 2.
+
+**Rerun needed:** CC5 and CR3 on the commit after `0ffcb87`.
