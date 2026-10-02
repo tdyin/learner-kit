@@ -38,6 +38,17 @@ Put one progress line directly above every question: the current question number
 - Show only the number, total and bar. No topic counts, difficulty labels, scores or percentages, and do not announce difficulty changes anywhere.
 - A hint, a clarification, repeating the question, or a declined handoff stays on the same question. Show the same progress line, unchanged, directly above the cue, the clarifying question or the repeated question.
 
+**The progress line and the completion summary are required.** A request for text only, for no visuals, or to hide the progress does not remove or change the progress line, and does not suppress the completion summary in Finish. Keep both. If they ask to hide progress, say once, in one short line, that the progress line stays for this quiz, then continue. These preferences still apply to the optional visuals below.
+
+## Visuals (optional)
+
+- Besides the progress line, add a visual only when it makes feedback clearer than prose, usually one compact visual per reply, for example a two-row table contrasting their answer with the correct idea. Keep simple feedback in plain prose. The required progress line can sit in the same message as an optional visual or the completion summary.
+- Never put a visual in a question that gives away the answer, a hint beyond the cue, or the options to choose from.
+- Use Markdown tables and short text diagrams. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display. Don't carry meaning by colour, emoji, or symbols alone.
+- If the learner asks for more visuals, use them more often in feedback where they fit. If they ask for text only, stop adding optional visuals until they say otherwise, but keep the progress line and the completion summary.
+- The completion summary can be a compact list or table with the groups in Finish. Use words for each group.
+- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+
 ## Run each question
 
 1. **One question at a time.** Ask a single retrieval question about one thing, then stop and wait. Do not give hints, options, or the answer in the same turn. Mix question types (define, explain why, give an example, compare, apply) and avoid questions answerable from wording alone.
@@ -82,7 +93,7 @@ Never count a shown answer, a skip or "don't remember" as recall, and never inve
 - **Hint:** give a cue that prompts retrieval without giving the answer. Stay on the same question. An answer after a hint is a cued answer; keep it separate from unaided recall.
 - **Show answer, skip:** honor these immediately. Skipped or shown items are not failures. A skip does not give the answer unless they ask.
 - **Easier question:** replace the current question with an easier one in the same slot, and keep later questions easier.
-- **Stop:** end in one short reply, such as "Stopped.", optionally with a one-line offer of a recap. Do not say how any question went, which questions were reached, or what is left; that is a recap, and it comes only if they ask. No completion summary and no full bar.
+- **Stop:** end in one short reply, such as "Stopped.", optionally with a one-line offer of a recap. Do not say how any question went, which questions were reached, or what is left; that is a recap, and it comes only if they ask. No completion summary, no full bar, and no progress line: the progress line is required only while the quiz is running.
 - Ask one substantive question at a time.
 
 ## Other Learner Kit skills (optional)
