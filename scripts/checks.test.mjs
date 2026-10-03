@@ -59,11 +59,14 @@ test('a recall cue can keep its slot pending without repeating the question', ()
 
 test('a completion marker without recognized conversation history cannot prove no activation', async t => {
   const sessions = await temporaryFixture(t, 'learner-kit-history-');
-  const date = join(sessions, '2026/10/03');
-  await mkdir(date, { recursive: true });
   const id = '01a10398-8b26-7092-9d02-27c1c3edf3f1';
+  const timestamp = new Date(parseInt(id.replaceAll('-', '').slice(0, 12), 16));
+  const date = join(sessions, String(timestamp.getFullYear()), String(timestamp.getMonth() + 1).padStart(2, '0'), String(timestamp.getDate()).padStart(2, '0'));
+  await mkdir(date, { recursive: true });
   await writeFile(join(date, `rollout-${id}.jsonl`), JSON.stringify({ type: 'event_msg', payload: { type: 'task_complete' } }));
-  assert.equal((await inspectActivation(id, undefined, 1, sessions)).status, 'unverified');
+  const result = await inspectActivation(id, undefined, 1, sessions);
+  assert.equal(result.status, 'unverified');
+  assert.match(result.observation, /^Recognized user\/assistant history unavailable/u);
 });
 
 test('equivalent mathematical minus glyphs pass numeric cues and still catch leaked answers', () => {
