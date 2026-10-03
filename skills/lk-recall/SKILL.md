@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Help the learner practise retrieving what they have studied through a short quiz of a fixed length. Work from their topic or material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -24,7 +24,7 @@ Ask the setup questions that are still open together, in one short message, and 
 
 1. **Coverage depth.** Ask how detailed the quiz should be: **Quick** (main ideas), **Standard** (main ideas plus important details) or **Deep** (thorough coverage with follow-up questions). Depth sets coverage and length, not difficulty: a Deep quiz can start with accessible questions.
 2. **Agree on references.** Ask once whether they want to answer from memory or with their notes open. You cannot see what they do outside the chat, so do not claim to monitor it. If they skip the question, assume memory.
-3. **Fix the total.** From the material and the chosen depth, pick a number of questions and announce it before question 1 (for example, "Standard quiz: 8 questions."). Choose a total that fits the material; there is no set number per depth. Once the quiz starts, the total does not change. Only the content and difficulty of the remaining questions adapt. The learner can still stop early.
+3. **Fix the total and show progress.** From the material and the chosen depth, pick a number of questions and announce it before question 1 (for example, "Standard quiz: 8 questions."). Choose a total that fits the material; there is no set number per depth. Directly above question 1, show its required empty progress bar (for two slots: `Question 1 of 2 ▱▱`). Keep this line even when the learner asks for text only or to hide progress: say once, briefly, that the quiz keeps its progress line, then ask the question with that line. Apply their preference to optional visuals. Once the quiz starts, the total does not change. Only the content and difficulty of the remaining questions adapt. The learner can still stop early.
 4. **Plan loosely.** Keep a rough outline of the ideas to cover at that depth. Write each question when you reach it, using the learner's answers so far. Do not write out or show the full set of questions or answers in advance.
 
 ## Progress bar
@@ -40,14 +40,16 @@ Put one progress line directly above every question: the current question number
 
 **The progress line and the completion summary are required.** A request for text only, for no visuals, or to hide the progress does not remove or change the progress line, and does not suppress the completion summary in Finish. Keep both. If they ask to hide progress, say once, in one short line, that the progress line stays for this quiz, then continue. These preferences still apply to the optional visuals below.
 
-## Visuals (optional)
+## Visuals
 
-- Besides the progress line, add a visual only when it makes feedback clearer than prose, usually one compact visual per reply, for example a two-row table contrasting their answer with the correct idea. Keep simple feedback in plain prose. The required progress line can sit in the same message as an optional visual or the completion summary.
+- Besides the progress line, proactively add a compact visual when feedback is hard to picture and a representation helps understanding; do not wait for a visual request. There is no visual quota. Use, for example, a two-row table contrasting their answer with the correct idea. Keep simple feedback in plain prose. The required progress line can sit in the same message as an optional visual or the completion summary.
 - Never put a visual in a question that gives away the answer, a hint beyond the cue, or the options to choose from.
 - Use Markdown tables and short text diagrams. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display. Don't carry meaning by colour, emoji, or symbols alone.
 - If the learner asks for more visuals, use them more often in feedback where they fit. If they ask for text only, stop adding optional visuals until they say otherwise, but keep the progress line and the completion summary.
 - The completion summary can be a compact list or table with the groups in Finish. Use words for each group.
-- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+- Keep essential meaning in words as well as the visual. Adapt to explicit preferences and evidence in the learner's reasoning; response speed alone is not evidence of a presentation need. Retain preferences within this conversation and reuse useful visuals with consistent labels and meaning; do not assign permanent learner labels.
+- **Sourced images:** when a real image helps (for example an archival photograph), use it only if tools can retrieve and inspect the actual pixels and this surface can display it. Check provenance, attribution, date, and usage conditions; distinguish visible detail, source-supported fact, and interpretation. Inspect the image before describing its details. A caption or URL alone is not inspection. If retrieval, inspection, or display is unavailable, state the specific gap and give a useful text fallback without claiming the image was viewed or rendered. Use native media or a permitted inline embed; do not download to bypass display restrictions.
+- Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
 
 ## Run each question
 
@@ -103,7 +105,7 @@ If a gap needs teaching rather than more quizzing, you may mention `lk-explain`,
 ## Recap on request and limits
 
 - A recap after an early stop lists the questions asked and, for each, whether it was recalled unaided, answered after a hint, answered partly or incorrectly, answered "don't remember", skipped, shown, or left unanswered, with one suggested next step. Count a question as answered only if the learner actually answered it. A question that was asked but still pending when they stopped is "asked, not answered", never "not reached". List planned questions that were never asked as not reached.
-- No scores, mastery claims, or forecasts of forgetting. Do not create or update files or learner records.
+- No scores, mastery claims, or forecasts of forgetting. Keep learner work in the chat. Temporary sourced-image resources are allowed only as described in Visuals; do not create or update learner records.
 - You only know this conversation. Recall in one session does not show long-term retention.
 
 ## Example requests

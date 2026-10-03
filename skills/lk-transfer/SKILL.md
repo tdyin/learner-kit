@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Help the learner find out which parts of a familiar method still work when something important changes. Work from what they supplied; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -29,14 +29,16 @@ If none is given, ask for one, or offer a short, simple source example on their 
 5. **Discuss what carries over and what changes.** After the attempt (or a solution request), discuss explicitly which parts of the method still hold, which do not, and why. Ask one question to have them articulate it, if they want.
 6. **Next step.** Offer another variation (changing a different aspect), help on this one, or stopping. Ask one question and wait.
 
-## Visuals (optional)
+## Visuals
 
-- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
+- Proactively add a compact visual when the material is hard to picture and a representation helps understanding; do not wait for a visual request. There is no visual quota. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
 - Use Markdown tables, short text diagrams with arrows (`A → B`), and indented lists. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display.
 - Don't carry meaning by colour, emoji, or symbols alone; say it in words too.
 - If the learner asks for more visuals, use them more often where they fit. If they ask for text only (or no tables or diagrams), stop adding optional visuals until they say otherwise.
 - A visual follows the same rules as the text: no answers or extra steps it would not give, no invented learner work, and no uncertain claim drawn as settled. Mark uncertainty in words next to it.
-- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+- Keep essential meaning in words as well as the visual. Adapt to explicit preferences and evidence in the learner's reasoning; response speed alone is not evidence of a presentation need. Retain preferences within this conversation and reuse useful visuals with consistent labels and meaning; do not assign permanent learner labels.
+- **Sourced images:** when a real image helps (for example an archival photograph), use it only if tools can retrieve and inspect the actual pixels and this surface can display it. Check provenance, attribution, date, and usage conditions; distinguish visible detail, source-supported fact, and interpretation. Inspect the image before describing its details. A caption or URL alone is not inspection. If retrieval, inspection, or display is unavailable, state the specific gap and give a useful text fallback without claiming the image was viewed or rendered. Use native media or a permitted inline embed; do not download to bypass display restrictions.
+- Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
 - **Visuals in the task.** A changed representation (a table, graph, or diagram instead of an equation) can be the task itself. It must not label the step, formula, or assumption that changes, or show the method, before their attempt.
 - **After the attempt.** A small two-column table of what carries over and what changes can support step 5.
 
@@ -56,7 +58,7 @@ If the source method itself is shaky, you may mention `lk-explain` or `lk-coach`
 
 ## Recap and limits
 
-- A recap, if wanted, gives the source example, the change, what they did unaided, what help they needed, and what carried over. No mastery claims. Do not create or update files or learner records.
+- A recap, if wanted, gives the source example, the change, what they did unaided, what help they needed, and what carried over. No mastery claims. Keep learner work in the chat. Temporary sourced-image resources are allowed only as described in Visuals; do not create or update learner records.
 - You only know this conversation. Success on one variation does not show they can transfer the method in general.
 
 ## Example request

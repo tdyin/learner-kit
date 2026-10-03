@@ -2,6 +2,20 @@
 
 All hosts use the same nine skill packages and the same teaching instructions. Only the setup steps and a small amount of metadata differ between hosts.
 
+## Current plugin candidate: 1.1.1
+
+This candidate adds native packaging and shared visual guidance. Earlier verified source releases do not automatically verify its new instructions or desktop behavior.
+
+Known candidate failure: `lk-recall` omitted its required progress bar when asked to hide progress, including after the 1.1.1 update. Text-only completion passed separately. See [current evidence](results/2026-10-03.md) for bounded outcomes and remaining acceptance.
+
+| Surface | Current outcome | Evidence |
+|---|---|---|
+| Codex CLI | Native local plugin installation and all-nine loader discovery passed; scoped conversations are recorded separately. This is headless evidence. | [Current record](results/2026-10-03.md) |
+| Codex Desktop | Fresh installation, installed update, activation, and personal display acceptance unverified. | [Native path/checklist](install.md#codex-desktop-native-catalog) |
+| Claude Desktop Chat | Package validation passed. Direct Chat install/update/activation/display unverified. Docs describe automatic skill matching; native explicit-only enforcement is unresolved. | [Chat path/checklist](install.md#claude-desktop-chat-native-plugin) |
+
+The following host table and evidence retain historical source-release observations and known failures. They do not claim candidate acceptance. Existing individual-skill installation remains available; see [directory setup](install.md#existing-directory-installations-and-troubleshooting).
+
 ## Status labels
 
 - **Verified:** in a recorded environment, installation worked, all nine skills were discovered, and representative tutoring checks passed.
@@ -14,11 +28,11 @@ All hosts use the same nine skill packages and the same teaching instructions. O
 
 | Host | Status (recorded evidence) | Activation enforcement | Setup |
 |---|---|---|---|
-| Codex CLI | **Verified** at `4cd969a`: all nine installed and discovered, CR1–CR5 passed. On the latest tested `lk-coach` revision (`5b7cec0`), `lk-coach` has a **known issue**: in 2 of the last 4 CR3 runs, a hint gave away the answer to the step it asked about. All other `lk-coach` behavior passed. | Native: `agents/openai.yaml` sets `policy.allow_implicit_invocation: false` | [README → Codex](../README.md#codex) |
-| Claude Code | **Verified.** CC1–CC4 and CC6–CC8 passed at `4cd969a`, with all nine installed and discovered. CC5 (`lk-coach`) passed at `4a1d03a` and again at `5b7cec0`; only the `5b7cec0` run used the final `lk-coach` wording. One line in `lk-explain` changed afterwards (`fcd0346`): its example of another skill now names `lk-practice`. This didn't change the teaching behavior and wasn't rerun. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [README → Claude Code](../README.md#claude-code) |
-| Pi coding agent | **Compatible but unverified — not tested.** Setup follows Pi's official documentation; no install or tutoring check has been run in Pi. | Native (documented, not observed): Pi supports `disable-model-invocation: true` in `SKILL.md` | [README → Pi](../README.md#pi) |
-| NousResearch Hermes Agent | **Compatible but unverified — not tested.** Setup follows Hermes's official documentation; no install or tutoring check has been run in Hermes. | **Best effort.** Hermes's documentation describes no manual-only control. Only each skill's "use only when explicitly selected" instruction applies. | [README → Hermes](../README.md#hermes) |
-| Other Agent Skills hosts | Not assessed. Each agent needs its own verification. | Depends on the agent. Best effort if it has no native control. | [README → Other agents](../README.md#other-agents) |
+| Codex CLI | **Verified** at `4cd969a`: all nine installed and discovered, CR1–CR5 passed. On the latest tested `lk-coach` revision (`5b7cec0`), `lk-coach` has a **known issue**: in 2 of the last 4 CR3 runs, a hint gave away the answer to the step it asked about. All other `lk-coach` behavior passed. | Native: `agents/openai.yaml` sets `policy.allow_implicit_invocation: false` | [Directory setup](install.md#existing-directory-installations-and-troubleshooting) |
+| Claude Code | **Verified.** CC1–CC4 and CC6–CC8 passed at `4cd969a`, with all nine installed and discovered. CC5 (`lk-coach`) passed at `4a1d03a` and again at `5b7cec0`; only the `5b7cec0` run used the final `lk-coach` wording. One line in `lk-explain` changed afterwards (`fcd0346`): its example of another skill now names `lk-practice`. This didn't change the teaching behavior and wasn't rerun. | Native: `disable-model-invocation: true` in `SKILL.md`. Observed working: no skill loaded on an ordinary matching request (CC3). | [Directory setup](install.md#existing-directory-installations-and-troubleshooting) |
+| Pi coding agent | **Compatible but unverified — not tested.** Setup follows Pi's official documentation; no install or tutoring check has been run in Pi. | Native (documented, not observed): Pi supports `disable-model-invocation: true` in `SKILL.md` | [Directory setup](install.md#existing-directory-installations-and-troubleshooting) |
+| NousResearch Hermes Agent | **Compatible but unverified — not tested.** Setup follows Hermes's official documentation; no install or tutoring check has been run in Hermes. | **Best effort.** Hermes's documentation describes no manual-only control. Only each skill's "use only when explicitly selected" instruction applies. | [Directory setup](install.md#existing-directory-installations-and-troubleshooting) |
+| Other Agent Skills hosts | Not assessed. Each agent needs its own verification. | Depends on the agent. Best effort if it has no native control. | [Directory setup](install.md#existing-directory-installations-and-troubleshooting) |
 
 `lk-recall`'s fixed-length adaptive quiz (issue #18) came after these results. In **Codex** (gpt-5.6-terra, medium), checks RA1–RA16 have passing runs except RA6 and RA8, which were re-graded as Fail after review; their fix is awaiting a rerun. It hasn't been checked in **Claude Code**. Details are in [smoke-checks.md](smoke-checks.md#issue-18-adaptive-lk-recall-quizzes).
 
@@ -77,4 +91,4 @@ In-chat visuals (issue #23) were checked in **Claude Code** 2.1.287 (claude-opus
 
 ### Other Agent Skills hosts
 
-Sharing the file format doesn't mean an agent will behave the same way. An unlisted agent hasn't been checked; its discovery, activation controls and teaching behavior need their own verification. General setup guidance is in [README → Other agents](../README.md#other-agents).
+Sharing the file format doesn't mean an agent will behave the same way. An unlisted agent hasn't been checked; its discovery, activation controls and teaching behavior need their own verification. General setup guidance is in [Directory setup](install.md#existing-directory-installations-and-troubleshooting).
