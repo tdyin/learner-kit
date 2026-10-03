@@ -2,7 +2,7 @@ export const names = ['lk-coach', 'lk-diagnose', 'lk-explain', 'lk-explore', 'lk
 
 export function scenarios(selection, prefix = '') {
   const select = name => `$${prefix}${name}`;
-  const hint = { question: true, absent: ['(?<![\\d.])-1(?!\\d|\\.\\d)'] };
+  const hint = { question: true, absent: ['(?<![\\d.])-1(?!\\d|\\.\\d)', '\\b(?:negative|minus)[\\s-]+one\\b'] };
   const recall = (id, preference) => ({ id, turns: [
     { prompt: `${select('lk-recall')} Quick, from memory, exactly two questions. ${preference} Notes: the additive identity is zero; adding a positive number moves right on the number line. Ask about the additive identity first.`, expect: { question: true, present: ['Question 1 of 2', '▱▱'] } },
     { prompt: 'Give me a cue, not the answer.', expect: { present: ['Question 1 of 2', '▱▱'], absent: ['zero', '\\b0\\b'] } },

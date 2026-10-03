@@ -73,7 +73,7 @@ test('equivalent mathematical minus glyphs pass numeric cues and still catch lea
 
 test('math hints reject the withheld answer in prose and diagrams regardless of phrasing', () => {
   const expect = scenarios('math').find(scenario => scenario.id === 'math-coach').turns[0].expect;
-  for (const text of ['You get -1. Which direction did you move?', 'Your endpoint is −1. What changed?', '-3 → -2 → -1\nWhere did you land?']) {
+  for (const text of ['You get -1. Which direction did you move?', 'Your endpoint is −1. What changed?', '-3 → -2 → -1\nWhere did you land?', 'The answer is negative one. Which direction did you move?', 'You land at minus one. What changed?', 'You get Negative-One. Where did you land?']) {
     assert.ok(checkReply(text, expect).some(failure => failure.startsWith('Forbidden')), text);
   }
   assert.deepEqual(checkReply('Start at −3 and move right. Which position comes next?', expect), []);
