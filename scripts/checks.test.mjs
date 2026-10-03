@@ -73,11 +73,23 @@ test('equivalent mathematical minus glyphs pass numeric cues and still catch lea
 
 test('math hints reject the withheld answer in prose and diagrams regardless of phrasing', () => {
   const expect = scenarios('math').find(scenario => scenario.id === 'math-coach').turns[0].expect;
-  for (const text of ['You get -1. Which direction did you move?', 'Your endpoint is −1. What changed?', '-3 → -2 → -1\nWhere did you land?', 'The answer is negative one. Which direction did you move?', 'You land at minus one. What changed?', 'You get Negative-One. Where did you land?']) {
+  for (const text of [
+    'You get -1. Which direction did you move?',
+    'Your endpoint is −1. What changed?',
+    '-3 → -2 → -1\nWhere did you land?',
+    'The answer is negative one. Which direction did you move?',
+    'You land at minus one. What changed?',
+    'You get Negative-One. Where did you land?',
+    'You land at − 1. Which direction did you move?',
+    'You get -\t1. What changed?',
+    'Your endpoint is negative 1. Where did you land?',
+    'You get minus 1. Which direction did you move?',
+  ]) {
     assert.ok(checkReply(text, expect).some(failure => failure.startsWith('Forbidden')), text);
   }
   assert.deepEqual(checkReply('Start at −3 and move right. Which position comes next?', expect), []);
   assert.deepEqual(checkReply('Imagine starting at -11 or -1.5. Which direction is positive?', expect), []);
+  assert.deepEqual(checkReply('Imagine negative 11 or minus 1.5. Which direction is positive?', expect), []);
 });
 
 test('cheap validation rejects host packages with inconsistent release versions', async t => {
