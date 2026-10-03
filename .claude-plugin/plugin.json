@@ -1,0 +1,9 @@
+{
+  "name": "learner-kit",
+  "displayName": "Learner Kit",
+  "version": "1.1.1",
+  "description": "Nine standalone tutoring skills for adult self-learners and university students, selected with their permission.",
+  "author": { "name": "tdyin" },
+  "repository": "https://github.com/tdyin/learner-kit",
+  "license": "GPL-3.0-only"
+}

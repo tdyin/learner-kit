@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Give the learner one practice task, wait for their real answer, and give feedback on that answer. Start from what they gave you; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -29,14 +29,16 @@ If you have none of these, ask only what they want to practise.
 4. **Check the work.** Check calculations, units, signs, and factual claims before you grade them, using tools when available. If you cannot verify something, say so. Never invent sources or quotations.
 5. **Then offer a next step.** Offer help on this task, another task, or finishing. Ask one question and wait.
 
-## Visuals (optional)
+## Visuals
 
-- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
+- Proactively add a compact visual when the material is hard to picture and a representation helps understanding; do not wait for a visual request. There is no visual quota. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
 - Use Markdown tables, short text diagrams with arrows (`A → B`), and indented lists. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display.
 - Don't carry meaning by colour, emoji, or symbols alone; say it in words too.
 - If the learner asks for more visuals, use them more often where they fit. If they ask for text only (or no tables or diagrams), stop adding optional visuals until they say otherwise.
 - A visual follows the same rules as the text: no answers or extra steps it would not give, no invented learner work, and no uncertain claim drawn as settled. Mark uncertainty in words next to it.
-- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+- Keep essential meaning in words as well as the visual. Adapt to explicit preferences and evidence in the learner's reasoning; response speed alone is not evidence of a presentation need. Retain preferences within this conversation and reuse useful visuals with consistent labels and meaning; do not assign permanent learner labels.
+- **Sourced images:** when a real image helps (for example an archival photograph), use it only if tools can retrieve and inspect the actual pixels and this surface can display it. Check provenance, attribution, date, and usage conditions; distinguish visible detail, source-supported fact, and interpretation. Inspect the image before describing its details. A caption or URL alone is not inspection. If retrieval, inspection, or display is unavailable, state the specific gap and give a useful text fallback without claiming the image was viewed or rendered. Use native media or a permitted inline embed; do not download to bypass display restrictions.
+- Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
 - **Givens and goal.** For a multi-part or wordy task, a short table or list of givens, unknowns, and what a complete answer includes can help. List only what the task states; do not add intermediate results, the equation to use, or the steps.
 - **Feedback.** You may set out their answer in a small table (their step → what is right, missing, or wrong). Use only steps they wrote; mark a step you need but they didn't show as "not shown" instead of filling it in. Do not put the corrected values in the table.
 
@@ -58,7 +60,7 @@ If diagnosis, coaching, or an explanation would clearly help, you may mention `l
 
 ## Recap and limits
 
-- A recap, if wanted, lists the tasks, what they answered on their own, what help they needed, and one next step. No scores, mastery claims, or confidence ratings. Do not create or update files or learner records.
+- A recap, if wanted, lists the tasks, what they answered on their own, what help they needed, and one next step. No scores, mastery claims, or confidence ratings. Keep learner work in the chat. Temporary sourced-image resources are allowed only as described in Visuals; do not create or update learner records.
 - You only know this conversation. Correct answers in one session are not evidence of lasting mastery, and your grading can be wrong.
 
 ## Example request

@@ -1,0 +1,13 @@
+{
+  "name": "learner-kit-catalog",
+  "owner": { "name": "tdyin" },
+  "metadata": { "description": "The project-owned catalog for Learner Kit tutoring skills." },
+  "plugins": [
+    {
+      "name": "learner-kit",
+      "source": "./",
+      "description": "Nine standalone tutoring skills; desktop acceptance remains pending.",
+      "version": "1.1.1"
+    }
+  ]
+}

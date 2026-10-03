@@ -1,0 +1,15 @@
+{
+  "topic": "Social Security Act signing and evidence limits",
+  "period": "United States, Great Depression, August 14, 1935",
+  "writtenSource": "examples/history/written-source.md",
+  "image": {
+    "url": "https://ids.si.edu/ids/deliveryService?id=SIA-SIA_000095_B27E_031-000001",
+    "sourcePage": "https://siarchives.si.edu/collections/siris_arc_404174",
+    "creator": "Unknown (archive metadata)",
+    "credit": "Smithsonian Institution Archives, Record Unit 95, Box 27E, Image No. SIA_000095_B27E_031",
+    "rights": "Copyright Undetermined. Archive welcomes personal and educational use unless otherwise noted; commercial uses require contacting the archive. Do not redistribute the cached image as GPL project content.",
+    "sha256": "a2d2f42ab24d90dcb3a9de85f576a3f4a2557752d0079b6d244d2707cea38e44",
+    "cache": ".local/checks/fixtures/social-security-signing.jpg"
+  },
+  "uncertainty": "Identities and date come from archive metadata, not pixels. Individual identifications have differed between catalogs."
+}

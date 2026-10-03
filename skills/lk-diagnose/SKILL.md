@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Find where the learner's actual answer or reasoning goes wrong and why it might have happened. Work only from what they supplied; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request counts; do not require a particular command syntax. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-explain`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -25,14 +25,16 @@ If the problem is missing, ask for it. If they supply only a final answer, ask f
 4. **Ask when the evidence is ambiguous.** If more than one cause fits, or the work could be a defensible alternative (another sign convention, method, or interpretation), say so. Ask up to two focused questions in total, one at a time, and wait for each answer. Stop asking once the cause is clear or two questions are used.
 5. **Close the loop.** Summarize the error and its most likely cause. Do not state the corrected final answer yet. Offer a choice: fix the step themselves, a short explanation, or a full corrected solution. Then wait for them to choose.
 
-## Visuals (optional)
+## Visuals
 
-- Add a visual only when it makes this reply clearer than prose, usually one compact visual per reply. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
+- Proactively add a compact visual when the material is hard to picture and a representation helps understanding; do not wait for a visual request. There is no visual quota. A simple question (a unit, a definition, a single value) gets a short prose answer of a few sentences, with no table or diagram.
 - Use Markdown tables, short text diagrams with arrows (`A → B`), and indented lists. Use Mermaid only when you know this host renders it, and give the essential meaning in text as well. If you don't know, use text; do not ask the learner about their display.
 - Don't carry meaning by colour, emoji, or symbols alone; say it in words too.
 - If the learner asks for more visuals, use them more often where they fit. If they ask for text only (or no tables or diagrams), stop adding optional visuals until they say otherwise.
 - A visual follows the same rules as the text: no answers or extra steps it would not give, no invented learner work, and no uncertain claim drawn as settled. Mark uncertainty in words next to it.
-- Keep visuals in the chat. Do not create image files, HTML pages, exports, or learner records.
+- Keep essential meaning in words as well as the visual. Adapt to explicit preferences and evidence in the learner's reasoning; response speed alone is not evidence of a presentation need. Retain preferences within this conversation and reuse useful visuals with consistent labels and meaning; do not assign permanent learner labels.
+- **Sourced images:** when a real image helps (for example an archival photograph), use it only if tools can retrieve and inspect the actual pixels and this surface can display it. Check provenance, attribution, date, and usage conditions; distinguish visible detail, source-supported fact, and interpretation. Inspect the image before describing its details. A caption or URL alone is not inspection. If retrieval, inspection, or display is unavailable, state the specific gap and give a useful text fallback without claiming the image was viewed or rendered. Use native media or a permitted inline embed; do not download to bypass display restrictions.
+- Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
 - **Annotated reasoning.** A small table of their steps helps locate the error: column 1 is each step in their own words, column 2 says in words whether it is correct, mistaken, incomplete, or unclear, and why. Use only steps they wrote, in their order. If a step you need is missing, write "not shown" rather than supplying it. Mark a step you are unsure about as unclear. Do not add a row with the corrected final answer before they choose how to continue.
 
   | Your step | Observation |
@@ -57,7 +59,7 @@ If they want guided help to finish the problem or practice on the same idea, you
 
 ## Recap and limits
 
-- A recap, if wanted, states the problem, the error you observed in their answer, the likely cause, and any coached retry outcome. No scores or mastery claims. Do not create or update files or learner records.
+- A recap, if wanted, states the problem, the error you observed in their answer, the likely cause, and any coached retry outcome. No scores or mastery claims. Keep learner work in the chat. Temporary sourced-image resources are allowed only as described in Visuals; do not create or update learner records.
 - You only see this conversation and this answer. A diagnosis explains one piece of work and can be wrong; say how confident you are.
 
 ## Example request
