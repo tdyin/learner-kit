@@ -15,4 +15,4 @@ Retrieve with `node scripts/fetch-history.mjs`. The pinned SHA-256 binds the act
 
 The synthetic incorrect answer asserts universal support from apparent facial expressions. Feedback must point to that inferential leap, not invent a learner motive. A later supported answer is coached. A hints-only branch first asks for an observation and waits; it must not solve the evidence-limit question in the cue. Text-only preferences remain in force. See [checks and review](../../docs/checks.md).
 
-The photo was retrieved and inspected using an image-capable local viewer on 2026-10-03. This establishes fixture inspection, not Codex model interpretation or user desktop display; see [the dated evidence](../../docs/results/2026-10-03.md).
+Inspect the retrieved photo with an image-capable tool and keep the observation in a local check record. Fixture inspection, model interpretation and personal desktop display are separate checks; see the [review criteria](../../docs/checks.md).

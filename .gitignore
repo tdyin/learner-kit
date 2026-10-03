@@ -1,1 +1,4 @@
 /.local/checks/
+/docs/results/
+/docs/smoke-checks.md
+/docs/release-acceptance.md

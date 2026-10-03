@@ -14,6 +14,19 @@ async function temporaryFixture(t, prefix) {
   return path;
 }
 
+async function publicSource(t) {
+  const fixture = await temporaryFixture(t, 'learner-kit-package-');
+  await cp(root, fixture, { recursive: true, filter: source => {
+    const path = relative(root, source).split(sep).join('/');
+    return !['.git', '.local', 'docs/results', 'docs/smoke-checks.md', 'docs/release-acceptance.md'].some(excluded => path === excluded || path.startsWith(`${excluded}/`));
+  } });
+  return fixture;
+}
+
+test('public source validates without any local result records', async t => {
+  assert.equal((await validate(await publicSource(t))).status, 'pass');
+});
+
 test('a recall cue can keep its slot pending without repeating the question', () => {
   const branch = scenarios('math').find(scenario => scenario.id === 'math-recall-completion');
   assert.deepEqual(checkReply('Question 1 of 2 ▱▱\nThink of a number you can add without changing a value.', branch.turns[1].expect), []);
@@ -35,8 +48,7 @@ test('equivalent mathematical minus glyphs pass numeric cues and still catch lea
 });
 
 test('cheap validation rejects host packages with inconsistent release versions', async t => {
-  const fixture = await temporaryFixture(t, 'learner-kit-package-');
-  await cp(root, fixture, { recursive: true, filter: source => !['.git', '.local'].includes(relative(root, source).split(sep)[0]) });
+  const fixture = await publicSource(t);
   const path = join(fixture, '.claude-plugin/plugin.json');
   const manifest = JSON.parse(await readFile(path, 'utf8'));
   manifest.version = '99.0.0';

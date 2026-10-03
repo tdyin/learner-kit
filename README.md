@@ -43,7 +43,6 @@ The project is inspired by *Make It Stick* (Brown, Roediger, and McDaniel, 2014)
 - [Install, update, and troubleshooting](docs/install.md)
 - [Compatibility and verification limits](docs/compatibility.md)
 - [Repeatable checks and review rubric](docs/checks.md)
-- [Current evidence](docs/results/2026-10-03.md) and [historical smoke checks](docs/smoke-checks.md)
 - [Release history](docs/changelog.md)
 - [Mathematics example](examples/mathematics.md), [history sources](examples/history/README.md), and [earlier thermodynamics material](examples/thermodynamics.md)
 

@@ -33,7 +33,7 @@ Reports and raw JSONL events/synthetic transcripts live only in `.local/checks/`
 
 `node scripts/review-activation.mjs .local/checks/<run-directory>` inspects only exact synthetic thread IDs in Codex's own session files. It checks completed-turn coverage, skill injections/reads, and unexpected companion loads; absent/incomplete history stays unverified. It writes `activation.json` beside the synthetic transcript. This adds no model calls and does not inspect other learner conversations. Other history formats may need a scoped adapter change, not a claim based on prose alone.
 
-Review the transcript and raw events with this short rubric. Record pass/fail/blocked/unverified and quote the supporting turn/event in a concise dated record under `docs/results/`; do not commit entire transcripts. Unreviewed judgments stay unverified. There is no automatic text-match quality score.
+Review the transcript and raw events with this short rubric. Record pass/fail/blocked/unverified and quote the supporting turn/event in a concise dated record under ignored `docs/results/`. Results and transcripts are for local reference and are excluded from commits and pushes. Unreviewed judgments stay unverified. There is no automatic text-match quality score.
 
 | Check | Evidence needed |
 |---|---|
@@ -42,7 +42,7 @@ Review the transcript and raw events with this short rubric. Record pass/fail/bl
 | Preference and source care | Text-only preference persists; speed alone creates no learner label. Source errors are flagged, not silently adopted; claims/uncertainty remain distinct. |
 | Activation | Discovery plus exact skill loading/injection evidence for selected and unselected chats. Absence of a shell read alone is insufficient: skills may be injected. Inspect host session/history evidence when available; without it mark unverified. Continuation needs no re-selection; another skill needs authorization. |
 | History content and pixels | Inspect the actual attached image with an image-capable tool. Cite visible details separately from archive identities/date and interpretation. Document byte hash/tool/revision. A caption alone cannot pass. |
-| Recall regression | If affected, reuse the existing RA/VI scenarios in [smoke checks](smoke-checks.md): unchanged slot on hint/clarification/declined handoff, required bar and final grouped summary even with text-only preference, no summary/progress after early stop. |
+| Recall regression | Use the recall branches in `scripts/scenarios.mjs`, adding affected cases as needed: unchanged slot on hint/clarification/declined handoff, required bar and final grouped summary even with text-only preference, no summary/progress after early stop. |
 | Desktop display | The user personally verifies the diagram/photo in each target app. Record app/surface/version and installed version separately from headless checks. |
 
-Statuses: pass = observed satisfaction; fail = observed contradiction; blocked = a missing prerequisite prevented checking; unverified = absent or insufficient evidence. Keep these dimensions separate. Preserve older [smoke evidence](smoke-checks.md) and [release evidence](release-acceptance.md) with their original revisions/dates.
+Statuses: pass = observed satisfaction; fail = observed contradiction; blocked = a missing prerequisite prevented checking; unverified = absent or insufficient evidence. Keep these dimensions separate. Older smoke-check and release-acceptance records are ignored local references; preserve their original revisions/dates locally.

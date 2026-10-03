@@ -53,6 +53,7 @@ export async function validate(directory = root) {
     const visit = async folder => {
       for (const entry of await readdir(join(directory, folder), { withFileTypes: true })) {
         const path = join(folder, entry.name);
+        if (['docs/results', 'docs/smoke-checks.md', 'docs/release-acceptance.md'].includes(path.replaceAll('\\', '/'))) continue;
         if (entry.isDirectory()) await visit(path);
         else if (entry.name.endsWith('.md')) {
           for (const match of (await read(path)).matchAll(/!?\[[^\]\n]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/gu)) {
