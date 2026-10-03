@@ -39,6 +39,7 @@ const selected = available.filter(scenario => !requested.length || requested.inc
 console.log(JSON.stringify({ scope: selection, conversations: preflightOnly ? 0 : selected.length,
   maximumAssistantTurns: preflightOnly ? 0 : selected.reduce((total, scenario) => total + scenario.turns.length, 0),
   plannedRetries: 0, model: model ?? null, perTurnTimeoutSeconds: 180, output }));
+let host;
 try {
   const cheap = await validate();
   report.checks.push({ scenario: 'cheap-validation', ...cheap });
@@ -52,7 +53,6 @@ try {
     if (createHash('sha256').update(bytes).digest('hex') !== history.image.sha256) throw new Error('History cache differs from pinned fixture');
     history.text = await readFile(join(root, history.writtenSource), 'utf8');
   }
-  let host;
   try { host = await preflight(root, names, prefix); }
   catch (error) { throw Object.assign(error, { blocked: true }); }
   report.hostVersion = host.version;
@@ -79,6 +79,8 @@ try {
 } catch (error) {
   report.status = error.blocked ? 'blocked' : 'fail';
   report.checks.push({ scenario: 'execution', status: report.status, observation: error.message });
+} finally {
+  await host?.cleanup();
 }
 await writeFile(join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

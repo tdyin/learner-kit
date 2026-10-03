@@ -6,6 +6,6 @@ Short exact excerpt from the act's opening:
 
 > AN ACT to provide for the general welfare by establishing a system of Federal old-age benefits
 
-The act's text establishes a legislative purpose and provisions. It does not, by itself, establish how everyone felt about the law or whether every intended effect occurred. This is historical source analysis, not advice about current benefits. The U.S. federal legislative text is public domain; the project's explanatory text is covered by its license.
+The U.S. federal legislative text is public domain; the project's explanatory text is covered by its license.
 
 An older Archives exhibit caption says August 15; the act citation, Archives milestone introduction, and Smithsonian photo's verso metadata identify August 14. Preserve and flag that source discrepancy rather than treating every official caption as infallible. The selected fixture uses August 14 with these supporting records.

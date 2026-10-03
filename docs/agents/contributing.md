@@ -4,7 +4,7 @@ Keep README friendly and concise: purpose, audience, skill overview, easy instal
 
 Keep the README warm and lightly playful, with the learning inspiration and installation near the top. Include expandable Codex and Claude installation commands in the README, with the detailed-guide link at the end of the installation section. Introduce a small starter set before the specialized skills; keep the full toolkit later or expandable so newcomers have an easy first choice. Omit a general navigation section such as “Take a look around.”
 
-Keep proposed edits local until the user approves pushing them. Present the concrete changes for review before requesting push approval.
+Keep proposed README edits local until the user approves pushing them. Present the concrete README changes for review before requesting push approval. Other authorized changes follow the normal task workflow without a separate push-approval requirement.
 
 Start with `node scripts/validate.mjs` and script syntax checks. Test changed runner behavior through its public conversation boundary with `node --test scripts/checks.test.mjs`. For skills, test the learner-visible conversation boundary; use the existing scenarios/rubric before adding a framework. Before model-backed execution, state affected skills/behavior/host and anticipated conversations/turns/retries. No routine approval gate. Stop after relevant passes; broaden only for failures, unresolved shared changes, or releases, with the reason stated. Avoid a subject-by-skill-by-host matrix. The initial representative subjects are mathematics and history.
 

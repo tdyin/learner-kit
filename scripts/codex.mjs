@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { readFile, mkdtemp } from 'node:fs/promises';
+import { readFile, mkdtemp, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -69,30 +69,36 @@ export async function discover(cwd) {
   } finally { lines.close(); stop(child); }
 }
 
-export async function preflight(root, names, prefix = '') {
-  const version = await execute(['--version'], { timeout: 10_000 });
+export async function preflight(root, names, prefix = '', runtime = { execute, discover }) {
+  const version = await runtime.execute(['--version'], { timeout: 10_000 });
   if (version.code) throw new Error(version.stderr || 'Codex executable unavailable');
-  const auth = await execute(['login', 'status'], { timeout: 10_000 });
+  const auth = await runtime.execute(['login', 'status'], { timeout: 10_000 });
   if (auth.code || !/logged in/iu.test(auth.stdout + auth.stderr)) {
     throw new Error(`Authentication preflight: ${(auth.stderr || auth.stdout).trim()}`);
   }
   const cwd = await mkdtemp(join(tmpdir(), 'learner-kit-synthetic-'));
-  const skills = await discover(cwd);
-  const digest = data => createHash('sha256').update(data).digest('hex');
-  const installed = [];
-  for (const name of names) {
-    const matches = skills.filter(skill => skill.name === `${prefix}${name}`);
-    if (matches.length !== 1) throw new Error(`Need exactly one discovered ${prefix}${name}; found ${matches.length}. Install the source revision under test and check --skill-prefix and duplicate selectable names.`);
-    const skill = matches[0];
-    const source = await readFile(join(root, 'skills', name, 'SKILL.md'));
-    const actual = await readFile(skill.path);
-    if (digest(source) !== digest(actual)) throw new Error(`Installed ${name} differs from source. Refresh the installed package before running.`);
-    const policyPath = join(skill.path, '..', 'agents', 'openai.yaml');
-    const policy = await readFile(policyPath);
-    if (digest(policy) !== digest(await readFile(join(root, 'skills', name, 'agents', 'openai.yaml')))) throw new Error(`Installed ${name} policy differs from source.`);
-    installed.push({ name, path: skill.path, sha256: digest(actual), scope: skill.scope });
+  const cleanup = () => rm(cwd, { recursive: true, force: true });
+  try {
+    const skills = await runtime.discover(cwd);
+    const digest = data => createHash('sha256').update(data).digest('hex');
+    const installed = [];
+    for (const name of names) {
+      const matches = skills.filter(skill => skill.name === `${prefix}${name}`);
+      if (matches.length !== 1) throw new Error(`Need exactly one discovered ${prefix}${name}; found ${matches.length}. Install the source revision under test and check --skill-prefix and duplicate selectable names.`);
+      const skill = matches[0];
+      const source = await readFile(join(root, 'skills', name, 'SKILL.md'));
+      const actual = await readFile(skill.path);
+      if (digest(source) !== digest(actual)) throw new Error(`Installed ${name} differs from source. Refresh the installed package before running.`);
+      const policyPath = join(skill.path, '..', 'agents', 'openai.yaml');
+      const policy = await readFile(policyPath);
+      if (digest(policy) !== digest(await readFile(join(root, 'skills', name, 'agents', 'openai.yaml')))) throw new Error(`Installed ${name} policy differs from source.`);
+      installed.push({ name, path: skill.path, sha256: digest(actual), scope: skill.scope });
+    }
+    return { version: version.stdout.trim(), cwd, installed, cleanup };
+  } catch (error) {
+    await cleanup();
+    throw error;
   }
-  return { version: version.stdout.trim(), cwd, installed };
 }
 
 export class CodexAdapter {

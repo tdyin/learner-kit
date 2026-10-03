@@ -1,12 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, writeFile, cp, mkdir, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, cp, mkdir, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, relative, sep } from 'node:path';
 import { runScenario, checkReply } from './conversation.mjs';
 import { root, validate } from './validate.mjs';
 import { inspectActivation } from './history.mjs';
 import { scenarios } from './scenarios.mjs';
+import { preflight } from './codex.mjs';
+
+for (const outcome of ['success', 'discovery failure', 'validation failure']) {
+  test(`preflight workspace is removed after ${outcome}`, async t => {
+    let cwd;
+    t.after(async () => { if (cwd) await rm(cwd, { recursive: true, force: true }); });
+    const runtime = {
+      async execute(args) { return { code: 0, stdout: args[0] === '--version' ? 'synthetic-host' : 'Logged in (synthetic)', stderr: '' }; },
+      async discover(path) {
+        cwd = path;
+        if (outcome === 'discovery failure') throw new Error('Synthetic discovery failure');
+        return outcome === 'validation failure' ? [] : [{ name: 'lk-learn', path: join(root, 'skills/lk-learn/SKILL.md'), scope: 'synthetic' }];
+      },
+    };
+    if (outcome === 'success') {
+      const host = await preflight(root, ['lk-learn'], '', runtime);
+      assert.ok((await stat(host.cwd)).isDirectory());
+      await host.cleanup();
+    } else {
+      await assert.rejects(preflight(root, ['lk-learn'], '', runtime), outcome === 'discovery failure' ? /Synthetic discovery failure/u : /exactly one/u);
+    }
+    await assert.rejects(stat(cwd), { code: 'ENOENT' });
+  });
+}
 
 async function temporaryFixture(t, prefix) {
   const path = await mkdtemp(join(tmpdir(), prefix));
@@ -47,6 +71,15 @@ test('equivalent mathematical minus glyphs pass numeric cues and still catch lea
   assert.equal(checkReply('−3 + 2 = −1', { absent: ['=\\s*-1'] }).length, 1);
 });
 
+test('math hints reject the withheld answer in prose and diagrams regardless of phrasing', () => {
+  const expect = scenarios('math').find(scenario => scenario.id === 'math-coach').turns[0].expect;
+  for (const text of ['You get -1. Which direction did you move?', 'Your endpoint is −1. What changed?', '-3 → -2 → -1\nWhere did you land?']) {
+    assert.ok(checkReply(text, expect).some(failure => failure.startsWith('Forbidden')), text);
+  }
+  assert.deepEqual(checkReply('Start at −3 and move right. Which position comes next?', expect), []);
+  assert.deepEqual(checkReply('Imagine starting at -11 or -1.5. Which direction is positive?', expect), []);
+});
+
 test('cheap validation rejects host packages with inconsistent release versions', async t => {
   const fixture = await publicSource(t);
   const path = join(fixture, '.claude-plugin/plugin.json');
@@ -71,10 +104,10 @@ test('a divergent assistant turn stops before the synthetic learner response', a
   const prompts = [];
   const adapter = { async turn(prompt) {
     prompts.push(prompt);
-    return { text: 'The answer is -1.', thread: 'synthetic-adapter' };
+    return { text: 'You get −1. Which direction did you move?', thread: 'synthetic-adapter' };
   } };
   const result = await runScenario({ id: 'hint', turns: [
-    { prompt: '$lk-coach Hints only: -3 + 2', expect: { question: true, absent: ['(?:=|answer is)\\s*-1'] } },
+    scenarios('math').find(scenario => scenario.id === 'math-coach').turns[0],
     { prompt: 'I think 5.' },
   ] }, adapter, output);
   assert.equal(result.status, 'fail');
