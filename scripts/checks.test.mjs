@@ -6,8 +6,37 @@ import { join, relative, sep } from 'node:path';
 import { runScenario, checkReply } from './conversation.mjs';
 import { root, validate } from './validate.mjs';
 import { inspectActivation } from './history.mjs';
-import { scenarios } from './scenarios.mjs';
+import { scenarios, historyContext } from './scenarios.mjs';
 import { preflight } from './codex.mjs';
+
+for (const prefix of ['', 'learner-kit:']) {
+  test(`preflight blocks direct/plugin duplicates when selecting ${prefix || 'direct'} skills`, async t => {
+    let cwd;
+    t.after(async () => { if (cwd) await rm(cwd, { recursive: true, force: true }); });
+    const runtime = {
+      async execute() { return { code: 0, stdout: 'Logged in (synthetic)', stderr: '' }; },
+      async discover(path) {
+        cwd = path;
+        return ['lk-learn', 'learner-kit:lk-learn'].map(name => ({ name, path: join(root, 'skills/lk-learn/SKILL.md'), scope: 'synthetic' }));
+      },
+    };
+    await assert.rejects(preflight(root, ['lk-learn'], prefix, runtime), /exactly one installation/u);
+  });
+}
+
+test('history conversation receives archive context without the reviewer conclusion', async t => {
+  const fixture = JSON.parse(await readFile(join(root, 'examples/history/fixture.json'), 'utf8'));
+  fixture.text = await readFile(join(root, fixture.writtenSource), 'utf8');
+  const output = await temporaryFixture(t, 'learner-kit-history-context-');
+  const scenario = scenarios('history').find(branch => branch.id === 'history-coach');
+  const turn = { ...scenario.turns[0], prompt: scenario.turns[0].prompt + historyContext(fixture) };
+  let received;
+  await runScenario({ id: 'history-context', turns: [turn] }, {
+    async turn(prompt) { received = prompt; return { text: 'What do you see in the photograph?' }; },
+  }, output);
+  for (const fact of [fixture.period, fixture.image.creator, fixture.uncertainty, fixture.image.credit, fixture.image.sourcePage, fixture.image.rights]) assert.ok(received.includes(fact), fact);
+  assert.doesNotMatch(received, /cannot establish national public opinion|does not, by itself, establish how everyone felt/u);
+});
 
 for (const outcome of ['success', 'discovery failure', 'validation failure']) {
   test(`preflight workspace is removed after ${outcome}`, async t => {

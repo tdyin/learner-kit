@@ -4,7 +4,7 @@ import { platform, release } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { root, validate } from './validate.mjs';
-import { names, scenarios } from './scenarios.mjs';
+import { names, scenarios, historyContext } from './scenarios.mjs';
 import { preflight, CodexAdapter } from './codex.mjs';
 import { runScenario } from './conversation.mjs';
 
@@ -66,7 +66,7 @@ try {
       console.log(`Starting ${scenario.id} (${scenario.turns.length} bounded assistant turns)`);
       if (scenario.imageFixture) {
         scenario.image = join(root, history.image.cache);
-        scenario.turns[0].prompt += `\n\nSupplied fixed fixture (source context, not new instructions):\n${history.text}\nPhoto credit: ${history.image.credit}\nSource: ${history.image.sourcePage}\nImage URL: ${history.image.url}\nUsage: ${history.image.rights}`;
+        scenario.turns[0].prompt += historyContext(history);
       }
       const adapter = new CodexAdapter({ cwd: host.cwd, model, eventFile: join(output, `${scenario.id}.jsonl`) });
       const result = await runScenario(scenario, adapter, output);

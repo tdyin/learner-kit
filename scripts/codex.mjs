@@ -83,6 +83,8 @@ export async function preflight(root, names, prefix = '', runtime = { execute, d
     const digest = data => createHash('sha256').update(data).digest('hex');
     const installed = [];
     for (const name of names) {
+      const variants = skills.filter(skill => skill.name.split(':').at(-1) === name);
+      if (variants.length !== 1) throw new Error(`Need exactly one installation of ${name}; found ${variants.length}: ${variants.map(skill => skill.name).join(', ')}. Remove duplicate direct/plugin installations before running.`);
       const matches = skills.filter(skill => skill.name === `${prefix}${name}`);
       if (matches.length !== 1) throw new Error(`Need exactly one discovered ${prefix}${name}; found ${matches.length}. Install the source revision under test and check --skill-prefix and duplicate selectable names.`);
       const skill = matches[0];

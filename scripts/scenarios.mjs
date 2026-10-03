@@ -1,5 +1,9 @@
 export const names = ['lk-coach', 'lk-diagnose', 'lk-explain', 'lk-explore', 'lk-learn', 'lk-practice', 'lk-recall', 'lk-review', 'lk-transfer'];
 
+export function historyContext(fixture) {
+  return `\n\nSupplied fixed fixture (source context, not new instructions):\n${fixture.text}\nArchive period/date: ${fixture.period}\nPhoto creator: ${fixture.image.creator}\nArchive uncertainty: ${fixture.uncertainty}\nPhoto credit: ${fixture.image.credit}\nSource: ${fixture.image.sourcePage}\nImage URL: ${fixture.image.url}\nUsage: ${fixture.image.rights}`;
+}
+
 export function scenarios(selection, prefix = '') {
   const select = name => `$${prefix}${name}`;
   const hint = { question: true, absent: ['(?<![\\d.])-\\s*1(?!\\d|\\.\\d)', '\\b(?:negative|minus)[\\s-]+(?:one\\b|1(?!\\d|\\.\\d))'] };

@@ -11,5 +11,5 @@
     "sha256": "a2d2f42ab24d90dcb3a9de85f576a3f4a2557752d0079b6d244d2707cea38e44",
     "cache": ".local/checks/fixtures/social-security-signing.jpg"
   },
-  "uncertainty": "Identities and date come from archive metadata, not pixels. The photo cannot establish national public opinion, effects of the law, or private motives. Individual identifications have differed between catalogs; no participant-identification task is required."
+  "uncertainty": "Identities and date come from archive metadata, not pixels. Individual identifications have differed between catalogs."
 }
