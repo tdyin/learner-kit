@@ -6,7 +6,7 @@
 
 Bring your curiosity, your notes, or that one problem that refuses to make sense.
 
-[Get started](#-get-started) · [Pick your help](#-start-with-these-three) · [Examples](examples/mathematics.md)
+[Install](#-installation) · [Get started](#-get-started) · [Pick your help](#-start-with-these-three)
 
 </div>
 
@@ -25,9 +25,53 @@ Inspired by **_Make It Stick_** (Brown, Roediger, and McDaniel, 2014), Learner K
 
 The aim is to give you more chances to do the thinking—with help when you need it.
 
-## 🚀 Get started
+## 🚀 Installation
 
-Follow the [installation guide](docs/install.md) for **Codex**, **Claude**, or another compatible agent. Install the bundle or just the skills you want. Desktop support is still being verified; see [compatibility and known limitations](docs/compatibility.md) for your app.
+Start with the three beginner skills: `lk-learn`, `lk-coach`, and `lk-recall`. Open your app's instructions below.
+
+<details>
+<summary><strong>Codex</strong> — paste this into a Codex chat</summary>
+
+Use Codex's built-in skill installer:
+
+```text
+$skill-installer install skills/lk-learn, skills/lk-coach, and skills/lk-recall from https://github.com/tdyin/learner-kit
+```
+
+After installation, open a new chat, type `$`, and select `lk-learn`. The skills are available across your projects.
+
+</details>
+
+<details>
+<summary><strong>Claude</strong> — install the starter skills in Claude Code</summary>
+
+Run these commands in a terminal to copy the skills into your personal Claude Code skills folder.
+
+**macOS / Linux**
+
+```sh
+git clone https://github.com/tdyin/learner-kit.git
+mkdir -p ~/.claude/skills
+cp -R learner-kit/skills/lk-learn learner-kit/skills/lk-coach learner-kit/skills/lk-recall ~/.claude/skills/
+```
+
+**Windows PowerShell**
+
+```powershell
+git clone https://github.com/tdyin/learner-kit.git
+New-Item -ItemType Directory -Force "$HOME/.claude/skills"
+Copy-Item -Recurse learner-kit/skills/lk-learn, learner-kit/skills/lk-coach, learner-kit/skills/lk-recall "$HOME/.claude/skills/"
+```
+
+Start a new Claude Code session and select `/lk-learn`.
+
+These commands are for **Claude Code**. Claude Desktop Chat uses plugin installation through its interface; support for that surface is still being verified.
+
+</details>
+
+Want the plugin bundle, desktop setup, another host, or help updating? See the [detailed installation guide](docs/install.md) and [compatibility notes](docs/compatibility.md).
+
+## 💬 Get started
 
 Then select **`lk-learn`** in your app's skill picker and try:
 
@@ -73,12 +117,6 @@ Each of these also works on its own—use whichever fits the moment.
 | Revisit notes or a pasted session recap | [`lk-review`](skills/lk-review/SKILL.md) |
 
 </details>
-
-## 🔎 Take a look around
-
-- **See examples:** [mathematics](examples/mathematics.md), [history](examples/history/README.md), and [thermodynamics](examples/thermodynamics.md)
-- **Set things up:** [installation and updates](docs/install.md) · [compatibility](docs/compatibility.md)
-- **Help build it:** [contributor guidance](docs/agents/contributing.md) · [repeatable checks](docs/checks.md) · [release history](docs/changelog.md)
 
 Learner Kit creates no learner profiles or saved learning records. Your app may retain chat history under its own settings.
 
