@@ -7,6 +7,8 @@ export function historyContext(fixture) {
 export function scenarios(selection, prefix = '') {
   const select = name => `$${prefix}${name}`;
   const hint = { question: true, absent: ['(?<![\\d.])-\\s*1(?!\\d|\\.\\d)', '\\b(?:negative|minus)[\\s-]+(?:one\\b|1(?!\\d|\\.\\d))'] };
+  const retryBookkeeping = ['coached retr', '\\b(?:first|second|third|one|two|three|[123])\\s+(?:unsuccessful\\s+)?(?:retr(?:y|ies)|attempts?)\\b', '\\b(?:retry|attempt)\\s*#?\\s*[123]\\b'];
+  const implicitHint = { ...hint, absent: [...hint.absent, ...retryBookkeeping] };
   const recall = (id, preference) => ({ id, turns: [
     { prompt: `${select('lk-recall')} Quick, from memory, exactly two questions. ${preference} Notes: the additive identity is zero; adding a positive number moves right on the number line. Ask about the additive identity first.`, expect: { question: true, present: ['Question 1 of 2', '▱▱'] } },
     { prompt: 'Give me a cue, not the answer.', expect: { present: ['Question 1 of 2', '▱▱'], absent: ['zero', '\\b0\\b'] } },
@@ -28,6 +30,12 @@ export function scenarios(selection, prefix = '') {
       { prompt: 'Starting at -3 and moving two places right, I get -1.', expect: { present: ['correct|yes|right|-1'] } },
       { prompt: 'Please do not switch to lk-explain. Continue coaching here with the same help limit.', expect: { absent: ['\\$lk-explain', 'switching to', 'activat(?:ed|ing) lk-explain'] } },
       { prompt: 'stop', expect: { question: false, maxWords: 45 } },
+    ] },
+    { id: 'math-coach-retries', turns: [
+      { prompt: `${select('lk-coach')} Hints only for -3 + 2; do not give the final answer. My answer is 5 because I added the magnitudes.`, expect: implicitHint },
+      { prompt: 'I started at -3 and moved two places right, so my answer is +1.', expect: implicitHint },
+      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, present: ['explanation', 'example', 'easier', 'break'], absent: implicitHint.absent } },
+      { prompt: 'Stop and give me a short recap I can paste into a new chat.', expect: { question: false, absent: retryBookkeeping } },
     ] },
     recall('math-recall-finish', 'Text only and hide progress if possible.'),
     recall('math-recall-completion', 'Text only.'),
