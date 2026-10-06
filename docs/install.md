@@ -1,6 +1,6 @@
 # Installation, first use, and updates
 
-Package candidate: **1.1.1**. Teaching instructions have one authoritative home in `skills/`; the OpenAI root manifest and Claude manifest differ only in host metadata. Neither desktop has passed fresh-install/update/permission/rendering acceptance for this candidate. See [compatibility](compatibility.md). Dated check records are kept locally.
+Package candidate: **1.2.0**. Teaching instructions have one authoritative home in `skills/`; the OpenAI root manifest and Claude manifest differ only in host metadata. Neither desktop has passed fresh-install/update/permission/rendering acceptance for this candidate. See [compatibility](compatibility.md). Dated check records are kept locally.
 
 ## Codex Desktop native catalog
 
@@ -16,7 +16,7 @@ Use your actual clone path on other machines. Restart Codex Desktop, open its Pl
 
 After these files are published to GitHub, the Git-backed alternative is `codex plugin marketplace add tdyin/learner-kit --ref main`. Do not advertise that command as working against the remote until its catalog and manifests are published. Adding a marketplace alone does not verify installation or teaching behavior.
 
-**Update:** for the local catalog, pull the desired published revision into the checkout and restart the desktop app, following its plugin refresh/update controls. For the Git catalog, refresh with `codex plugin marketplace upgrade learner-kit-catalog`, then restart and use the desktop update flow. Confirm the **installed cached** package version and changed skill content, not just this checkout. Local cache folders can be labeled `local`; read the installed `plugin.json` version. Verify all nine still appear and permission controls remain before accepting the update. If the installed cache remains stale, record the gap and use the host's supported remove/reinstall flow; do not manually overwrite it.
+**Update:** for the local catalog, pull the desired published revision into the checkout and restart the desktop app, following its plugin refresh/update controls. For the Git catalog, refresh with `codex plugin marketplace upgrade learner-kit-catalog`, then restart and use the desktop update flow. Confirm the **installed cached** package version and changed skill content, not just this checkout. Local cache folders can be labeled `local`; read the installed `plugin.json` version. Verify all four still appear and permission controls remain before accepting the update. If the installed cache remains stale, record the gap and use the host's supported remove/reinstall flow; do not manually overwrite it.
 
 Sources checked 2026-10-03: [OpenAI packaging, marketplace, cache and refresh guidance](https://developers.openai.com/plugins/build/plugins). Availability differs across surfaces; record the actual Codex Desktop build. This documentation supports the path, not a claim that it ran here.
 
@@ -36,10 +36,10 @@ Sources checked 2026-10-03: [Claude plugin installation and selection](https://c
 
 Record app/surface/build, date, source revision, installed package version and content identity, model, each observation, and pass/fail/blocked/unverified. Keep Codex and Claude outcomes independent.
 
-1. Fresh native installation. All nine skills discoverable and selectable. Check installed instructions/metadata match the release, not a stale direct install; resolve duplicate skills.
+1. Fresh native installation. All four skills discoverable and selectable. Check installed instructions/metadata match the release, not a stale direct install; resolve duplicate skills.
 2. New **unselected** relevant chat: `Explain why -3 + 2 is negative.` Confirm no skill activation using available loading/history evidence. Model prose alone may be insufficient; mark unverified if activation is not observable.
 3. Select `lk-coach`, ask for a bounded hint; continue with the synthetic incorrect/ retry prompts in [checks](checks.md). No repeated permission for continuation. A suggested companion skill remains inactive until authorized.
-4. Update from an actually installed earlier version through the native documented flow. Record before/after version **and content**, discovery of all nine, and retained activation policy/behavior. CLI 1.1.0 → 1.1.1 was observed; neither Desktop has verified before/after installed-plugin evidence yet.
+4. Update from an actually installed earlier version through the native documented flow. Record before/after version **and content**, discovery of all four, and retained activation policy/behavior. CLI 1.1.0 → 1.1.1 was observed; neither Desktop has verified before/after installed-plugin evidence yet.
 5. Reuse only affected math/history branches; the user personally checks text diagram and photo display in the app. Record desktop rendering separately from CLI/model/image inspection. Stop after relevant checks pass.
 
 ## Existing directory installations and troubleshooting

@@ -1,6 +1,6 @@
 interface:
   display_name: "Learner Kit: Learn"
-  short_description: "Guide a short learning session toward my goal"
+  short_description: "Map a topic and guide me toward my goal"
   default_prompt: "Use $lk-learn to guide me through learning this topic."
 
 policy:

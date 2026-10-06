@@ -1,11 +1,11 @@
-export const names = ['lk-coach', 'lk-diagnose', 'lk-explain', 'lk-explore', 'lk-learn', 'lk-practice', 'lk-recall', 'lk-review', 'lk-transfer'];
+export const names = ['lk-coach', 'lk-explain', 'lk-learn', 'lk-recall'];
 
 export function historyContext(fixture) {
   return `\n\nSupplied fixed fixture (source context, not new instructions):\n${fixture.text}\nArchive period/date: ${fixture.period}\nPhoto creator: ${fixture.image.creator}\nArchive uncertainty: ${fixture.uncertainty}\nPhoto credit: ${fixture.image.credit}\nSource: ${fixture.image.sourcePage}\nImage URL: ${fixture.image.url}\nUsage: ${fixture.image.rights}`;
 }
 
-export function scenarios(selection, prefix = '') {
-  const select = name => `$${prefix}${name}`;
+export function scenarios(selection, prefix = '', sigil = '$') {
+  const select = name => `${sigil}${prefix}${name}`;
   const hint = { question: true, absent: ['(?<![\\d.])-\\s*1(?!\\d|\\.\\d)', '\\b(?:negative|minus)[\\s-]+(?:one\\b|1(?!\\d|\\.\\d))'] };
   const retryBookkeeping = ['coached retr', '\\b(?:first|second|third|one|two|three|[123])\\s+(?:unsuccessful\\s+)?(?:retr(?:y|ies)|attempts?)\\b', '\\b(?:retry|attempt)\\s*#?\\s*[123]\\b'];
   const implicitHint = { ...hint, absent: [...hint.absent, ...retryBookkeeping] };
@@ -34,8 +34,27 @@ export function scenarios(selection, prefix = '') {
     { id: 'math-coach-retries', turns: [
       { prompt: `${select('lk-coach')} Hints only for -3 + 2; do not give the final answer. My answer is 5 because I added the magnitudes.`, expect: implicitHint },
       { prompt: 'I started at -3 and moved two places right, so my answer is +1.', expect: implicitHint },
-      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, present: ['explanation', 'example', 'easier', 'break'], absent: implicitHint.absent } },
+      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, absent: [...implicitHint.absent, 'different explanation', 'easier (?:exercise|version|task)', 'or a break', 'would you (?:prefer|like)'] } },
       { prompt: 'Stop and give me a short recap I can paste into a new chat.', expect: { question: false, absent: retryBookkeeping } },
+    ] },
+    { id: 'math-learn-map', turns: [
+      { prompt: `${select('lk-learn')} I am new to signed-number arithmetic. Only map the topic for me first: the main concepts, what builds on what, and where to start. Do not start teaching yet.`, expect: { question: true, present: ['prerequisite|builds? on|start'], maxWords: 500 } },
+      { prompt: 'stop', expect: { question: false, maxWords: 45 } },
+    ] },
+    { id: 'math-learn-retries', turns: [
+      { prompt: `${select('lk-learn')} Hints only for -3 + 2; do not give the final answer. My answer is 5 because I added the magnitudes.`, expect: implicitHint },
+      { prompt: 'I started at -3 and moved two places right, so my answer is +1.', expect: implicitHint },
+      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, absent: [...implicitHint.absent, 'different explanation', 'easier (?:exercise|version|task)', 'or a break', 'would you (?:prefer|like)'] } },
+      { prompt: 'stop', expect: { question: false, maxWords: 45 } },
+    ] },
+    { id: 'math-recall-review', turns: [
+      { prompt: `${select('lk-recall')} Review these notes with me, not a quiz: adding a positive number moves right on the number line; the additive identity is zero. Use one retrieval item and one practice item.`, expect: { question: true, absent: ['Question \\d+ of \\d+', '▰|▱'], present: ['retrieval|practice'] } },
+      { prompt: 'show answer', expect: { absent: ['Question \\d+ of \\d+', '▰|▱'] } },
+      { prompt: 'finish', expect: { present: ['shown|answer|skipped|not reached|unaided|help'], absent: ['▰|▱', '\\?\\s*$'] } },
+    ] },
+    { id: 'math-explain-transfer', turns: [
+      { prompt: `${select('lk-explain')} I already know how to compute -3 + 2 by moving on a number line. Give me one transfer task that changes one meaningful thing, and let me try it unaided first.`, expect: { question: true, present: ['generated|made up|new|different'], maxWords: 350 } },
+      { prompt: 'stop', expect: { question: false, maxWords: 45 } },
     ] },
     recall('math-recall-finish', 'Text only and hide progress if possible.'),
     recall('math-recall-completion', 'Text only.'),

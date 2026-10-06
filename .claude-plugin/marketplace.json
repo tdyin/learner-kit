@@ -6,8 +6,8 @@
     {
       "name": "learner-kit",
       "source": "./",
-      "description": "Nine standalone tutoring skills; desktop acceptance remains pending.",
-      "version": "1.1.1"
+      "description": "Four standalone tutoring skills; desktop acceptance remains pending.",
+      "version": "1.2.0"
     }
   ]
 }

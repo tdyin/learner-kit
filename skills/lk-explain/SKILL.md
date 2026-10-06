@@ -1,6 +1,6 @@
 ---
 name: lk-explain
-description: Learner Kit explanation. Explains a concept, question, or supplied material to an adult self-learner or university student with intuition and a relevant example, adding formalism and assumptions when useful. Use only when the learner explicitly selects this skill or asks for it by name.
+description: Learner Kit explanation. Explains a concept, question, or supplied material to an adult self-learner or university student with intuition and a relevant example, adding formalism and assumptions when useful. Can also pose a transfer task that changes one thing about a method they already know and discuss what carries over. Use only when the learner explicitly selects this skill or asks for it by name.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Help the learner understand a concept. Work from their question, topic, or supplied material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-practice`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-coach`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -40,15 +40,30 @@ If it is unclear what they want explained, ask only for that.
 - Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
 - **Comparison table** when two ideas are easily confused: one row per property, one column per idea.
 - **Relationship diagram or causal sequence** when the point is how one thing leads to another (`hot body → heat flows → temperature of cold body rises`). Draw only an established mechanism; if you are unsure of a step, say so in words beside it.
+- **Visuals in a transfer task.** A changed representation (a table, graph, or diagram instead of an equation) can be the task itself. It must not label the step, formula, or assumption that changes, or show the method, before their attempt. After the attempt, a small two-column table of what carries over and what changes can support step 5.
+
+## Transfer practice
+
+When the learner brings a method, worked example, or concept they already know and wants to apply it in a different situation, or asks whether it still works if something changes, run transfer practice instead of explaining from scratch. Infer this from the request; do not ask which mode they want. After an explanation, you may offer one transfer task as the understanding check.
+
+1. **Name the source.** Restate the source example and method in one or two lines. If none is given, ask for one, or offer a short, simple, labelled example on their topic and confirm they know it before you change it. If the source contains an error, say which step looks wrong and why, keep it separate from your correction, and agree on the corrected source first.
+2. **Change one meaningful thing:** the context (a different system, field, or application), the representation (a graph, table, diagram, or words instead of an equation), or an assumption (reversible → irreversible, constant → varying, ideal → non-ideal). Do not just swap numbers. Check the task is well-posed: the givens are consistent, enough is given, and it has a defensible answer. When it specifies a process or end state, work out the outcome the givens imply and confirm it matches what you state (a gas pushing against an external pressure lower than its final pressure needs a stop to end at the stated volume). Label the variation as generated. The success standard describes only the form of a complete answer (which quantities, with units and signs, plus a short justification); it must not name or hint at the method, formula, or step that changes.
+3. **Invite an actual attempt.** End with an explicit invitation such as "Try it unaided first. What do you get?" and wait. Do not hint or solve in the same turn. Their first answer is an unaided transfer attempt.
+4. **Feedback.** Check calculations, units, signs, and claims. Say what they carried over correctly and what they missed, in their own terms. Accept defensible alternative approaches.
+5. **Discuss what carries over and what changes** after the attempt or a solution request: which parts of the method still hold, which do not, and why. You may ask one question to have them put it in their own words.
+6. **Hints and retries.** A hint moves them one step without revealing the full approach. An answer after help is a coached retry; keep it separate from the unaided attempt. If two coached retries on the same task fail, stop correcting and change approach yourself: show in a short, labelled worked contrast where the method breaks in this setting, then offer a smaller variation. Do not ask them to pick from a menu.
+7. **Next step.** Offer another variation (changing a different aspect), help on this one, or stopping. Ask one question and wait.
+
+A recap, if wanted, gives the source example, the change, what they did unaided, what help they needed, and what carried over. Success on one variation does not show they can transfer the method in general.
 
 ## Learner controls
 
-- Honor requests for **simpler**, **deeper**, **another example**, a **different angle**, **redirection**, and **stop** immediately.
+- Honor requests for **hint**, **full solution** (asking is not a failed attempt), **easier variation**, **skip**, **simpler**, **deeper**, **another example**, a **different angle**, **redirection**, and **stop** immediately.
 - Ask one substantive question at a time.
 
 ## Other Learner Kit skills (optional)
 
-You may mention `lk-practice` to try a problem or `lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+You may mention `lk-coach` to try a problem or `lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Limits
 

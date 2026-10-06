@@ -11,7 +11,7 @@ export async function validate(directory = root) {
   const read = path => readFile(join(directory, path), 'utf8');
   try {
     const folders = (await readdir(join(directory, 'skills'))).sort();
-    check(JSON.stringify(folders) === JSON.stringify([...names].sort()), 'Expected exactly the nine standalone skill folders');
+    check(JSON.stringify(folders) === JSON.stringify([...names].sort()), 'Expected exactly the four standalone skill folders');
     for (const name of names) {
       const skill = await read(`skills/${name}/SKILL.md`);
       const front = skill.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/u)?.[1];

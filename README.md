@@ -6,7 +6,7 @@
 
 Bring your curiosity, your notes, or that one problem that refuses to make sense.
 
-[Install](#-installation) · [Get started](#-get-started) · [Pick your help](#-start-with-these-three)
+[Install](#-installation) · [Get started](#-get-started) · [Pick your help](#-the-skill-set)
 
 </div>
 
@@ -27,7 +27,7 @@ The aim is to give you more chances to do the thinking—with help when you need
 
 ## 🚀 Installation
 
-Start with the three beginner skills: `lk-learn`, `lk-coach`, and `lk-recall`. Open your app's instructions below.
+Learner Kit has four skills: `lk-learn`, `lk-coach`, `lk-recall`, and `lk-explain`. Open your app's instructions below.
 
 <details>
 <summary><strong>Codex</strong> — paste this into a Codex chat</summary>
@@ -35,7 +35,7 @@ Start with the three beginner skills: `lk-learn`, `lk-coach`, and `lk-recall`. O
 Use Codex's built-in skill installer:
 
 ```text
-$skill-installer install skills/lk-learn, skills/lk-coach, and skills/lk-recall from https://github.com/tdyin/learner-kit
+$skill-installer install skills/lk-learn, skills/lk-coach, skills/lk-recall, and skills/lk-explain from https://github.com/tdyin/learner-kit
 ```
 
 After installation, open a new chat, type `$`, and select `lk-learn`. The skills are available across your projects.
@@ -43,7 +43,7 @@ After installation, open a new chat, type `$`, and select `lk-learn`. The skills
 </details>
 
 <details>
-<summary><strong>Claude</strong> — install the starter skills in Claude Code</summary>
+<summary><strong>Claude</strong> — install the skills in Claude Code</summary>
 
 Run these commands in a terminal to copy the skills into your personal Claude Code skills folder.
 
@@ -52,7 +52,7 @@ Run these commands in a terminal to copy the skills into your personal Claude Co
 ```sh
 git clone https://github.com/tdyin/learner-kit.git
 mkdir -p ~/.claude/skills
-cp -R learner-kit/skills/lk-learn learner-kit/skills/lk-coach learner-kit/skills/lk-recall ~/.claude/skills/
+cp -R learner-kit/skills/lk-learn learner-kit/skills/lk-coach learner-kit/skills/lk-recall learner-kit/skills/lk-explain ~/.claude/skills/
 ```
 
 **Windows PowerShell**
@@ -60,7 +60,7 @@ cp -R learner-kit/skills/lk-learn learner-kit/skills/lk-coach learner-kit/skills
 ```powershell
 git clone https://github.com/tdyin/learner-kit.git
 New-Item -ItemType Directory -Force "$HOME/.claude/skills"
-Copy-Item -Recurse learner-kit/skills/lk-learn, learner-kit/skills/lk-coach, learner-kit/skills/lk-recall "$HOME/.claude/skills/"
+Copy-Item -Recurse learner-kit/skills/lk-learn, learner-kit/skills/lk-coach, learner-kit/skills/lk-recall, learner-kit/skills/lk-explain "$HOME/.claude/skills/"
 ```
 
 Start a new Claude Code session and select `/lk-learn`.
@@ -82,13 +82,14 @@ are different, then give me something to try.
 
 Reply naturally from there. You select the skill once for that activity; it continues as you answer.
 
-## ✨ Start with these three
+## ✨ The skill set
 
 | Today’s mission | Pick | Try saying… |
 |---|---|---|
-| 🧭 “Help me learn this.” | [`lk-learn`](skills/lk-learn/SKILL.md) | “Walk me through this topic, then let me practise.” |
-| 🧑‍🏫 “I’m stuck on a problem.” | [`lk-coach`](skills/lk-coach/SKILL.md) | “Hints only, please. Here’s the problem…” |
-| 🧠 “What do I actually remember?” | [`lk-recall`](skills/lk-recall/SKILL.md) | “Give me a short quiz from these notes.” |
+| 🧭 “Help me learn this.” | [`lk-learn`](skills/lk-learn/SKILL.md) | “Map this topic, walk me through it, then let me practise.” |
+| 🧑‍🏫 “I’m stuck on a problem.” | [`lk-coach`](skills/lk-coach/SKILL.md) | “Hints only, please. Here’s the problem and my attempt…” |
+| 🧠 “What do I actually remember?” | [`lk-recall`](skills/lk-recall/SKILL.md) | “Quiz me on these notes,” or “Review my notes with me.” |
+| 💡 “Why does this work?” | [`lk-explain`](skills/lk-explain/SKILL.md) | “Explain this idea, then test me on it in a new situation.” |
 
 **Not sure? Start with `lk-learn`.** It combines explanation, practice, and recall in a guided session.
 
@@ -99,24 +100,6 @@ Reply naturally from there. You select the skill once for that activity; it cont
 Diagrams and tables help when an idea is hard to picture. Say **“more visuals”** or **“text only”** to set your preference. Where supported, sourced images can bring real examples into the conversation too.
 
 Feedback distinguishes your own attempt from what you completed with help. These are model instructions, so explanations and grading can still be wrong. Check important claims against your course material.
-
-## 🧰 More tools, when you want them
-
-<details>
-<summary>Got a specific study task? Open the rest of the toolkit.</summary>
-
-Each of these also works on its own—use whichever fits the moment.
-
-| When you want to… | Skill |
-|---|---|
-| Map an unfamiliar topic and find a starting point | [`lk-explore`](skills/lk-explore/SKILL.md) |
-| Dig into one concept with intuition and examples | [`lk-explain`](skills/lk-explain/SKILL.md) |
-| Work on a practice problem and get feedback | [`lk-practice`](skills/lk-practice/SKILL.md) |
-| Find the wrong turn in your reasoning | [`lk-diagnose`](skills/lk-diagnose/SKILL.md) |
-| Apply a familiar method when the situation changes | [`lk-transfer`](skills/lk-transfer/SKILL.md) |
-| Revisit notes or a pasted session recap | [`lk-review`](skills/lk-review/SKILL.md) |
-
-</details>
 
 Learner Kit creates no learner profiles or saved learning records. Your app may retain chat history under its own settings.
 

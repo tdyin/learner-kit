@@ -1,7 +1,0 @@
-interface:
-  display_name: "Learner Kit: Transfer"
-  short_description: "Apply a method under one meaningful change"
-  default_prompt: "Use $lk-transfer to apply this method to a new situation."
-
-policy:
-  allow_implicit_invocation: false

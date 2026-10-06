@@ -1,6 +1,6 @@
 interface:
   display_name: "Learner Kit: Coach"
-  short_description: "Coach me through a homework problem step by step"
+  short_description: "Diagnose my mistakes and coach me through the fix"
   default_prompt: "Use $lk-coach to help me with this homework problem."
 
 policy:
