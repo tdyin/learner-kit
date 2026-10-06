@@ -13,11 +13,12 @@ function stop(child) {
   } else child.kill('SIGKILL');
 }
 
-// A nested run must not inherit the calling session's identity, or it would reuse that session.
+// A nested run must not inherit the calling session's identity (it would reuse that session) or the nested-session guard flag.
 function cleanEnvironment() {
   const env = { ...process.env };
   delete env.CLAUDE_CODE_SESSION_ID;
   delete env.CLAUDE_CODE_CHILD_SESSION;
+  delete env.CLAUDECODE;
   return env;
 }
 
