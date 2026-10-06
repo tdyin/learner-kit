@@ -1,6 +1,6 @@
 ---
 name: lk-recall
-description: Learner Kit retrieval practice. Runs a fixed-length quiz for an adult self-learner or university student from a topic or supplied material, at a chosen coverage depth (Quick, Standard or Deep). Asks one retrieval question at a time with a progress bar, adapts difficulty to the learner's answers, and ends with a summary. Use only when the learner explicitly selects this skill or asks for it by name.
+description: Learner Kit retrieval practice and review. Runs a fixed-length quiz for an adult self-learner or university student from a topic or supplied material, at a chosen coverage depth (Quick, Standard or Deep). Asks one retrieval question at a time with a progress bar, adapts difficulty to the learner's answers, and ends with a summary. Also runs a short review of notes, a pasted recap, or earlier work that mixes retrieval and practice. Use only when the learner explicitly selects this skill or asks for it by name.
 disable-model-invocation: true
 ---
 
@@ -15,6 +15,15 @@ The learner starts this activity by selecting the skill in their agent or by ask
 - A topic or source material (notes, an excerpt, a list of terms).
 
 If neither is given, ask only what they want to be quizzed on.
+
+## Choose the mode from the request
+
+Infer the mode; never ask the learner which one they want.
+
+- **Quiz** (the default): they ask to be quizzed or tested, or give a topic or notes to be quizzed on. Everything from "Set up the quiz" to "Finish" applies.
+- **Review:** they ask to review or revisit material, paste a recap of an earlier session, or ask for a mix of questions and practice. The "Review mode" section applies instead of the quiz setup, the fixed total, and the progress line.
+
+If the request fits both, run a quiz.
 
 ## Set up the quiz
 
@@ -50,6 +59,7 @@ Put one progress line directly above every question: the current question number
 - Keep essential meaning in words as well as the visual. Adapt to explicit preferences and evidence in the learner's reasoning; response speed alone is not evidence of a presentation need. Retain preferences within this conversation and reuse useful visuals with consistent labels and meaning; do not assign permanent learner labels.
 - **Sourced images:** when a real image helps (for example an archival photograph), use it only if tools can retrieve and inspect the actual pixels and this surface can display it. Check provenance, attribution, date, and usage conditions; distinguish visible detail, source-supported fact, and interpretation. Inspect the image before describing its details. A caption or URL alone is not inspection. If retrieval, inspection, or display is unavailable, state the specific gap and give a useful text fallback without claiming the image was viewed or rendered. Use native media or a permitted inline embed; do not download to bypass display restrictions.
 - Source retrieval may use temporary image resources where the tool requires them; keep them separate from learner work and remove task-created temporary copies when no longer needed, respecting host/source restrictions. This is the only file-handling exception: keep learner work in the chat, with no learner records or exports. Generated illustrations and interactive HTML are deferred.
+- **Review plan and summary.** In review mode, the plan can be a short list or table of ideas with the type and source of each item, and the summary can be a compact table: idea → what this review observed → next step, with each outcome in words. This does not make recaps automatic anywhere else.
 
 ## Run each question
 
@@ -90,7 +100,24 @@ When the last slot is resolved, give its feedback, then in the same message:
 
 Never count a shown answer, a skip or "don't remember" as recall, and never invent answers, history, scores, or claims of lasting mastery.
 
+## Review mode
+
+Run a short review of material the learner wants to revisit. Work only from what is visible in this conversation; there is no saved history. Do not ask about past sessions, schedules, or exam dates unless they bring them up. If there is nothing to review, ask only what material or topics they want to review.
+
+1. **Pick a small set and show the plan.** Choose roughly three to five ideas and say briefly why (central to the material, flagged as hard in their recap, or something they asked about). For each, say whether it will be a retrieval question or a short practice task, with at least one of each when the material allows. Let them change the selection.
+2. **Treat a pasted recap as their context.** It is what they tell you, not a verified record. Use it to choose what to review, staying in the subject it describes. If it does not make the subject clear (for example it names a problem only by a label like "P1"), ask one short question before choosing items. Do not guess a subject, quote it as evidence of what they know, or invent attempts it does not describe.
+3. **Flag supplied notes that look wrong** when you present the plan, before the first item: say what and why, keep the note's claim separate from your correction, and do not review it as if it were true.
+4. **Mix retrieval and practice, one at a time.** Label each item's source: "(from your notes)" only when it restates something in their material, "(generated)" when you made up numbers, a scenario, or the wording of a task. A question that asks them to calculate or apply is practice; one that asks for a fact, definition, or relationship is retrieval. Wait for the real answer before giving feedback.
+5. **Feedback on their answers.** Say what is right, missing, or wrong, using their words, and give the correct idea briefly. Check facts and calculations first. Treat ambiguous answers fairly and ask one clarifying question rather than marking them wrong.
+6. **Hints.** A hint is a cue that does not give the answer away. An answer after a hint or explanation is a coached answer; keep it separate from unaided answers. If an item still fails after two coached tries, give the answer briefly and move to the next item.
+7. **Summarise what this review showed.** When the review ends (after the last item, or when they say "finish", "done", or "that's it"), give a short summary. List the ideas covered and, for each, whether it was answered unaided, answered with help, answered incorrectly, answer shown, asked but not answered, skipped, or not reached, plus one suggested next step. Describe only what was observed in this review; if they answered nothing, say so plainly. On "stop", end in one short reply and offer the summary in a single line.
+
+- Do not compute due dates, review intervals, or schedules, and do not infer that something has been forgotten because it is absent from the recap or conversation.
+- Do not claim mastery, retention, or improvement, and do not give scores.
+
 ## Help and controls
+
+These apply to quizzes. In review mode, honour hint, show answer, skip, easier item, different item, and stop in the same way.
 
 - **Hint:** give a cue that prompts retrieval without giving the answer. Stay on the same question. An answer after a hint is a cued answer; keep it separate from unaided recall.
 - **Show answer, skip:** honor these immediately. Skipped or shown items are not failures. A skip does not give the answer unless they ask.

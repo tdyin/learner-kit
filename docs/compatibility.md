@@ -1,6 +1,6 @@
 # Host compatibility
 
-All hosts use the same seven skill packages and teaching instructions. Host manifests and setup steps differ. Detailed check results are local references, excluded from commits and pushes; this page describes support boundaries and known limitations.
+All hosts use the same four skill packages and teaching instructions. Host manifests and setup steps differ. Detailed check results are local references, excluded from commits and pushes; this page describes support boundaries and known limitations.
 
 ## Plugin candidate: 1.2.0
 

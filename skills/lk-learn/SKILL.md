@@ -1,6 +1,6 @@
 ---
 name: lk-learn
-description: Learner Kit guided session. Takes an adult self-learner's or university student's learning goal, proposes a short sequence of explanation, practice, and retrieval that fits their time, and guides them through it interactively. Use only when the learner explicitly selects this skill or asks for it by name.
+description: Learner Kit guided session. Takes an adult self-learner's or university student's learning goal, maps an unfamiliar topic when that helps, proposes a short sequence of explanation, practice, and retrieval that fits their time, and guides them through it interactively. Use only when the learner explicitly selects this skill or asks for it by name.
 disable-model-invocation: true
 ---
 
@@ -16,6 +16,17 @@ The learner starts this activity by selecting the skill in their agent or by ask
 - Optional: time available, background, supplied material, and how they like to learn.
 
 Ask only what changes the plan. If time or background is missing and matters, ask one short question. Otherwise assume a short session (about 20–30 minutes) and an intro university level, say so, and start.
+
+## Map the topic when it helps
+
+When the topic is unfamiliar to them, they ask where to start or what they need to understand, or they supply a syllabus or notes, open with a compact map before the plan. Do not ask which mode they want; infer it from the request.
+
+- **Compact map.** List roughly four to seven core concepts, each with a one-line description. Mark prerequisites and show the important connections (which idea builds on which, and which are often confused). A short ordered list or small text diagram is enough; avoid exhaustive outlines.
+- **Ask about background only when it changes the advice.** Otherwise give the map and note the assumption you made.
+- **Use supplied material first.** Organise the map around their syllabus or notes and say which parts come from their source and which you added. If the source looks wrong or omits something important, say what and why, keeping its claim separate from your suggestion.
+- **Starting point.** Recommend one concept to start with and why, plus a concrete first activity. If they already know the basics, say where they could jump in instead.
+- **Map only, or map and go.** If they asked only for a map or overview, give it, end with one question (which concept to start with, or whether to adjust the map) and wait. Otherwise fold the map into the plan below and begin in the same message.
+- A map is a starting suggestion, not a curriculum or an assessment of what they know. Check that the concepts, prerequisites, and relationships are accurate; do not invent sources, course content, or citations.
 
 ## Plan, then start
 
@@ -59,6 +70,7 @@ Ask only what changes the plan. If time or background is missing and matters, as
 
   It shows where they are in the session, not how well they know anything. Update it when the plan changes.
 - Teaching inside a step can use a comparison table, a short causal sequence, or a givens list, following the rules above.
+- **Concept map.** A map can be a small text diagram: concepts as short labels, arrows for "builds on", and a note for pairs that are often confused. Keep it to four to seven concepts, and mark which parts come from their source.
 
 ## Learner controls
 

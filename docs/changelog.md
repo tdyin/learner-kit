@@ -2,7 +2,7 @@
 
 ## 1.2.0 — plugin candidate, 2026-10-06
 
-`lk-coach` now absorbs `lk-diagnose` and `lk-practice`: it diagnoses an attempt automatically, guides the learner through the fix, and runs practice on request. The retry limit and its "different explanation, example, easier exercise, or break" menu are gone; the coach changes approach on its own when a step keeps failing. `lk-diagnose` and `lk-practice` are removed, leaving seven skills. Desktop acceptance remains independent and pending, and the installed-update path from 1.1.x is unchecked; see [compatibility](compatibility.md).
+`lk-coach` now absorbs `lk-diagnose` and `lk-practice`: it diagnoses an attempt automatically, guides the learner through the fix, and runs practice on request. The retry limit and its "different explanation, example, easier exercise, or break" menu are gone; the coach changes approach on its own when a step keeps failing. `lk-learn` absorbs `lk-explore` (topic maps), `lk-recall` absorbs `lk-review` (review mode, inferred from the request), and `lk-explain` absorbs `lk-transfer` (transfer tasks). All six merged skills are removed, leaving four: `lk-coach`, `lk-learn`, `lk-recall`, `lk-explain`. Desktop acceptance remains independent and pending, and the installed-update path from 1.1.x is unchecked; see [compatibility](compatibility.md).
 
 ## 1.1.1 — plugin candidate, 2026-10-03
 

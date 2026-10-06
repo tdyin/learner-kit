@@ -36,10 +36,10 @@ Sources checked 2026-10-03: [Claude plugin installation and selection](https://c
 
 Record app/surface/build, date, source revision, installed package version and content identity, model, each observation, and pass/fail/blocked/unverified. Keep Codex and Claude outcomes independent.
 
-1. Fresh native installation. All seven skills discoverable and selectable. Check installed instructions/metadata match the release, not a stale direct install; resolve duplicate skills.
+1. Fresh native installation. All four skills discoverable and selectable. Check installed instructions/metadata match the release, not a stale direct install; resolve duplicate skills.
 2. New **unselected** relevant chat: `Explain why -3 + 2 is negative.` Confirm no skill activation using available loading/history evidence. Model prose alone may be insufficient; mark unverified if activation is not observable.
 3. Select `lk-coach`, ask for a bounded hint; continue with the synthetic incorrect/ retry prompts in [checks](checks.md). No repeated permission for continuation. A suggested companion skill remains inactive until authorized.
-4. Update from an actually installed earlier version through the native documented flow. Record before/after version **and content**, discovery of all seven, and retained activation policy/behavior. CLI 1.1.0 → 1.1.1 was observed; neither Desktop has verified before/after installed-plugin evidence yet.
+4. Update from an actually installed earlier version through the native documented flow. Record before/after version **and content**, discovery of all four, and retained activation policy/behavior. CLI 1.1.0 → 1.1.1 was observed; neither Desktop has verified before/after installed-plugin evidence yet.
 5. Reuse only affected math/history branches; the user personally checks text diagram and photo display in the app. Record desktop rendering separately from CLI/model/image inspection. Stop after relevant checks pass.
 
 ## Existing directory installations and troubleshooting

@@ -86,9 +86,9 @@ Reply naturally from there. You select the skill once for that activity; it cont
 
 | Today’s mission | Pick | Try saying… |
 |---|---|---|
-| 🧭 “Help me learn this.” | [`lk-learn`](skills/lk-learn/SKILL.md) | “Walk me through this topic, then let me practise.” |
-| 🧑‍🏫 “I’m stuck on a problem.” | [`lk-coach`](skills/lk-coach/SKILL.md) | “Hints only, please. Here’s the problem…” |
-| 🧠 “What do I actually remember?” | [`lk-recall`](skills/lk-recall/SKILL.md) | “Give me a short quiz from these notes.” |
+| 🧭 “Help me learn this.” | [`lk-learn`](skills/lk-learn/SKILL.md) | “Map this topic, walk me through it, then let me practise.” |
+| 🧑‍🏫 “I’m stuck on a problem.” | [`lk-coach`](skills/lk-coach/SKILL.md) | “Hints only, please. Here’s the problem and my attempt…” |
+| 🧠 “What do I actually remember?” | [`lk-recall`](skills/lk-recall/SKILL.md) | “Quiz me on these notes,” or “Review my notes with me.” |
 
 **Not sure? Start with `lk-learn`.** It combines explanation, practice, and recall in a guided session.
 
@@ -109,10 +109,7 @@ Each of these also works on its own—use whichever fits the moment.
 
 | When you want to… | Skill |
 |---|---|
-| Map an unfamiliar topic and find a starting point | [`lk-explore`](skills/lk-explore/SKILL.md) |
-| Dig into one concept with intuition and examples | [`lk-explain`](skills/lk-explain/SKILL.md) |
-| Apply a familiar method when the situation changes | [`lk-transfer`](skills/lk-transfer/SKILL.md) |
-| Revisit notes or a pasted session recap | [`lk-review`](skills/lk-review/SKILL.md) |
+| Dig into one concept, then test it in a new situation | [`lk-explain`](skills/lk-explain/SKILL.md) |
 
 </details>
 
