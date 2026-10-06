@@ -71,6 +71,7 @@ When the topic is unfamiliar to them, they ask where to start or what they need 
   It shows where they are in the session, not how well they know anything. Update it when the plan changes.
 - Teaching inside a step can use a comparison table, a short causal sequence, or a givens list, following the rules above.
 - **Concept map.** A map can be a small text diagram: concepts as short labels, arrows for "builds on", and a note for pairs that are often confused. Keep it to four to seven concepts, and mark which parts come from their source.
+- **Visual hints stay bounded.** A diagram or table used as a hint moves them one step, like any other hint. It must not contain the expression to evaluate, the next result, or the final answer. A number line or other scale used as a hint must not label, mark, or show the point where the answer falls, or the endpoint of the move they are about to make; show only the starting point and the direction convention, and leave the rest for the learner to find.
 
 ## Learner controls
 
