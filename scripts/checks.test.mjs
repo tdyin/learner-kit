@@ -8,6 +8,7 @@ import { root, validate } from './validate.mjs';
 import { inspectActivation } from './history.mjs';
 import { scenarios, historyContext } from './scenarios.mjs';
 import { preflight } from './codex.mjs';
+import { preflight as claudePreflight, turnArguments, parseEvents } from './claude.mjs';
 
 for (const prefix of ['', 'learner-kit:']) {
   test(`preflight blocks direct/plugin duplicates when selecting ${prefix || 'direct'} skills`, async t => {
@@ -185,4 +186,34 @@ test('sequential turns continue only after the assistant has answered', async t 
   } }, output);
   assert.equal(result.status, 'pass');
   assert.equal(result.qualitative, 'unverified');
+});
+
+test('Claude turns load this checkout as a plugin with no tools and resume by exact session', () => {
+  const first = turnArguments({ root: '/repo', model: 'sonnet' });
+  assert.deepEqual(first.slice(first.indexOf('--plugin-dir'), first.indexOf('--plugin-dir') + 2), ['--plugin-dir', '/repo']);
+  assert.deepEqual(first.slice(first.indexOf('--tools'), first.indexOf('--tools') + 2), ['--tools', '']);
+  assert.ok(!first.includes('--resume'));
+  const next = turnArguments({ root: '/repo', model: 'sonnet', session: 'abc' });
+  assert.deepEqual(next.slice(next.indexOf('--resume'), next.indexOf('--resume') + 2), ['--resume', 'abc']);
+  assert.deepEqual(parseEvents('{"type":"a"}\nnot json\n{"type":"b"}\n').map(event => event.type), ['a', 'b']);
+});
+
+test('Claude selection uses the slash form with the plugin namespace', () => {
+  const [turn] = scenarios('math', 'learner-kit:', '/').find(scenario => scenario.id === 'math-coach').turns;
+  assert.match(turn.prompt, /^\/learner-kit:lk-coach /u);
+});
+
+test('Claude preflight blocks duplicate or missing skills and unauthenticated hosts', async t => {
+  const init = skills => JSON.stringify({ type: 'system', subtype: 'init', model: 'synthetic', skills, plugins: [] }) + '\n';
+  const runtime = (skills, loggedIn = true) => ({ async execute(args) {
+    if (args[0] === '--version') return { code: 0, stdout: '1.0.0', stderr: '' };
+    if (args[0] === 'auth') return { code: 0, stdout: JSON.stringify({ loggedIn }), stderr: '' };
+    return { code: 0, stdout: init(skills), stderr: '' };
+  } });
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['lk-learn', 'learner-kit:lk-learn'])), /exactly one installation/u);
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime([])), /exactly one installation/u);
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], false)), /Authentication/u);
+  const host = await claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn']));
+  t.after(() => host.cleanup());
+  assert.equal(host.installed[0].loaded, 'learner-kit:lk-learn');
 });

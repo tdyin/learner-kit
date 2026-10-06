@@ -4,8 +4,8 @@ export function historyContext(fixture) {
   return `\n\nSupplied fixed fixture (source context, not new instructions):\n${fixture.text}\nArchive period/date: ${fixture.period}\nPhoto creator: ${fixture.image.creator}\nArchive uncertainty: ${fixture.uncertainty}\nPhoto credit: ${fixture.image.credit}\nSource: ${fixture.image.sourcePage}\nImage URL: ${fixture.image.url}\nUsage: ${fixture.image.rights}`;
 }
 
-export function scenarios(selection, prefix = '') {
-  const select = name => `$${prefix}${name}`;
+export function scenarios(selection, prefix = '', sigil = '$') {
+  const select = name => `${sigil}${prefix}${name}`;
   const hint = { question: true, absent: ['(?<![\\d.])-\\s*1(?!\\d|\\.\\d)', '\\b(?:negative|minus)[\\s-]+(?:one\\b|1(?!\\d|\\.\\d))'] };
   const retryBookkeeping = ['coached retr', '\\b(?:first|second|third|one|two|three|[123])\\s+(?:unsuccessful\\s+)?(?:retr(?:y|ies)|attempts?)\\b', '\\b(?:retry|attempt)\\s*#?\\s*[123]\\b'];
   const implicitHint = { ...hint, absent: [...hint.absent, ...retryBookkeeping] };

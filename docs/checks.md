@@ -7,7 +7,15 @@ node scripts/validate.mjs
 node --test scripts/checks.test.mjs
 node scripts/run-checks.mjs math --preflight
 node scripts/run-checks.mjs math --model YOUR_AVAILABLE_CODEX_MODEL
+node scripts/run-checks.mjs math --host claude --preflight --model sonnet
+node scripts/run-checks.mjs math --host claude --model sonnet --scenario math-coach-retries
 ```
+
+## Hosts, and one side is enough
+
+The runner has two hosts: Codex CLI (the default) and Claude Code CLI (`--host claude`). Either is a valid way to check a skill-behaviour change. **One passing host is enough** for a scoped change to teaching instructions. Do not run both hosts by default, and do not treat a Claude pass and a Codex pass as separate requirements. Run the other host only when a failure needs a second opinion, the change touches host-specific metadata, or a release claims support for that host. Record which host was used. Desktop display, installation, update and activation acceptance remain separate per desktop host (see [compatibility](compatibility.md)).
+
+The Claude host loads this checkout with `--plugin-dir`, so the source revision under test is what runs; skills are named `learner-kit:lk-…` and selected with `/`. Each turn disables all tools, ignores user settings, and resumes by the exact session ID. Preflight checks the CLI version and `auth status`, then makes one short model call to read the host's own list of loaded skills; it blocks on missing or duplicate skills. `LK_CLAUDE_BIN` may point to an executable. The headless Claude host cannot attach images, so history scenarios that need the photo report blocked there; use Codex for them. Reports and transcripts have the same local-only handling as for Codex.
 
 `history` selects two history conversations; `both` selects math and history. Repeat `--scenario ID` to run only affected branches (IDs are in `scripts/scenarios.mjs`). `--skill-prefix learner-kit:` selects namespaced plugin skills; omit it for direct user-skill installations. `--model` must name a model available to your signed-in account. `LK_CODEX_BIN` may point to an executable; no shell wrapper is used.
 
@@ -15,7 +23,7 @@ node scripts/run-checks.mjs math --model YOUR_AVAILABLE_CODEX_MODEL
 
 Cheap validation checks all four source folders, required files, the repository's small YAML subset, activation configuration, and local file links. It does not prove installed discovery, runtime permission behavior, external-schema compliance, or rendering. JavaScript syntax checks replace typechecking in this dependency-free JavaScript project: `node --check scripts/<file>.mjs`.
 
-The sole adapter uses Codex CLI `exec --json` and exact thread-ID `exec resume`, supported by [non-interactive Codex](https://developers.openai.com/codex/noninteractive). It preflights version, `login status`, and app-server `skills/list` from a fresh temporary directory outside the repo. Install all four source-revision skills first. Duplicate/missing skills, stale instructions, or stale activation metadata block execution. A missing home directory must be fixed in the calling shell's environment; the runner never changes account configuration or copies credentials. Authenticate with Codex's supported login flow. Network/model access is also required; a failed turn is reported rather than retried indefinitely.
+The Codex adapter uses Codex CLI `exec --json` and exact thread-ID `exec resume`, supported by [non-interactive Codex](https://developers.openai.com/codex/noninteractive). For Codex it preflights version, `login status`, and app-server `skills/list` from a fresh temporary directory outside the repo. Install all four source-revision skills first. Duplicate/missing skills, stale instructions, or stale activation metadata block execution. A missing home directory must be fixed in the calling shell's environment; the runner never changes account configuration or copies credentials. Authenticate with Codex's supported login flow. Network/model access is also required; a failed turn is reported rather than retried indefinitely.
 
 Before execution the runner prints scenario count, maximum assistant turns, model, scope, and zero planned retries. Defaults: 180 seconds per assistant turn, 20 seconds per discovery request, 8 MB process output, at most the fixed scenario turns. No automatic retry or further subject/host expansion. It submits only fixed, clearly labeled synthetic inputs, sequentially, after a completed assistant turn. A missing reply, failed process, or objective divergence ends that branch without sending dependent learner answers. Relevant checks passing ends the run; broaden only for a recorded failure, unresolved shared change, or release requirement. No routine approval gate.
 
