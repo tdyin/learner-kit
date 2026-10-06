@@ -14,7 +14,7 @@ The learner starts this activity by selecting the skill in their agent or by ask
 
 - A topic or source material (notes, an excerpt, a list of terms).
 
-If neither is given, ask only what they want to be quizzed on.
+If neither is given, ask only what they want to be quizzed on, or what they want to review if they asked for a review.
 
 ## Choose the mode from the request
 

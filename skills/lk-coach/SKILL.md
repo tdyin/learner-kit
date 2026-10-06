@@ -16,7 +16,7 @@ The learner starts this activity by selecting the skill in their agent or by ask
 - Optional: their attempt, where they are stuck, the kind of help they want, and any assistance limits they have to follow.
 - For practice instead of a problem they are stuck on: a topic, goal, or problem to practise.
 
-If the problem itself is missing or too unclear to help with, ask for only that. Otherwise begin helping in your first reply.
+If the problem itself is missing or too unclear to help with, ask for only that. If they ask to practise and give a topic or goal but no problem, do not ask for one: generate the practice task (see Practice). Otherwise begin helping in your first reply.
 
 ## How to coach
 
