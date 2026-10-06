@@ -55,11 +55,11 @@ export function parseEvents(stdout) {
 // Uses the host's own report of loaded skills from the first system event of a real session.
 export async function preflight(root, names, prefix = 'learner-kit:', model, runtime = { execute }) {
   const version = await runtime.execute(['--version'], { timeout: 10_000 });
-  if (version.code) throw new Error(version.stderr || 'Claude executable unavailable');
+  if (version.code || version.reason) throw new Error(version.reason || version.stderr || 'Claude executable unavailable');
   const auth = await runtime.execute(['auth', 'status'], { timeout: 10_000 });
   let status;
   try { status = JSON.parse(auth.stdout); } catch { /* handled below */ }
-  if (auth.code || !status?.loggedIn) throw new Error(`Authentication preflight: ${(auth.stderr || auth.stdout).trim()}`);
+  if (auth.code || auth.reason || !status?.loggedIn) throw new Error(`Authentication preflight: ${(auth.reason || auth.stderr || auth.stdout).trim()}`);
   const cwd = await mkdtemp(join(tmpdir(), 'learner-kit-synthetic-'));
   const cleanup = () => rm(cwd, { recursive: true, force: true });
   try {

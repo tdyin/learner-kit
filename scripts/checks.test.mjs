@@ -214,6 +214,12 @@ test('Claude preflight blocks duplicate or missing skills and unauthenticated ho
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['lk-learn', 'learner-kit:lk-learn'])), /exactly one installation/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime([])), /exactly one installation/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], false)), /Authentication/u);
+  const timedOut = which => ({ async execute(args) {
+    if (args[0] === '--version') return which === 'version' ? { code: null, stdout: '', stderr: '', reason: 'Claude turn timed out' } : { code: 0, stdout: '1.0.0', stderr: '' };
+    return { code: null, stdout: JSON.stringify({ loggedIn: true }), stderr: '', reason: 'Claude turn timed out' };
+  } });
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', timedOut('version')), /timed out/u);
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', timedOut('auth')), /Authentication preflight: Claude turn timed out/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], true, [])), /not loaded as a plugin/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], true, [{ path: root, version: '0.0.0' }])), /differs from source/u);
   const host = await claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn']));
