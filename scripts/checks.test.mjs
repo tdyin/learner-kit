@@ -204,15 +204,18 @@ test('Claude selection uses the slash form with the plugin namespace', () => {
 });
 
 test('Claude preflight blocks duplicate or missing skills and unauthenticated hosts', async t => {
-  const init = skills => JSON.stringify({ type: 'system', subtype: 'init', model: 'synthetic', skills, plugins: [] }) + '\n';
-  const runtime = (skills, loggedIn = true) => ({ async execute(args) {
+  const version = JSON.parse(await readFile(join(root, '.claude-plugin/plugin.json'), 'utf8')).version;
+  const init = (skills, plugins = [{ path: root, version }]) => JSON.stringify({ type: 'system', subtype: 'init', model: 'synthetic', skills, plugins }) + '\n';
+  const runtime = (skills, loggedIn = true, plugins) => ({ async execute(args) {
     if (args[0] === '--version') return { code: 0, stdout: '1.0.0', stderr: '' };
     if (args[0] === 'auth') return { code: 0, stdout: JSON.stringify({ loggedIn }), stderr: '' };
-    return { code: 0, stdout: init(skills), stderr: '' };
+    return { code: 0, stdout: init(skills, plugins), stderr: '' };
   } });
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['lk-learn', 'learner-kit:lk-learn'])), /exactly one installation/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime([])), /exactly one installation/u);
   await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], false)), /Authentication/u);
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], true, [])), /not loaded as a plugin/u);
+  await assert.rejects(claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn'], true, [{ path: root, version: '0.0.0' }])), /differs from source/u);
   const host = await claudePreflight(root, ['lk-learn'], 'learner-kit:', 'sonnet', runtime(['learner-kit:lk-learn']));
   t.after(() => host.cleanup());
   assert.equal(host.installed[0].loaded, 'learner-kit:lk-learn');

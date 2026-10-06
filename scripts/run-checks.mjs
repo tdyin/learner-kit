@@ -39,8 +39,10 @@ prefix ??= hostName === 'claude' ? 'learner-kit:' : '';
 const available = scenarios(selection, prefix, hostName === 'claude' ? '/' : '$');
 if (requested.some(id => !available.some(scenario => scenario.id === id))) throw new Error('Unknown scenario for this subject selection');
 const selected = available.filter(scenario => !requested.length || requested.includes(scenario.id));
-console.log(JSON.stringify({ scope: selection, conversations: preflightOnly ? 0 : selected.length,
-  maximumAssistantTurns: preflightOnly ? 0 : selected.reduce((total, scenario) => total + scenario.turns.length, 0),
+// The Claude preflight reads the host's loaded-skill list from one short real model turn.
+const probe = hostName === 'claude' ? 1 : 0;
+console.log(JSON.stringify({ scope: selection, conversations: probe + (preflightOnly ? 0 : selected.length),
+  maximumAssistantTurns: probe + (preflightOnly ? 0 : selected.reduce((total, scenario) => total + scenario.turns.length, 0)),
   plannedRetries: 0, model: model ?? null, perTurnTimeoutSeconds: 180, output }));
 let host;
 try {

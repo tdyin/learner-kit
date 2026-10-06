@@ -67,12 +67,16 @@ export async function preflight(root, names, prefix = 'learner-kit:', model, run
     if (probe.code || probe.reason) throw new Error(probe.reason || `Claude exited ${probe.code}: ${probe.stderr.slice(-1500)}`);
     const init = parseEvents(probe.stdout).find(event => event.type === 'system' && event.subtype === 'init');
     if (!init) throw new Error('Claude did not report its loaded skills');
+    const entry = init.plugins?.find(plugin => plugin.path === root);
+    if (!entry) throw new Error('The checkout was not loaded as a plugin; refusing to test a different installation.');
+    const expected = await sourceVersion(root);
+    if (entry.version !== expected) throw new Error(`Loaded plugin version ${entry.version} differs from source ${expected}.`);
     const installed = [];
     for (const name of names) {
       const variants = init.skills.filter(skill => skill.split(':').at(-1) === name);
       if (variants.length !== 1) throw new Error(`Need exactly one installation of ${name}; found ${variants.length}: ${variants.join(', ')}. Remove duplicate direct/plugin installations before running.`);
       if (variants[0] !== `${prefix}${name}`) throw new Error(`Expected ${prefix}${name}; found ${variants[0]}. Check --skill-prefix.`);
-      installed.push({ name, loaded: variants[0], plugin: init.plugins?.find(plugin => plugin.path === root)?.version ?? null });
+      installed.push({ name, loaded: variants[0], plugin: entry.version });
     }
     return { version: version.stdout.trim(), cwd, root, model: init.model, installed, cleanup };
   } catch (error) {
