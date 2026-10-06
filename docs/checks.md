@@ -13,7 +13,7 @@ node scripts/run-checks.mjs math --model YOUR_AVAILABLE_CODEX_MODEL
 
 ## Prerequisites and stopping
 
-Cheap validation checks all nine source folders, required files, the repository's small YAML subset, activation configuration, and local file links. It does not prove installed discovery, runtime permission behavior, external-schema compliance, or rendering. JavaScript syntax checks replace typechecking in this dependency-free JavaScript project: `node --check scripts/<file>.mjs`.
+Cheap validation checks all seven source folders, required files, the repository's small YAML subset, activation configuration, and local file links. It does not prove installed discovery, runtime permission behavior, external-schema compliance, or rendering. JavaScript syntax checks replace typechecking in this dependency-free JavaScript project: `node --check scripts/<file>.mjs`.
 
 The sole adapter uses Codex CLI `exec --json` and exact thread-ID `exec resume`, supported by [non-interactive Codex](https://developers.openai.com/codex/noninteractive). It preflights version, `login status`, and app-server `skills/list` from a fresh temporary directory outside the repo. Install all nine source-revision skills first. Duplicate/missing skills, stale instructions, or stale activation metadata block execution. A missing home directory must be fixed in the calling shell's environment; the runner never changes account configuration or copies credentials. Authenticate with Codex's supported login flow. Network/model access is also required; a failed turn is reported rather than retried indefinitely.
 

@@ -1,7 +1,0 @@
-interface:
-  display_name: "Learner Kit: Diagnose"
-  short_description: "Find where my answer or reasoning went wrong"
-  default_prompt: "Use $lk-diagnose to find where my answer went wrong."
-
-policy:
-  allow_implicit_invocation: false

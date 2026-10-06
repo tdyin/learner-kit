@@ -53,7 +53,7 @@ If there is nothing to review, ask only what material or topics they want to rev
 
 ## Other Learner Kit skills (optional)
 
-If an idea needs teaching, you may mention `lk-explain`; for focused practice, `lk-practice`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+If an idea needs teaching, you may mention `lk-explain`; for focused practice, `lk-coach`. Carrying over the idea and their answers makes switching easy. If they decline or the skill is not installed, explain briefly here and continue the review. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Example request
 

@@ -111,8 +111,6 @@ Each of these also works on its own—use whichever fits the moment.
 |---|---|
 | Map an unfamiliar topic and find a starting point | [`lk-explore`](skills/lk-explore/SKILL.md) |
 | Dig into one concept with intuition and examples | [`lk-explain`](skills/lk-explain/SKILL.md) |
-| Work on a practice problem and get feedback | [`lk-practice`](skills/lk-practice/SKILL.md) |
-| Find the wrong turn in your reasoning | [`lk-diagnose`](skills/lk-diagnose/SKILL.md) |
 | Apply a familiar method when the situation changes | [`lk-transfer`](skills/lk-transfer/SKILL.md) |
 | Revisit notes or a pasted session recap | [`lk-review`](skills/lk-review/SKILL.md) |
 

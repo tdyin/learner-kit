@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Help the learner understand a concept. Work from their question, topic, or supplied material; do not require onboarding, a learner profile, another Learner Kit skill, or a prior activity.
 
-The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-practice`) and let the learner select it in their own agent.
+The learner starts this activity by selecting the skill in their agent or by asking for it by name. Any host command or plain request by name counts; do not require a particular command syntax. Continue an authorized activity without asking for permission again. Ordinary relevant chat is not permission to activate this skill. A suggestion of another skill is not authorization to load or switch to it; wait for the learner to select it or explicitly agree. When you mention another Learner Kit skill, refer to it by name (for example `lk-coach`) and let the learner select it in their own agent.
 
 ## Minimum input
 
@@ -48,7 +48,7 @@ If it is unclear what they want explained, ask only for that.
 
 ## Other Learner Kit skills (optional)
 
-You may mention `lk-practice` to try a problem or `lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
+You may mention `lk-coach` to try a problem or `lk-recall` to test memory. Carrying over the concept and what was covered makes switching easy. If they decline or the skill is not installed, keep helping here. Pick up exactly where you left off: if a question or choice was pending, repeat it rather than moving ahead or treating the decline as a request for the answer.
 
 ## Limits
 

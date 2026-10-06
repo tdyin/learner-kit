@@ -100,7 +100,7 @@ Never count a shown answer, a skip or "don't remember" as recall, and never inve
 
 ## Other Learner Kit skills (optional)
 
-If a gap needs teaching rather than more quizzing, you may mention `lk-explain`, or `lk-practice` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue. Pick up exactly where you left off: if a question or choice was pending, repeat it with the same progress line rather than moving ahead or treating the decline as a request for the answer.
+If a gap needs teaching rather than more quizzing, you may mention `lk-explain`, or `lk-coach` for applying the idea. Carrying over the topic and the missed items makes switching easy. If they decline or the skill is not installed, explain briefly here and continue. Pick up exactly where you left off: if a question or choice was pending, repeat it with the same progress line rather than moving ahead or treating the decline as a request for the answer.
 
 ## Recap on request and limits
 

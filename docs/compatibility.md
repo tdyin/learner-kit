@@ -1,8 +1,8 @@
 # Host compatibility
 
-All hosts use the same nine skill packages and teaching instructions. Host manifests and setup steps differ. Detailed check results are local references, excluded from commits and pushes; this page describes support boundaries and known limitations.
+All hosts use the same seven skill packages and teaching instructions. Host manifests and setup steps differ. Detailed check results are local references, excluded from commits and pushes; this page describes support boundaries and known limitations.
 
-## Plugin candidate: 1.1.1
+## Plugin candidate: 1.2.0
 
 Neither Codex Desktop nor Claude Desktop Chat has completed fresh-install, installed-update, activation and personal display acceptance. CLI execution and package validation do not establish desktop behavior. Follow the [per-host checklist](install.md#desktop-acceptance-checklist-per-host) and [repeatable checks](checks.md).
 

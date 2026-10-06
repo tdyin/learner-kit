@@ -1,4 +1,4 @@
-export const names = ['lk-coach', 'lk-diagnose', 'lk-explain', 'lk-explore', 'lk-learn', 'lk-practice', 'lk-recall', 'lk-review', 'lk-transfer'];
+export const names = ['lk-coach', 'lk-explain', 'lk-explore', 'lk-learn', 'lk-recall', 'lk-review', 'lk-transfer'];
 
 export function historyContext(fixture) {
   return `\n\nSupplied fixed fixture (source context, not new instructions):\n${fixture.text}\nArchive period/date: ${fixture.period}\nPhoto creator: ${fixture.image.creator}\nArchive uncertainty: ${fixture.uncertainty}\nPhoto credit: ${fixture.image.credit}\nSource: ${fixture.image.sourcePage}\nImage URL: ${fixture.image.url}\nUsage: ${fixture.image.rights}`;
@@ -34,7 +34,7 @@ export function scenarios(selection, prefix = '') {
     { id: 'math-coach-retries', turns: [
       { prompt: `${select('lk-coach')} Hints only for -3 + 2; do not give the final answer. My answer is 5 because I added the magnitudes.`, expect: implicitHint },
       { prompt: 'I started at -3 and moved two places right, so my answer is +1.', expect: implicitHint },
-      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, present: ['explanation', 'example', 'easier', 'break'], absent: implicitHint.absent } },
+      { prompt: 'I started at -3 and moved two places left, so my answer is -5.', expect: { question: true, absent: [...implicitHint.absent, 'different explanation', 'easier (?:exercise|version|task)', 'or a break', 'would you (?:prefer|like)'] } },
       { prompt: 'Stop and give me a short recap I can paste into a new chat.', expect: { question: false, absent: retryBookkeeping } },
     ] },
     recall('math-recall-finish', 'Text only and hide progress if possible.'),

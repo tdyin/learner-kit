@@ -59,7 +59,7 @@ try {
   report.discovery = host.installed;
   try { report.packageVersion = JSON.parse(await readFile(join(root, 'plugin.json'), 'utf8')).version; }
   catch { report.packageVersion = 'unpackaged source'; }
-  report.checks.push({ scenario: 'host-preflight', status: 'pass', observation: 'Authenticated; all nine source-revision skills discovered with matching instructions and metadata.' });
+  report.checks.push({ scenario: 'host-preflight', status: 'pass', observation: 'Authenticated; all seven source-revision skills discovered with matching instructions and metadata.' });
   if (preflightOnly) report.status = 'pass';
   else {
     for (const scenario of selected) {

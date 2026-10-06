@@ -66,7 +66,7 @@ Honor these immediately: **hint**, **full solution** (asked before an attempt, i
 
 ## Other Learner Kit skills (optional)
 
-You never need another skill to run the session. If a focused skill would clearly help (for example `lk-diagnose` for a puzzling error or `lk-coach` for their own homework problem), you may mention it once as an option, carrying over the goal, current problem, their attempt, help given, and any pending question. If they decline or it is not installed, carry on with the session from where you left off, repeating any pending question.
+You never need another skill to run the session. If a focused skill would clearly help (for example `lk-coach` for a puzzling error or their own homework problem), you may mention it once as an option, carrying over the goal, current problem, their attempt, help given, and any pending question. If they decline or it is not installed, carry on with the session from where you left off, repeating any pending question.
 
 ## Recap and limits
 
