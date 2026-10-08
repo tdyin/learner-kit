@@ -136,6 +136,33 @@ test('cheap validation rejects host packages with inconsistent release versions'
   assert.ok(result.failures.some(failure => /version/iu.test(failure)));
 });
 
+test('cheap validation enforces skill-authoring best practices', async t => {
+  const fixture = await publicSource(t);
+  const path = join(fixture, 'skills/lk-coach/SKILL.md');
+  const skill = await readFile(path, 'utf8');
+  await writeFile(path, skill
+    .replace(/^description: .*$/mu, 'description: We help with <b>homework</b>.')
+    .replace('## Minimum input', '[Details](details.md "Details")\n\n## Minimum input'));
+  await writeFile(join(fixture, 'skills/lk-coach/details.md'), 'See [more](more.md).\n');
+  await writeFile(join(fixture, 'skills/lk-coach/more.md'), 'More.\n');
+  const { status, failures } = await validate(fixture);
+  assert.equal(status, 'fail');
+  for (const rule of [/XML tags/u, /third person/u, /when to use/u, /one level deep/u]) {
+    assert.ok(failures.some(failure => rule.test(failure)), String(rule));
+  }
+});
+
+test('the SKILL.md body limit ignores the final newline', async t => {
+  const fixture = await publicSource(t);
+  const path = join(fixture, 'skills/lk-coach/SKILL.md');
+  const skill = await readFile(path, 'utf8');
+  const front = skill.slice(0, skill.indexOf('\n---', 3) + 5);
+  await writeFile(path, `${front}${'line\n'.repeat(499)}`);
+  assert.equal((await validate(fixture)).status, 'pass');
+  await writeFile(path, `${front}${'line\n'.repeat(500)}`);
+  assert.ok((await validate(fixture)).failures.some(failure => /500 lines/u.test(failure)));
+});
+
 test('an empty assistant reply cannot pass or advance the script', async t => {
   const output = await temporaryFixture(t, 'learner-kit-check-');
   const result = await runScenario({ id: 'empty', turns: [{ prompt: 'Help' }] }, {
