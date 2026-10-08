@@ -1,6 +1,6 @@
 # Installation, first use, and updates
 
-Package candidate: **1.2.0**. Teaching instructions have one authoritative home in `skills/`; the OpenAI root manifest and Claude manifest differ only in host metadata. Neither desktop has passed fresh-install/update/permission/rendering acceptance for this candidate. See [compatibility](compatibility.md). Dated check records are kept locally.
+Package candidate: **1.2.1**. Teaching instructions have one authoritative home in `skills/`; the OpenAI root manifest and Claude manifest differ only in host metadata. Neither desktop has passed fresh-install/update/permission/rendering acceptance for this candidate. See [compatibility](compatibility.md). Dated check records are kept locally.
 
 ## Codex Desktop native catalog
 

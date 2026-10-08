@@ -1,5 +1,9 @@
 # Release history
 
+## 1.2.1 — plugin candidate, 2026-10-08
+
+All four skills now follow Anthropic's [skill-authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), and cheap validation enforces them: a third-person description that says when to use the skill, no XML tags or reserved words, a SKILL.md body under 500 lines, forward-slash paths, and reference files at most one level deep. The shared Visuals guidance in every skill is shorter, with no rule changed. `lk-recall` now uses the glossary term "coached retry" for an answer after help. Desktop acceptance remains independent and pending, and the installed-update path from 1.2.0 is unchecked; see [compatibility](compatibility.md).
+
 ## 1.2.0 — plugin candidate, 2026-10-06
 
 `lk-coach` now absorbs `lk-diagnose` and `lk-practice`: it diagnoses an attempt automatically, guides the learner through the fix, and runs practice on request. The retry limit and its "different explanation, example, easier exercise, or break" menu are gone; the coach changes approach on its own when a step keeps failing, and `lk-learn` follows the same rule. `lk-learn` absorbs `lk-explore` (topic maps), `lk-recall` absorbs `lk-review` (review mode, inferred from the request), and `lk-explain` absorbs `lk-transfer` (transfer tasks). All five merged skills (`lk-diagnose`, `lk-practice`, `lk-explore`, `lk-review`, `lk-transfer`) are removed, taking the package from nine skills to four: `lk-coach`, `lk-learn`, `lk-recall`, `lk-explain`. The check runner gains a Claude Code CLI host (`--host claude`); one passing host is enough for scoped skill-behaviour checks. Desktop acceptance remains independent and pending, and the installed-update path from 1.1.x is unchecked; see [compatibility](compatibility.md).
