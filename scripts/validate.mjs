@@ -26,12 +26,12 @@ export async function validate(directory = root) {
       const description = fields.description ?? '';
       check(!/[<>]/u.test(`${fields.name}${description}`), `${name}: name/description must not contain XML tags`);
       check(!/anthropic|claude/iu.test(fields.name ?? ''), `${name}: name must not contain a reserved word`);
-      check(!/\b(?:I|me|my|you|your)\b/u.test(description), `${name}: description must be third person`);
+      check(!/\b(?:I|me|my|we|us|our|you|your)\b/iu.test(description), `${name}: description must be third person`);
       check(/\bUse (?:only )?when\b/u.test(description), `${name}: description must say when to use the skill`);
-      const body = skill.slice(skill.indexOf('\n---', 3) + 4).replace(/^\r?\n/u, '');
+      const body = skill.slice(skill.indexOf('\n---', 3) + 4).replace(/^\r?\n/u, '').replace(/\r?\n$/u, '');
       check(body.split(/\r?\n/u).length < 500, `${name}: SKILL.md body must stay under 500 lines`);
       check(!/\]\([^)\s]*\\/u.test(skill), `${name}: file references must use forward slashes`);
-      for (const match of skill.matchAll(/\]\(([^)\s#]+\.md)(?:#[^)\s]*)?\)/gu)) {
+      for (const match of skill.matchAll(/\]\(([^)\s#]+\.md)(?:#[^)\s]*)?(?:\s+"[^"]*")?\)/gu)) {
         if (/^[a-z][a-z0-9+.-]*:/iu.test(match[1])) continue;
         const nested = await read(`skills/${name}/${match[1]}`).catch(() => '');
         check(!/\]\((?![a-z][a-z0-9+.-]*:)[^)\s#]+\.md/iu.test(nested), `${name}: ${match[1]} must not link to further reference files (keep references one level deep)`);
