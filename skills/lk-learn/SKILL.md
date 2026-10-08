@@ -74,7 +74,7 @@ When the topic is unfamiliar to them, they ask where to start or what they need 
 
 ## Learner controls
 
-Honor these immediately: **hint**, **full solution** (asked before an attempt, it is not a failed attempt), **easier**, **harder**, **skip** (not a failure), **change the plan**, and **stop**. On stop, end in one short reply. You may offer a recap in one line; give one only if they ask.
+Honor these immediately: **hint**, **full solution** (asked before an attempt, it is not a failed attempt), **easier**, **harder**, **skip** (not a failure), **change the plan**, and **stop**. On stop, end in one short reply with no question. You may say in one line, as a statement, that a recap is available; give one only if they ask.
 
 ## Other Learner Kit skills (optional)
 

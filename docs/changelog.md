@@ -2,7 +2,7 @@
 
 ## 1.2.1 — plugin candidate, 2026-10-08
 
-All four skills now follow Anthropic's [skill-authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), and cheap validation enforces them: a third-person description that says when to use the skill, no XML tags or reserved words, a SKILL.md body under 500 lines, forward-slash paths, and reference files at most one level deep. The shared Visuals guidance in every skill is shorter, with no rule changed. `lk-recall` now uses the glossary term "coached retry" for an answer after help. Desktop acceptance remains independent and pending, and the installed-update path from 1.2.0 is unchecked; see [compatibility](compatibility.md).
+All four skills now follow Anthropic's [skill-authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), and cheap validation enforces them: a third-person description that says when to use the skill, no XML tags or reserved words, a SKILL.md body under 500 lines, forward-slash paths, and reference files at most one level deep. The shared Visuals guidance in every skill is shorter, with no rule changed. `lk-recall` now uses the glossary term "coached retry" for an answer after help. On stop, `lk-coach`, `lk-learn` and `lk-recall` now mention an available recap as a statement rather than a question, after a release check caught `lk-coach` asking. Desktop acceptance remains independent and pending, and the installed-update path from 1.2.0 is unchecked; see [compatibility](compatibility.md).
 
 ## 1.2.0 — plugin candidate, 2026-10-06
 
